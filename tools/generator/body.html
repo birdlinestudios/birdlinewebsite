@@ -538,11 +538,11 @@
     <form class="lead" data-lead novalidate>
       <div class="lead-row">
         <label for="lead-name">Name<input id="lead-name" name="name" type="text" autocomplete="name" required></label>
-        <label for="lead-email">Work email<input id="lead-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email><small class="hint">Please use your company email. Personal email providers aren’t accepted.</small></label>
+        <label for="lead-email">Work email<input id="lead-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email></label>
       </div>
       <div class="lead-row">
         <label for="lead-company">Company<input id="lead-company" name="company" type="text" autocomplete="organization" required></label>
-        <label for="lead-size">Company size<select id="lead-size" name="size"><option value="">Select…</option><option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>501-1000</option><option>1000+</option></select></label>
+        <label for="lead-size">Company size<select id="lead-size" name="size" required><option value="">Select…</option><option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>501-1000</option><option>1000+</option></select></label>
       </div>
       <label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn--light" type="submit">Book a call</button>

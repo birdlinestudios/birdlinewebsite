@@ -324,23 +324,21 @@ BOOK = '''<dialog class="book" data-book-dialog aria-labelledby="book-title">
     <button class="book-x" type="button" data-book-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
     <div class="book-step" data-book-step="form">
       <span class="eyebrow">Book a call</span>
-      <h2 class="book-h" id="book-title">Let’s Talk About <span class="nowrap">Your Content.</span></h2>
-      <p class="book-sub">Tell us a little about you, then pick a time that works. We’ll come to the call with a first read on what your content could earn.</p>
+      <h2 class="book-h" id="book-title">Let’s Scale Your <span class="nowrap">Content Library.</span></h2>
       <form class="lead" data-lead data-book-form novalidate>
         <div class="lead-row">
           <label for="book-name">Full name *<input id="book-name" name="name" type="text" autocomplete="name" required></label>
-          <label for="book-email">Work email *<input id="book-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email><small class="hint">Please use your company email. Personal email providers aren’t accepted.</small></label>
+          <label for="book-email">Work email *<input id="book-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email></label>
         </div>
         <div class="lead-row">
-          <label for="book-company">Company name<input id="book-company" name="company" type="text" autocomplete="organization"></label>
-          <label for="book-size">Company size<select id="book-size" name="size">%s</select></label>
+          <label for="book-company">Company name *<input id="book-company" name="company" type="text" autocomplete="organization" required></label>
+          <label for="book-size">Company size *<select id="book-size" name="size" required>%s</select></label>
         </div>
         <label for="book-source">How did you hear about Birdline?<select id="book-source" name="source" data-source>%s</select></label>
         <label class="book-other" for="book-source-other" hidden>Tell us more<input id="book-source-other" name="source_other" type="text" data-source-other></label>
         <label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-        <button class="btn" type="submit">Continue to pick a time</button>
+        <button class="btn" type="submit">Pick a time</button>
         <p class="lead-msg" data-lead-msg aria-live="polite"></p>
-        <p class="book-fine">Your details go to the Birdline team to prepare for the call, nothing else.</p>
       </form>
     </div>
     <div class="book-step" data-book-step="calendar" hidden>

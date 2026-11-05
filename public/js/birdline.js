@@ -191,7 +191,7 @@ function enhance(doc) {
     var msg = form.querySelector('[data-lead-msg]'), bad = null, text = '';
     Array.prototype.forEach.call(form.querySelectorAll('[required],[data-work-email]'), function (f) {
       var v = f.value.trim(), wrong = false;
-      if (f.hasAttribute('required') && !v) { wrong = true; text = text || 'Add your name and a work email and we’re set.'; }
+      if (f.hasAttribute('required') && !v) { wrong = true; text = text || 'Please fill in every field marked with an asterisk.'; }
       else if (f.type === 'email' && v && !emailDomain(v)) { wrong = true; text = text || 'That email address doesn’t look complete.'; }
       else if (f.hasAttribute('data-work-email') && v && !isWorkEmail(v)) { wrong = true; text = text || WORK_EMAIL_HINT; }
       f.setAttribute('aria-invalid', wrong ? 'true' : 'false');

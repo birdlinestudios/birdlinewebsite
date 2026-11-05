@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 const PERSONAL = /^(gmail|googlemail|yahoo|ymail|rocketmail|hotmail|outlook|live|msn|icloud|me|mac|aol|protonmail|proton|pm|gmx|mail|zoho|yandex|fastmail|hey|duck|comcast|att|verizon|sbcglobal|cox|qq|163|126)\./i;
-const SIZES = new Set(["", "1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"]);
+const SIZES = new Set(["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"]);
 
 type Lead = { name: string; email: string; company: string; size: string; source: string; page: string; referrer: string };
 
@@ -45,7 +45,8 @@ export async function POST(req: Request) {
   if (!lead.name) return NextResponse.json({ ok: false, error: "Add your full name." }, { status: 400 });
   if (!domain) return NextResponse.json({ ok: false, error: "That email address doesn’t look complete." }, { status: 400 });
   if (PERSONAL.test(domain)) return NextResponse.json({ ok: false, error: "Please use your company email. Personal email providers aren’t accepted." }, { status: 400 });
-  if (!SIZES.has(lead.size)) lead.size = "";
+  if (!lead.company) return NextResponse.json({ ok: false, error: "Add your company name." }, { status: 400 });
+  if (!lead.size || !SIZES.has(lead.size)) return NextResponse.json({ ok: false, error: "Choose your company size." }, { status: 400 });
 
   const when = new Date().toISOString();
   console.log("[book] lead", JSON.stringify({ ...lead, at: when }));

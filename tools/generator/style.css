@@ -698,7 +698,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .book-x:hover{background:var(--tint)}
 .book-x svg{width:18px;height:18px}
 .book .eyebrow{margin-bottom:10px}
-.book-h{margin:0 0 10px;padding-right:36px;font:700 clamp(27px,3.4vw,40px)/1.08 var(--display);letter-spacing:-.02em;color:var(--navy);text-wrap:balance}
+.book-h{margin:0 0 22px;padding-right:36px;font:700 clamp(27px,3.4vw,40px)/1.08 var(--display);letter-spacing:-.02em;color:var(--navy);text-wrap:balance}
 .book-sub{margin:0 0 22px;max-width:58ch;font-size:16px;line-height:1.55;color:var(--ink-2)}
 .book .lead{padding:0;border-radius:0;box-shadow:none}
 .book .lead .btn{min-height:54px}
