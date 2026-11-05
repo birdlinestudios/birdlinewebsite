@@ -1,0 +1,224 @@
+[
+ {
+  "route": "/",
+  "file": "index.html",
+  "title": "Birdline: Unlimited Deliverables. One Production Workspace.",
+  "description": "Birdline pairs a premium creative studio with a production workspace: unlimited deliverables every month, and the revenue every production earned, in one place."
+ },
+ {
+  "route": "/work",
+  "file": "work.html",
+  "title": "Work: Birdline",
+  "description": "Birdline’s work: case studies, commercials, social content, photography, design and animation for brands like Public Rec, Gardyn, FreePower, Route, 686, Patrol, Literati, Solidroad and WHOOP."
+ },
+ {
+  "route": "/case-studies",
+  "file": "case-studies.html",
+  "title": "Case Studies: Birdline",
+  "description": "Twelve Birdline case studies: WHOOP, Gardyn, Literati, Solidroad, 686, Route, FreePower, Public Rec, Willie’s Remedy, Patrol, EDJY and the UFL."
+ },
+ {
+  "route": "/packages",
+  "file": "packages.html",
+  "title": "Packages: Birdline",
+  "description": "Birdline’s monthly packages: Video Editing starting at $8,000/mo and Design & Animation starting at $6,000/mo, each with a dedicated creative, unlimited deliverables and the Birdline Workflow. Productions scoped per project."
+ },
+ {
+  "route": "/about",
+  "file": "about.html",
+  "title": "About: Birdline",
+  "description": "Birdline is a premium creative studio and production workspace: top-tier creators, unlimited deliverables, and an in-house production experience for brands that can’t slow down."
+ },
+ {
+  "route": "/production-workspace",
+  "file": "production-workspace.html",
+  "title": "Production Workspace: Birdline",
+  "description": "The Birdline App is the production workspace for in-house content teams: briefs, shot lists, deliverables, and performance insights as one connected campaign, with ROPS™ and ROCS™ measured on every production."
+ },
+ {
+  "route": "/case-studies/whoop",
+  "file": "case-studies__whoop.html",
+  "title": "WHOOP Case Study: Birdline",
+  "description": "Starting in early 2026, our partnership with WHOOP has grown from supporting a social series and a handful of paid ads into a much broader creative partnership spanning Ferrari content, video podcasts, paid social, design, animation, VFX, and more. Birdline has become a flexible extension of…"
+ },
+ {
+  "route": "/case-studies/gardyn",
+  "file": "case-studies__gardyn.html",
+  "title": "Gardyn Case Study: Birdline",
+  "description": "Our dedicated Bird team powers Gardyn’s content production, delivering high-quality video, photography, and graphics every month for their social media, website, and paid ads. We create a diverse mix of content, including commercial videos, UGC-style assets, still photography, and custom graphic…"
+ },
+ {
+  "route": "/case-studies/literati",
+  "file": "case-studies__literati.html",
+  "title": "Literati Case Study: Birdline",
+  "description": "We have partnered with Literati as their dedicated content production team, supporting everything from video editing and graphic design to full-scale campaign content and animation. We work closely with their internal creative team and agency partners, develop assets tailored for paid ads, web…"
+ },
+ {
+  "route": "/case-studies/solidroad",
+  "file": "case-studies__solidroad.html",
+  "title": "Solidroad Case Study: Birdline",
+  "description": "Birdline’s partnership with Solidroad has grown from an initial brand and product video project into an ongoing, embedded content partnership supporting nearly every part of their content engine. Together, we’ve handled on-site productions, founder and team storytelling, event coverage, customer…"
+ },
+ {
+  "route": "/case-studies/686",
+  "file": "case-studies__686.html",
+  "title": "686 Case Study: Birdline",
+  "description": "We partnered with 686 to create a seamless content workflow, delivering a steady stream of paid ads, social content, and website videos. Our dedicated team handled recurring video shoots and weekly post-production, capturing and refining edits to showcase the full scope of 686’s product line,…"
+ },
+ {
+  "route": "/case-studies/route",
+  "file": "case-studies__route.html",
+  "title": "Route Case Study: Birdline",
+  "description": "We partnered with Route as their always-on content team, producing a steady flow of video, photography, and animations to power their social channels, website, app, and live events. From profile features and “How-To” tutorials to high-impact B2B commercials, our work spanned a wide range of…"
+ },
+ {
+  "route": "/case-studies/freepower",
+  "file": "case-studies__freepower.html",
+  "title": "FreePower Case Study: Birdline",
+  "description": "Our Bird team partners with FreePower to produce high-quality video, photography, and VFX/animations every month, fueling their social media, website, and paid ad campaigns. From branded commercials to explainer videos, product demos, and custom animations, we create a diverse range of content…"
+ },
+ {
+  "route": "/case-studies/public-rec",
+  "file": "case-studies__public-rec.html",
+  "title": "Public Rec Case Study: Birdline",
+  "description": "We provide Public Rec with a dedicated content team, ensuring a steady flow of high-quality video, photography, and edits each month. Our Birds handle recurring shoots to capture their full product line, leveraging top-tier talent and production crews to create compelling ads, social content, TV…"
+ },
+ {
+  "route": "/case-studies/willies-remedy",
+  "file": "case-studies__willies-remedy.html",
+  "title": "Willie’s Remedy Case Study: Birdline",
+  "description": "Willie’s Remedy wanted an educational, entertaining YouTube series for a broad audience, including viewers who are older or new to cannabis. The brief: Vox-style explainers of two to three minutes each, with AI voiceover, that make THC drinks easy to understand."
+ },
+ {
+  "route": "/case-studies/patrol",
+  "file": "case-studies__patrol.html",
+  "title": "Patrol Case Study: Birdline",
+  "description": "We partnered with Patrol as a full-service content team, leading creative development and production across campaigns that build awareness, trust, and adoption for the Patrol app. From premium brand commercials to authentic UGC storytelling, we’ve helped shape Patrol’s message around proactive,…"
+ },
+ {
+  "route": "/case-studies/edjy",
+  "file": "case-studies__edjy.html",
+  "title": "EDJY Case Study: Birdline",
+  "description": "EDJY makes precision-engineered personal care tools, including a single-blade nail cutter and tweezers. They were taking on a category still defined by an 1881 design. They had great footage and bold ideas, but they needed a partner to turn them into a steady stream of ads that win attention and…"
+ },
+ {
+  "route": "/case-studies/ufl",
+  "file": "case-studies__ufl.html",
+  "title": "UFL Case Study: Birdline",
+  "description": "The United Football League was launching a new season across 8 teams. They needed fresh, high-quality content for every team, every week. It had to work on social feeds, on stadium screens, on the radio and on broadcast TV, and it had to arrive in time for game day."
+ },
+ {
+  "route": "/services",
+  "file": "services.html",
+  "title": "Services: Birdline",
+  "description": "Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / CGI / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production."
+ },
+ {
+  "route": "/why-us",
+  "file": "why-us.html",
+  "title": "Why Birdline",
+  "description": "Why brands choose Birdline: world-class creatives on Slack, unlimited deliverables, a content library that keeps working for years, ROPS™ and ROCS™ on every production, and the Birdline App that holds it all."
+ },
+ {
+  "route": "/rops",
+  "file": "rops.html",
+  "title": "ROPS™ & ROCS™: Birdline",
+  "description": "ROPS™ (Return on Production Spend) and ROCS™ (Return on Campaign Spend): what they are, why Birdline measures them on every campaign, what they are worth, and how the Birdline App measures them."
+ },
+ {
+  "route": "/services/production-process",
+  "file": "services__production-process.html",
+  "title": "Production Process: Birdline",
+  "description": "How Birdline plans and runs full-service productions for commercial, photo and UGC-style shoots: scoped per project, planned in the Birdline App, crewed wherever the shoot is, and built so one day on set feeds campaigns for years."
+ },
+ {
+  "route": "/services/commercial",
+  "file": "services__commercial.html",
+  "title": "Commercial: Birdline",
+  "description": "Brand films and commercials produced end to end: script, cast, shoot, edit, color and mix, then cut into every length your channels need."
+ },
+ {
+  "route": "/services/paid-social",
+  "file": "services__paid-social.html",
+  "title": "Paid Social: Birdline",
+  "description": "Performance creative for Meta, TikTok and YouTube: hooks to test, every format covered, and each variation cut from the footage you already have or the shoot we plan with you."
+ },
+ {
+  "route": "/services/photography",
+  "file": "services__photography.html",
+  "title": "Photography: Birdline",
+  "description": "Product, lifestyle and campaign photography shot by our Birds, retouched and delivered in every crop your product pages, ads and emails need."
+ },
+ {
+  "route": "/services/ugc",
+  "file": "services__ugc.html",
+  "title": "UGC: Birdline",
+  "description": "Scripted, shot and cut to look like it came from a customer, because the best-performing ad often doesn’t look like an ad."
+ },
+ {
+  "route": "/services/3d-cgi-vfx",
+  "file": "services__3d-cgi-vfx.html",
+  "title": "3D / CGI / VFX: Birdline",
+  "description": "Product renders when the product isn’t ready, worlds you can’t shoot, and effects that disappear into the footage."
+ },
+ {
+  "route": "/services/motion-graphics",
+  "file": "services__motion-graphics.html",
+  "title": "Motion Graphics: Birdline",
+  "description": "Motion design for explainers, titles, product features and social, made to move with your brand, not just across it."
+ },
+ {
+  "route": "/services/design",
+  "file": "services__design.html",
+  "title": "Design: Birdline",
+  "description": "Graphic design for every placement: paid statics, landing page graphics, email visuals, product pages, and the brand assets that hold a campaign together."
+ },
+ {
+  "route": "/services/ctv",
+  "file": "services__ctv.html",
+  "title": "CTV: Birdline",
+  "description": "Broadcast-quality commercials in CTV and OTT specs, produced new or cut from the footage you already own."
+ },
+ {
+  "route": "/services/profiles",
+  "file": "services__profiles.html",
+  "title": "Profiles: Birdline",
+  "description": "Founder stories, customer features and documentary series that give a brand a face, and give the feed something longer to watch."
+ },
+ {
+  "route": "/services/video-podcasts",
+  "file": "services__video-podcasts.html",
+  "title": "Video Podcasts: Birdline",
+  "description": "Video podcasts produced from the studio to the feed: multi-camera capture, clean audio, a full episode for YouTube, and the clips that bring people to it."
+ },
+ {
+  "route": "/services/illustration",
+  "file": "services__illustration.html",
+  "title": "Illustrations: Birdline",
+  "description": "Custom illustration for campaigns, characters, key art, and the moments photography can’t reach."
+ },
+ {
+  "route": "/services/film",
+  "file": "services__film.html",
+  "title": "Film: Birdline",
+  "description": "For the campaigns that want texture, grain, and a look no filter reproduces, we shoot on film and finish it for every screen."
+ },
+ {
+  "route": "/services/audio",
+  "file": "services__audio.html",
+  "title": "Audio: Birdline",
+  "description": "Voice-over, sound design, music licensing and the mix, for the spots you air and the shows you publish."
+ },
+ {
+  "route": "/services/ooh",
+  "file": "services__ooh.html",
+  "title": "OOH: Birdline",
+  "description": "Content built for the big surfaces: billboards, transit, trade-show booths, stadium screens, retail, and the office lobby."
+ },
+ {
+  "route": "/services/ai-content",
+  "file": "services__ai-content.html",
+  "title": "AI Content: Birdline",
+  "description": "AI used where it helps: concept visuals, product renders, variations and voice, directed by our Birds and kept on brand."
+ }
+]

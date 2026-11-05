@@ -1,0 +1,6 @@
+# What the Vercel CLI leaves out of a deployment (GitHub deployments follow .gitignore). The videos are served from Blob.
+node_modules
+.next
+.generator-out
+public/video
+.env*.local

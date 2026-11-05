@@ -1,0 +1,22 @@
+# dependencies and build output
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# the generator's scratch output (npm run content)
+.generator-out/
+__pycache__/
+
+# local environment and Vercel's project link
+.env*.local
+.vercel/
+
+# the videos (1.4 GB): kept in public/video on each machine for local work, served from Vercel Blob in production
+# (NEXT_PUBLIC_VIDEO_BASE). content/videos.txt lists every file the pages need.
+public/video/*
+!public/video/.gitkeep
+
+# OS
+.DS_Store

@@ -1,0 +1,2851 @@
+{
+ "portfolio": {
+  "heroText": "Our Bird's Work\u200b Our creators don\u2019t just make content at scale, but work that makes an impact. Watch Reel FreePower Case Study Gardyn Case Study Literati Case Study Public Rec Case Study Patrol Case S",
+  "reel": "https://vimeo.com/1049385390",
+  "cards": [
+   {
+    "img": "2024/06/FreePower_Bar_5.jpeg",
+    "set": "5000/300/1024/1536/2048/720",
+    "w": 5000,
+    "h": 3335,
+    "slug": "freepower",
+    "txt": "FreePower Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1.jpeg",
+    "set": "3800/300/1024/1536/2048/720",
+    "w": 3800,
+    "h": 2535,
+    "slug": "gardyn",
+    "txt": "Gardyn Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2025/10/create_a_cgi_rendered_product_shot_of9-e1790789913659.jpg",
+    "set": "4096/300/1024/768/1536/2048",
+    "w": 4096,
+    "h": 2307,
+    "slug": "gardyn",
+    "txt": "Literati Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2025/09/PublicRec-DTLA-DD-33.jpeg",
+    "set": "8192/300/1024/1536/2048/720",
+    "w": 8192,
+    "h": 5464,
+    "slug": "public-rec",
+    "txt": "Public Rec Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2025/06/Patrol-GrantPuckett-00760-1-1.jpeg",
+    "set": "4800/300/1024",
+    "w": 4800,
+    "h": 3202,
+    "slug": "patrol",
+    "txt": "Patrol Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2024/05/Route-App.jpg",
+    "set": "2558/300/1024/1536/2048",
+    "w": 2558,
+    "h": 1439,
+    "slug": "route",
+    "txt": "Route App Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   },
+   {
+    "img": "2024/05/thumb-6-2.jpg",
+    "set": "3840/300/1024",
+    "w": 3840,
+    "h": 2160,
+    "slug": "686",
+    "txt": "686 Case Study",
+    "cls": "carousel-item-content.pos-rel.w-100"
+   }
+  ],
+  "panes": [
+   {
+    "id": "video",
+    "items": [
+     {
+      "src": "2024/05/thumb-32.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1119136322",
+      "alt": "Gardyn",
+      "w": 3830,
+      "h": 2146
+     },
+     {
+      "src": "2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg",
+      "asp": 1.79,
+      "href": "https://vimeo.com/1087155996",
+      "alt": "Patrol",
+      "w": 3824,
+      "h": 2142
+     },
+     {
+      "src": "2024/05/Gardyn-Unboxing-1.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/916190607",
+      "alt": "Gardyn",
+      "w": 1620,
+      "h": 2880
+     },
+     {
+      "src": "2024/05/thumb-10-3.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/1032082968",
+      "alt": "Gardyn",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/05/thumb-14-1.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/918117865",
+      "alt": "Gardyn",
+      "w": 1620,
+      "h": 2880
+     },
+     {
+      "src": "2024/05/thumb-7-3.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/1051823176",
+      "alt": "FreePower",
+      "w": 720,
+      "h": 1280
+     },
+     {
+      "src": "2024/06/Route-x-Daily-Drills.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/844754785",
+      "alt": "Route x Daily Drills",
+      "w": 2560,
+      "h": 1440
+     },
+     {
+      "src": "2024/06/686-UNWORK-Tyler-Ravelle.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/876232748",
+      "alt": "686 UNWORK",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/07/Route-App.webp",
+      "asp": 1.78,
+      "href": "https://vimeo.com/833777565",
+      "alt": "Route App",
+      "w": 1440,
+      "h": 810
+     },
+     {
+      "src": "2024/05/maxresdefault_11zon.webp",
+      "asp": 1.78,
+      "href": "https://vimeo.com/640557935",
+      "alt": "Public Rec",
+      "w": 1280,
+      "h": 720
+     },
+     {
+      "src": "2024/05/686-EP.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/776002616",
+      "alt": "686",
+      "w": 1080,
+      "h": 1080
+     },
+     {
+      "src": "2024/07/thumb.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/1008273734#t=0",
+      "alt": "Gardyn",
+      "w": 2288,
+      "h": 2288
+     },
+     {
+      "src": "2024/07/thumb-3-1.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/1000153543",
+      "alt": "Public Rec",
+      "w": 1713,
+      "h": 1713
+     },
+     {
+      "src": "2024/05/thumb-17-1.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1087156021",
+      "alt": "DYNA",
+      "w": 3830,
+      "h": 2148
+     },
+     {
+      "src": "2024/05/thumb-18-2.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1035100357",
+      "alt": "FreePower",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-16-1.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/981127428",
+      "alt": "FreePower",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/06/686-WINTER-Goggles-Color-Grid.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/881956457",
+      "alt": "686",
+      "w": 1440,
+      "h": 2560
+     },
+     {
+      "src": "2024/05/thumb-11.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/840632761",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/05/thumb-6-2.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/895391449",
+      "alt": "686",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/Particle-Tachyon.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1000128286",
+      "alt": "Particle",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/06/686-x-James-Coffman-Design-1.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/847156288",
+      "alt": "686 x James Coffman",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/06/Route-22In-The-Studio22-with-Elwood.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/852037510",
+      "alt": "Route \"In The Studio\" with Elwood",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/Standard-Self-Care-Hyaluronic-Daily-Moisturizer-e1720508673792.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/750741312",
+      "alt": "Standard Self Care",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/686-Hydra-Thermagraph-Jacket.jpeg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/892462752",
+      "alt": "686",
+      "w": 688,
+      "h": 688
+     },
+     {
+      "src": "2024/05/Bezel-Work-Persona-e1715122673128.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/916190755",
+      "alt": "Bezel",
+      "w": 1440,
+      "h": 1440
+     },
+     {
+      "src": "2024/05/Gardyn-New-Year-New-You-1.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/903044617",
+      "alt": "Gardyn",
+      "w": 1440,
+      "h": 2560
+     },
+     {
+      "src": "2024/06/686-Outerwear-Drop-2023.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/863369992",
+      "alt": "686",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/05/thumb-9.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/873063801",
+      "alt": "Public Rec",
+      "w": 1620,
+      "h": 2880
+     },
+     {
+      "src": "2024/05/FreePower-HDExpo-Dala-Interview.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/951398925",
+      "alt": "FreePower",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/06/Logan-Hollowell-X-Route.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/776374524",
+      "alt": "Route x Logan Hollowell",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/06/FreePower-JakeS.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/984139678",
+      "alt": "FreePower",
+      "w": 3148,
+      "h": 1768
+     },
+     {
+      "src": "2024/05/thumb-2.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/716056347",
+      "alt": "Public Rec",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/thumb-15-2.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/923557755",
+      "alt": "Gardyn",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-3-2-e1720505206447.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/980840332",
+      "alt": "Gardyn",
+      "w": 2160,
+      "h": 2161
+     },
+     {
+      "src": "2024/05/Public-Rec-ADED-Studio-e1715122388745.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/845138443",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/thumb-5-2-e1720505903796.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/864077199",
+      "alt": "OluKai",
+      "w": 1081,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/thumb-15_11zon.webp",
+      "asp": 1.78,
+      "href": "https://vimeo.com/923568837",
+      "alt": "Sweet Sweat x Yulex",
+      "w": 1440,
+      "h": 810
+     },
+     {
+      "src": "2024/07/Bezel-Auctions-2-scaled-uai-2556x1438-1_2_11zon.webp",
+      "asp": 1.78,
+      "href": "https://vimeo.com/907719324",
+      "alt": "Bezel",
+      "w": 1440,
+      "h": 810
+     },
+     {
+      "src": "2024/05/Nestle-uai-2133x1200-1.png",
+      "asp": 1.78,
+      "href": "https://vimeo.com/727974264",
+      "alt": "Nestl\u00e9",
+      "w": 2133,
+      "h": 1200
+     },
+     {
+      "src": "2024/05/Standard-Self-Care-e1720508355419.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/753024501",
+      "alt": "Standard Self Care",
+      "w": 2900,
+      "h": 1633
+     },
+     {
+      "src": "2024/05/thumb-17.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/870567081",
+      "alt": "Celcius",
+      "w": 720,
+      "h": 1280
+     },
+     {
+      "src": "2024/05/thumb-19.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/952074040",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1922
+     },
+     {
+      "src": "2024/05/thumb-23.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/984134684",
+      "alt": "Gardyn",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/05/thumb-21.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/787075185",
+      "alt": "686",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/06/Noah-Collins-Design-e1721025792448.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/844754542",
+      "alt": "Noah Collins Design",
+      "w": 2553,
+      "h": 1437
+     },
+     {
+      "src": "2024/06/Route-22In-The-Studio22-with-DEUX.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/852037214",
+      "alt": "Route \"In The Studio\" with DEUX",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/06/Culture-Shifters-Morgan-Collett.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/279186494",
+      "alt": "STAB x Saturdays NYC",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/06/Culture-Shifters-Jake-Burghart.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/223912295",
+      "alt": "STAB x Vice",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/Gardyn-Fresh-247-e1715122740848.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/923557688",
+      "alt": "Gardyn",
+      "w": 1440,
+      "h": 1440
+     },
+     {
+      "src": "2024/05/thumb-9-2-e1720507088117.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/750741312",
+      "alt": "686",
+      "w": 1081,
+      "h": 1080
+     },
+     {
+      "src": "2024/07/Luxe-Collection-4x5-1-e1721014195323.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/845139337",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1080
+     }
+    ]
+   },
+   {
+    "id": "photo",
+    "items": [
+     {
+      "src": "2025/08/GrantPuckett-Studio-Product.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Studio-Product.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2024/05/Gardyn_7_29_2025_26229.jpeg",
+      "asp": 0.67,
+      "href": "2024/05/Gardyn_7_29_2025_26229.jpeg",
+      "alt": "",
+      "w": 3202,
+      "h": 4800
+     },
+     {
+      "src": "2024/06/GrantPuckett-Active-4.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett-Active-4.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 1668
+     },
+     {
+      "src": "2025/08/GrantPuckett-Product-0006.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Product-0006.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2024/06/GrantPuckett-Active-2.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Active-2.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2024/06/FreePower_Bar_5.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/FreePower_Bar_5.jpeg",
+      "alt": "",
+      "w": 5000,
+      "h": 3335
+     },
+     {
+      "src": "2024/06/Grant-Puckett-Youth-2.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/Grant-Puckett-Youth-2.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3750
+     },
+     {
+      "src": "2024/06/GrantPuckett-Product-105-uai-1500x1875-1.jpg",
+      "asp": 0.8,
+      "href": "2024/06/GrantPuckett-Product-105-uai-1500x1875-1.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 1875
+     },
+     {
+      "src": "2024/06/FreePower-GrantPuckett-0815-ColorTest-V2-HaloScreen.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/FreePower-GrantPuckett-0815-ColorTest-V2-HaloScreen.jpeg",
+      "alt": "",
+      "w": 3800,
+      "h": 2535
+     },
+     {
+      "src": "2025/08/GrantPuckett-Product.jpeg",
+      "asp": 1.5,
+      "href": "2025/08/GrantPuckett-Product.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 1668
+     },
+     {
+      "src": "2024/05/Gardyn-4-30-25-GrantPuckett26940.jpeg",
+      "asp": 0.67,
+      "href": "2024/05/Gardyn-4-30-25-GrantPuckett26940.jpeg",
+      "alt": "",
+      "w": 1601,
+      "h": 2400
+     },
+     {
+      "src": "2025/08/Grant-Puckett-AB-9.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/Grant-Puckett-AB-9.jpeg",
+      "alt": "",
+      "w": 2333,
+      "h": 3500
+     },
+     {
+      "src": "2025/09/WolfAndShepherd-GrantPuckett-0140-1-1.jpeg",
+      "asp": 1.0,
+      "href": "2025/09/WolfAndShepherd-GrantPuckett-0140-1-1.jpeg",
+      "alt": "",
+      "w": 3800,
+      "h": 3800
+     },
+     {
+      "src": "2025/09/PublicRec-DTLA-DD-33.jpeg",
+      "asp": 1.5,
+      "href": "2025/09/PublicRec-DTLA-DD-33.jpeg",
+      "alt": "",
+      "w": 8192,
+      "h": 5464
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-4-uai-1500x843-1.jpg",
+      "asp": 1.78,
+      "href": "2024/06/GrantPuckett-Lifestyle-4-uai-1500x843-1.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 843
+     },
+     {
+      "src": "2024/05/Gardyn_7_29_2025_Kitchen_77886.jpeg",
+      "asp": 1.5,
+      "href": "2024/05/Gardyn_7_29_2025_Kitchen_77886.jpeg",
+      "alt": "",
+      "w": 4800,
+      "h": 3202
+     },
+     {
+      "src": "2024/06/GrantPuckett-Product-4.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Product-4.jpeg",
+      "alt": "",
+      "w": 2334,
+      "h": 3500
+     },
+     {
+      "src": "2024/05/PublicRec-GrantPuckett-01315-e1757375301741.jpeg",
+      "asp": 1.78,
+      "href": "2024/05/PublicRec-GrantPuckett-01315-e1757375301741.jpeg",
+      "alt": "",
+      "w": 4800,
+      "h": 2704
+     },
+     {
+      "src": "2024/06/GrantPuckett-Youth.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett-Youth.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 1666
+     },
+     {
+      "src": "2024/06/FreePower_Booth_3.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/FreePower_Booth_3.jpeg",
+      "alt": "",
+      "w": 5000,
+      "h": 3335
+     },
+     {
+      "src": "2025/06/Patrol-GrantPuckett-02027-1-1.jpeg",
+      "asp": 1.5,
+      "href": "2025/06/Patrol-GrantPuckett-02027-1-1.jpeg",
+      "alt": "",
+      "w": 4800,
+      "h": 3202
+     },
+     {
+      "src": "2024/06/GrantPuckett-Active-3.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Active-3.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2025/09/Literati-GrantPuckett10679-1-e1757363049774.jpeg",
+      "asp": 1.78,
+      "href": "2025/09/Literati-GrantPuckett10679-1-e1757363049774.jpeg",
+      "alt": "",
+      "w": 4800,
+      "h": 2704
+     },
+     {
+      "src": "2025/08/GrantPuckett-Product-36.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Product-36.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3750
+     },
+     {
+      "src": "2025/08/GrantPuckett-Lifestyle.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Lifestyle.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2025/08/GrantPuckett-Lifestyle-1.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Lifestyle-1.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3748
+     },
+     {
+      "src": "2025/08/GrantPuckett-Portrait-9.jpeg",
+      "asp": 1.5,
+      "href": "2025/08/GrantPuckett-Portrait-9.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 1667
+     },
+     {
+      "src": "2024/06/FreePower-GrantPuckett-0871-ColorTest-V2-halaoscreen.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/FreePower-GrantPuckett-0871-ColorTest-V2-halaoscreen.jpeg",
+      "alt": "",
+      "w": 3800,
+      "h": 2535
+     },
+     {
+      "src": "2024/06/Grant-Puckett-Youth-1.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/Grant-Puckett-Youth-1.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 3750
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-3.jpeg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett-Lifestyle-3.jpeg",
+      "alt": "",
+      "w": 2500,
+      "h": 1667
+     },
+     {
+      "src": "2024/05/Gardyn_7_29_2025_25452.jpeg",
+      "asp": 1.5,
+      "href": "2024/05/Gardyn_7_29_2025_25452.jpeg",
+      "alt": "",
+      "w": 4800,
+      "h": 3202
+     },
+     {
+      "src": "2025/08/GrantPuckett-Britni-Studio21.jpeg",
+      "asp": 0.67,
+      "href": "2025/08/GrantPuckett-Britni-Studio21.jpeg",
+      "alt": "",
+      "w": 2333,
+      "h": 3500
+     },
+     {
+      "src": "2024/06/GrantPuckett-Product-5-uai-1500x1875-1.jpeg",
+      "asp": 0.8,
+      "href": "2024/06/GrantPuckett-Product-5-uai-1500x1875-1.jpeg",
+      "alt": "",
+      "w": 1500,
+      "h": 1875
+     },
+     {
+      "src": "2024/06/GrantPuckett-Cuts-Lifestyle4-uai-1500x2000-1.jpg",
+      "asp": 0.75,
+      "href": "2024/06/GrantPuckett-Cuts-Lifestyle4-uai-1500x2000-1.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2000
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-21.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Lifestyle-21.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/GrantPuckett-Portrait-12.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Portrait-12.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/GrantPuckett_Product.jpg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett_Product.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 1000
+     },
+     {
+      "src": "2024/06/IMG1803-R01-012-scaled-1.jpg",
+      "asp": 0.67,
+      "href": "2024/06/IMG1803-R01-012-scaled-1.jpg",
+      "alt": "",
+      "w": 1710,
+      "h": 2560
+     },
+     {
+      "src": "2024/06/2023-02-08-GrantPuckett-Gardyn-1483-Retouch-1-scaled-1.jpeg",
+      "asp": 0.67,
+      "href": "2024/06/2023-02-08-GrantPuckett-Gardyn-1483-Retouch-1-scaled-1.jpeg",
+      "alt": "",
+      "w": 1708,
+      "h": 2560
+     },
+     {
+      "src": "2024/06/000020670014-scaled-1.jpg",
+      "asp": 0.73,
+      "href": "2024/06/000020670014-scaled-1.jpg",
+      "alt": "",
+      "w": 1875,
+      "h": 2560
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett-Lifestyle.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-16-e1757350120995.jpg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett-Lifestyle-16-e1757350120995.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 1000
+     },
+     {
+      "src": "2024/06/Grant-Puckett-AB-14.jpg",
+      "asp": 0.67,
+      "href": "2024/06/Grant-Puckett-AB-14.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/GrantPuckett_Lifestyle-2.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett_Lifestyle-2.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/GrantPuckett_Portrait-3.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett_Portrait-3.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     },
+     {
+      "src": "2024/06/Grant-Puckett-Lifestyle-uai-1500x1875-1.jpeg",
+      "asp": 0.8,
+      "href": "2024/06/Grant-Puckett-Lifestyle-uai-1500x1875-1.jpeg",
+      "alt": "",
+      "w": 1500,
+      "h": 1875
+     },
+     {
+      "src": "2024/05/freepower-countertop-installed-in-kitchen-island-e1716965665552.jpg",
+      "asp": 1.5,
+      "href": "2024/05/freepower-countertop-installed-in-kitchen-island-e1716965665552.jpg",
+      "alt": "",
+      "w": 974,
+      "h": 650
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-67.jpg",
+      "asp": 1.5,
+      "href": "2024/06/GrantPuckett-Lifestyle-67.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 1000
+     },
+     {
+      "src": "2024/06/GrantPuckett-Lifestyle-34.jpg",
+      "asp": 0.8,
+      "href": "2024/06/GrantPuckett-Lifestyle-34.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 1875
+     },
+     {
+      "src": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1.jpeg",
+      "asp": 1.5,
+      "href": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1.jpeg",
+      "alt": "",
+      "w": 3800,
+      "h": 2535
+     },
+     {
+      "src": "2024/05/Gardyn_7_29_2025_25537.jpeg",
+      "asp": 0.67,
+      "href": "2024/05/Gardyn_7_29_2025_25537.jpeg",
+      "alt": "",
+      "w": 3202,
+      "h": 4800
+     },
+     {
+      "src": "2024/05/C55I6960-scaled-1.jpg",
+      "asp": 1.55,
+      "href": "2024/05/C55I6960-scaled-1.jpg",
+      "alt": "",
+      "w": 2560,
+      "h": 1654
+     },
+     {
+      "src": "2024/06/GrantPuckett_Lifestyle-3.jpg",
+      "asp": 0.67,
+      "href": "2024/06/GrantPuckett_Lifestyle-3.jpg",
+      "alt": "",
+      "w": 1500,
+      "h": 2250
+     }
+    ]
+   },
+   {
+    "id": "graphic",
+    "items": [
+     {
+      "src": "2024/05/Protect-Static-v2.jpg",
+      "asp": 1.0,
+      "href": "2024/05/Protect-Static-v2.jpg",
+      "alt": "Route",
+      "w": 1080,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/Gardyn-Static-BT4W-1x1-3.jpeg",
+      "asp": 1.0,
+      "href": "2024/05/Gardyn-Static-BT4W-1x1-3.jpeg",
+      "alt": "Gardyn",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png",
+      "asp": 1.0,
+      "href": "2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png",
+      "alt": "Literati",
+      "w": 2160,
+      "h": 2161
+     },
+     {
+      "src": "2024/05/thumb-19-1.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1109212937",
+      "alt": "Literati",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-20-1.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/1109212937",
+      "alt": "Gardyn",
+      "w": 3840,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/DOUBLE-KNIT-ORION-GALLERY5.jpg",
+      "asp": 0.8,
+      "href": "2024/05/DOUBLE-KNIT-ORION-GALLERY5.jpg",
+      "alt": "686",
+      "w": 1080,
+      "h": 1350
+     },
+     {
+      "src": "2024/05/thumb-2-2.jpg",
+      "asp": 0.8,
+      "href": "https://vimeo.com/916190740",
+      "alt": "Bezel",
+      "w": 1440,
+      "h": 1800
+     },
+     {
+      "src": "2024/05/IMG_8421.jpg",
+      "asp": 0.8,
+      "href": "2024/05/IMG_8421.jpg",
+      "alt": "Route",
+      "w": 1174,
+      "h": 1467
+     },
+     {
+      "src": "2024/05/thumb-4-3-e1721004821170.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/914543282",
+      "alt": "Route",
+      "w": 1913,
+      "h": 1074
+     },
+     {
+      "src": "2024/05/thumb-6-3.jpg",
+      "asp": 1.78,
+      "href": "https://vimeo.com/983994096",
+      "alt": "Route",
+      "w": 1920,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/thumb-18.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/983998329",
+      "alt": "686",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-21-1.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/1109213045",
+      "alt": "Humiint",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png",
+      "asp": 1.0,
+      "href": "2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png",
+      "alt": "Literati",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-26.jpg",
+      "asp": 1.0,
+      "href": "https://vimeo.com/1109213060",
+      "alt": "Gardyn",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/0001_THE-EVERYWHERE-HYBRID-SHORT.jpg",
+      "asp": 1.0,
+      "href": "2024/05/0001_THE-EVERYWHERE-HYBRID-SHORT.jpg",
+      "alt": "686",
+      "w": 1080,
+      "h": 1080
+     },
+     {
+      "src": "2024/05/Affirm-Pricing-1x1-v2-1.jpeg",
+      "asp": 1.0,
+      "href": "2024/05/Affirm-Pricing-1x1-v2-1.jpeg",
+      "alt": "Gardyn",
+      "w": 2160,
+      "h": 2160
+     },
+     {
+      "src": "2024/05/thumb-13-2.jpg",
+      "asp": 0.8,
+      "href": "https://vimeo.com/845138567",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1350
+     },
+     {
+      "src": "2024/05/thumb-8-2.jpg",
+      "asp": 0.8,
+      "href": "https://vimeo.com/983994074",
+      "alt": "Route",
+      "w": 1080,
+      "h": 1350
+     },
+     {
+      "src": "2024/05/thumb-12-2.jpg",
+      "asp": 0.8,
+      "href": "https://vimeo.com/845139513",
+      "alt": "Public Rec",
+      "w": 1080,
+      "h": 1350
+     },
+     {
+      "src": "2024/05/thumb-11-2.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/983994020",
+      "alt": "Route",
+      "w": 1620,
+      "h": 2880
+     },
+     {
+      "src": "2024/05/thumb-10-2.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/984056226",
+      "alt": "Brekky",
+      "w": 1620,
+      "h": 2880
+     },
+     {
+      "src": "2024/05/thumb-7-2.jpg",
+      "asp": 0.56,
+      "href": "https://vimeo.com/983993974",
+      "alt": "Route",
+      "w": 1080,
+      "h": 1920
+     },
+     {
+      "src": "2024/05/OPTION-1A.jpg",
+      "asp": 2.26,
+      "href": "2024/05/OPTION-1A.jpg",
+      "alt": "Route",
+      "w": 18864,
+      "h": 8352
+     },
+     {
+      "src": "2024/05/EVERYWHERE_1080x2160_Ad.jpg",
+      "asp": 2.0,
+      "href": "2024/05/EVERYWHERE_1080x2160_Ad.jpg",
+      "alt": "686",
+      "w": 2160,
+      "h": 1080
+     }
+    ]
+   }
+  ],
+  "weCreate": [
+   "Video",
+   "Photo",
+   "Design & Animation"
+  ]
+ },
+ "cases": {
+  "whoop": {
+   "url": "/portfolio/whoop/",
+   "title": "WHOOP",
+   "heroBg": "2026/08/Screenshot-2026-08-11-at-4.10.30-PM.png",
+   "logo": "2026/08/WHOOP_Logo_R_White-1024x168.png",
+   "logoSet": [
+    [
+     "2026/08/WHOOP_Logo_R_White-1024x168.png",
+     1024
+    ],
+    [
+     "2026/08/WHOOP_Logo_R_White-300x49.png",
+     300
+    ],
+    [
+     "2026/08/WHOOP_Logo_R_White-1536x251.png",
+     1536
+    ],
+    [
+     "2026/08/WHOOP_Logo_R_White.png",
+     1760
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "Starting in early 2026, our partnership with WHOOP has grown from supporting a social series and a handful of paid ads into a much broader creative partnership spanning Ferrari content, video podcasts, paid social, design, animation, VFX, and more. Birdline has become a flexible extension of WHOOP\u2019s in-house team, scaling alongside their needs and supporting everything from quick-turn content to larger, high-profile productions."
+    ],
+    "results": [],
+    "services": [
+     "Social Content",
+     "Paid Ads",
+     "GFX/Animations",
+     "OOH Content",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Zack McCabe",
+      "title": "Video and Motion GFX Director",
+      "paras": [
+       "\"Birdline has become an incredibly valuable extension of our team, giving us the flexibility to execute across everything from bespoke long-form content and paid campaign deliverables to high-leverage work across our sports and culture partnerships, often on tight timelines. What really sets Birdline apart is how they work. Their team is courteous, respectful, and driven, with a genuine desire to understand what we\u2019re trying to accomplish and find a way to get it done without sacrificing quality.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Route App",
+     "Gardyn",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2026/08/thumb-54.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1217478558&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-53.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1217481666&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-56.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1217478661&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-57.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1217480327&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-58.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1217478559&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-60.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1217480198&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-59.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1217478560&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-63.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1217481395&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2026/08/thumb-61.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1217480199&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2026/08/thumb-62.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1217481396&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    }
+   ]
+  },
+  "freepower": {
+   "url": "/portfolio/freepower/",
+   "title": "FreePower",
+   "heroBg": "2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg",
+   "logo": "2024/05/FreePowerLogo-White-1024x311.png",
+   "logoSet": [
+    [
+     "2024/05/FreePowerLogo-White-1024x311.png",
+     1024
+    ],
+    [
+     "2024/05/FreePowerLogo-White-300x91.png",
+     300
+    ],
+    [
+     "2024/05/FreePowerLogo-White-1536x467.png",
+     1536
+    ],
+    [
+     "2024/05/FreePowerLogo-White.png",
+     2030
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "Our Bird team partners with FreePower to produce high-quality video, photography, and VFX/animations every month, fueling their social media, website, and paid ad campaigns. From branded commercials to explainer videos, product demos, and custom animations, we create a diverse range of content tailored to their marketing strategy.",
+     "Outside of production, we collaborate closely with FreePower\u2019s PR and marketing teams\u2014developing storyboards, shot lists, creative briefs, and performance-driven concepts to ensure each deliverable is optimized for engagement and impact."
+    ],
+    "results": [
+     "In 2024, FreePower teamed up with Birdline to launch its groundbreaking wireless charging technology and build brand awareness through expertly crafted, engaging content.",
+     "Over the past 12 months, Birdline\u2019s efforts delivered 15M total views, 170K link clicks, and a reach of 23M users, while growing FreePower\u2019s audience by 25K+ followers.",
+     "By leveraging creative production strategies, Birdline showcased FreePower\u2019s technology without the need for in-home installations, lowering production costs and driving maximizing their content."
+    ],
+    "services": [
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Jake Slatnick",
+      "title": "CEO, Founder",
+      "paras": [
+       "\"This video production company is full-service and one of a kind. They handle every detail from concept through post-production, making the process seamless and stress-free. And most importantly, they produce Super Bowl commercial quality at unbelievable prices.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Route App",
+     "Gardyn",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2024/05/FreePower-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/916190858",
+     "alt": "",
+     "w": 2492,
+     "h": 1402
+    },
+    {
+     "src": "2024/05/thumb-4-5.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1035100357",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/thumb-5-3.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/984139678",
+     "alt": "",
+     "w": 3148,
+     "h": 1768
+    },
+    {
+     "src": "2024/05/FreePower-Fabricator-Shop.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/918139632",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/HD-Expo-FreePower-Recap.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/951398990",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/freepower-countertop-installed-in-kitchen-island-e1716965665552.jpg",
+     "asp": 1.5,
+     "href": "2024/05/freepower-countertop-installed-in-kitchen-island-e1716965665552.jpg",
+     "alt": "",
+     "w": 974,
+     "h": 650
+    },
+    {
+     "src": "2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg",
+     "asp": 1.5,
+     "href": "2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg",
+     "alt": "",
+     "w": 2560,
+     "h": 1708
+    },
+    {
+     "src": "2024/05/FreePower_Counter_charger-Lifestyle_LivingRoom_Close.jpg",
+     "asp": 1.5,
+     "href": "2024/05/FreePower_Counter_charger-Lifestyle_LivingRoom_Close.jpg",
+     "alt": "",
+     "w": 1280,
+     "h": 854
+    },
+    {
+     "src": "2024/05/thumb-6-4.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1051823195",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-7-3.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1051823176",
+     "alt": "",
+     "w": 720,
+     "h": 1280
+    },
+    {
+     "src": "2024/05/thumb-8-3.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1051823190",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/FreePower-Jake-Slatnick.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/951399222",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/05/HD-Expo-Jake-Interview.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/951398874",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/05/FreePower-HDExpo-Dala-Interview.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/951398925",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    }
+   ]
+  },
+  "686": {
+   "url": "/portfolio/686/",
+   "title": "686",
+   "heroBg": "2024/06/686-Smarty-Goggles.jpg",
+   "logo": "2024/06/NEW-686-LOGOS-2022-1024x1024.png",
+   "logoSet": [
+    [
+     "2024/06/NEW-686-LOGOS-2022-1024x1024.png",
+     1024
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022-300x300.png",
+     300
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022-150x150.png",
+     150
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022-1536x1536.png",
+     1536
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022-320x320.png",
+     320
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022-760x760.png",
+     760
+    ],
+    [
+     "2024/06/NEW-686-LOGOS-2022.png",
+     1910
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "We partnered with 686 to create a seamless content workflow, delivering a steady stream of paid ads, social content, and website videos. Our dedicated team handled recurring video shoots and weekly post-production, capturing and refining edits to showcase the full scope of 686\u2019s product line, their riders, and brand story.",
+     "We worked closely with 686\u2019s creative and marketing teams\u2014shaping video concepts, leading strategic planning sessions, and optimizing every campaign for maximum impact. Through an ongoing feedback loop, we analyzed ad performance, refined edits, and adjusted strategies to enhance production quality and drive sales with high-performing direct response video ads across all social platforms."
+    ],
+    "results": [],
+    "services": [
+     "Social Content",
+     "Paid Ads",
+     "GFX/Animations",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Brent Sandor",
+      "title": "Vice President Marketing",
+      "paras": [
+       "\"They understand working with brands and their thoughtful and intentional approach to video projects, storytelling, collaboration and operational excellence has transformed our video content and department. There's no babysitting or thinking twice about projects with them. They take the lead on video creation and editing and you know the content will land on time and on concept every time.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Route App",
+     "Gardyn",
+     "FreePower"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2024/06/686-Everywhere-Pant.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/750740327",
+     "alt": "",
+     "w": 5120,
+     "h": 2880
+    },
+    {
+     "src": "2024/06/686-Smarty-Goggles.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/895391449",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/06/686-ATP-Collection-Trail-Running.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/750741312",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-x-James-Coffman-Design.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/847156288",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-UNWORK-Tyler-Ravelle.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/876232748",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-GORE-TEX-Pro-Bib.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/773909218",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-Gore-Tex-Pro-Review-Matt-Belzile.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/787074990",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686_EGSS_BSPant_V1_1x1_Features.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/834213087",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-30-Years-of-Independence.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/773909705",
+     "alt": "",
+     "w": 1080,
+     "h": 1080
+    },
+    {
+     "src": "2024/06/686-Hydra-Thermagraph-Jacket.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/892462752",
+     "alt": "",
+     "w": 1440,
+     "h": 2560
+    },
+    {
+     "src": "2024/06/686-Outerwear-Drop-2023.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/863369992",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/06/686-WINTER-Goggles-Color-Grid.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/870566902",
+     "alt": "",
+     "w": 1440,
+     "h": 2560
+    }
+   ]
+  },
+  "gardyn": {
+   "url": "/portfolio/gardyn/",
+   "title": "Gardyn",
+   "heroBg": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1.jpeg",
+   "logo": "2024/05/GardynLogo-White-1024x311.png",
+   "logoSet": [
+    [
+     "2024/05/GardynLogo-White-1024x311.png",
+     1024
+    ],
+    [
+     "2024/05/GardynLogo-White-300x91.png",
+     300
+    ],
+    [
+     "2024/05/GardynLogo-White-1536x467.png",
+     1536
+    ],
+    [
+     "2024/05/GardynLogo-White.png",
+     2030
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "Our dedicated Bird team powers Gardyn\u2019s content production, delivering high-quality video, photography, and graphics every month for their social media, website, and paid ads. We create a diverse mix of content, including commercial videos, UGC-style assets, still photography, and custom graphic designs tailored to their marketing needs.",
+     "We collaborate directly with Gardyn\u2019s creative and marketing teams\u2014developing storyboards, shot lists, creative briefs, and performance-driven strategies to ensure every campaign is optimized for engagement and ROI."
+    ],
+    "results": [
+     "In 2024, Gardyn partnered with Birdline to introduce their new indoor gardening systems and strengthen brand awareness through highly engaging, premium content.",
+     "Over the past 12 months, our paid content drove a 28% YoY boost in CTR, while improving watch-through rates by 50%. With $8.23M ad spend, we scaled campaigns by 14%, maintaining cost efficiency with a 9% improvement in CAC.",
+     "Through our social assets, Gardyn achieved 45M+ organic views and a 111% follower growth rate, amplifying brand visibility and engagement."
+    ],
+    "services": [
+     "Broadcast/OTT",
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "FX Rouxel",
+      "title": "CEO",
+      "paras": [
+       "\u201cBirdline has been one of our key creative partners, helping us design a wide range of assets, videos, and campaigns. They\u2019ve truly taken our brand to places we didn\u2019t think were possible.",
+       "What I appreciate most is how responsive and collaborative they are. Every brainstorming session is productive\u2014they show up with ideas that hit the mark and bring fresh creative energy.",
+       "They move fast, deliver high-quality work, and handle complex projects with ease. Because of that, we\u2019ve been able to produce a large volume of impactful videos and content that perform incredibly well across both paid media and organic channels.",
+       "Working with Birdline has been a real game-changer for us. I highly recommend them.\u201d"
+      ]
+     },
+     {
+      "name": "Kristen Connors",
+      "title": "Art Director",
+      "paras": [
+       "\"Fast, creative, and reliable. They\u2019ve completely elevated our video and paid media creative. We\u2019ve challenged them with some quick turnarounds and they have always gone above and beyond, producing dynamic work that performs. From ideation to execution they\u2019ve proven themselves to be masters of their craft as well as fantastic communicators and partners.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Route App",
+     "FreePower",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2024/05/thumb-32.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1119136322#t=0",
+     "alt": "",
+     "w": 3830,
+     "h": 2146
+    },
+    {
+     "src": "2024/05/Gardyn-4.0-Free-Starter-Pack.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/927324603",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/Gardyn-Growing-Symphony-3.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/916190712",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/Gardyn-Summer.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/980832797",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/thumb-20-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1109214100",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/Gardyn-Summer-Delight.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/910315870",
+     "alt": "",
+     "w": 1440,
+     "h": 1800
+    },
+    {
+     "src": "2024/05/Gardyn-Static-Ad-4x5-1.jpeg",
+     "asp": 0.8,
+     "href": "2024/05/Gardyn-Static-Ad-4x5-1.jpeg",
+     "alt": "",
+     "w": 2160,
+     "h": 2700
+    },
+    {
+     "src": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1-1.jpeg",
+     "asp": 0.8,
+     "href": "2024/05/Gardyn-14May2024-GrantPuckett43284-RetouchV1-1.jpeg",
+     "alt": "",
+     "w": 2000,
+     "h": 2500
+    },
+    {
+     "src": "2024/05/Gardyn-New-Year-New-You-1.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/903044617",
+     "alt": "",
+     "w": 1440,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/Gardyn-Neeyaz-CommentResponse.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/927322306",
+     "alt": "",
+     "w": 1496,
+     "h": 2666
+    },
+    {
+     "src": "2024/05/Gardyn-Unboxing-1.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/916190607",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/Gardyn-How-it-Works.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/916190659",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-34.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1109213060#t=0",
+     "alt": "",
+     "w": 2160,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_27630.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/Gardyn_7_29_2025_27630.jpeg",
+     "alt": "",
+     "w": 3202,
+     "h": 4800
+    },
+    {
+     "src": "2024/05/2023-02-08-GrantPuckett-Gardyn-1483-Retouch-1-scaled-1.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/2023-02-08-GrantPuckett-Gardyn-1483-Retouch-1-scaled-1.jpeg",
+     "alt": "",
+     "w": 1708,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_25537.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/Gardyn_7_29_2025_25537.jpeg",
+     "alt": "",
+     "w": 3202,
+     "h": 4800
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_Kitchen_77909.jpeg",
+     "asp": 1.5,
+     "href": "2024/05/Gardyn_7_29_2025_Kitchen_77909.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2024/05/Gardyn-Static-Ad-4x5-v3.jpeg",
+     "asp": 0.8,
+     "href": "2024/05/Gardyn-Static-Ad-4x5-v3.jpeg",
+     "alt": "",
+     "w": 2160,
+     "h": 2700
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_24772.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/Gardyn_7_29_2025_24772.jpeg",
+     "alt": "",
+     "w": 3202,
+     "h": 4800
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_26229.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/Gardyn_7_29_2025_26229.jpeg",
+     "alt": "",
+     "w": 3202,
+     "h": 4800
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_24263.jpeg",
+     "asp": 0.67,
+     "href": "2024/05/Gardyn_7_29_2025_24263.jpeg",
+     "alt": "",
+     "w": 3202,
+     "h": 4800
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_25452.jpeg",
+     "asp": 1.5,
+     "href": "2024/05/Gardyn_7_29_2025_25452.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2024/05/Gardyn_7_29_2025_27427.jpeg",
+     "asp": 1.5,
+     "href": "2024/05/Gardyn_7_29_2025_27427.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    }
+   ]
+  },
+  "route": {
+   "url": "/portfolio/route/",
+   "title": "Route",
+   "heroBg": "2024/05/Route-App.jpg",
+   "logo": "2024/05/RouteLogo-White-1024x311.png",
+   "logoSet": [
+    [
+     "2024/05/RouteLogo-White-1024x311.png",
+     1024
+    ],
+    [
+     "2024/05/RouteLogo-White-300x91.png",
+     300
+    ],
+    [
+     "2024/05/RouteLogo-White-1536x467.png",
+     1536
+    ],
+    [
+     "2024/05/RouteLogo-White.png",
+     2030
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "We partnered with Route as their always-on content team, producing a steady flow of video, photography, and animations to power their social channels, website, app, and live events. From profile features and \u201cHow-To\u201d tutorials to high-impact B2B commercials, our work spanned a wide range of formats designed to connect with multiple audiences.",
+     "Beyond production, we collaborated closely with Route\u2019s creative and marketing teams to align every project with their brand strategy. Together, we built storyboards, crafted shot lists, and developed detailed creative briefs\u2014ensuring each asset was purposeful, on-brand, and optimized for measurable impact."
+    ],
+    "results": [],
+    "services": [
+     "Brand Commercial",
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Chelsea Moon",
+      "title": "SVP, Brand & Creative",
+      "paras": [
+       "\"They are a terrific creative partner and extension of our team at Route. From internal culture videos, creating dynamic social videos and clips, to larger commercial work, they have approached each project with great care and passion: working with our team on everything from creative ideation to execution. We've been extremely impressed and thoroughly enjoy partnering with their whole team and feel we can truly come to them with any creative video need or proiect!\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Gardyn",
+     "FreePower",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2024/05/Route-App.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/833777565",
+     "alt": "",
+     "w": 2558,
+     "h": 1439
+    },
+    {
+     "src": "2024/05/thumb-5.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/776374524",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-1-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/844754785",
+     "alt": "",
+     "w": 2560,
+     "h": 1440
+    },
+    {
+     "src": "2024/05/thumb-2-1.jpg",
+     "asp": 1.77,
+     "href": "https://vimeo.com/914543282",
+     "alt": "",
+     "w": 1916,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-27.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/983994096#t=0",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-4-4.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1032483306",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/thumb-4-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/852037510",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-3-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/852037214",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-5-1.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/870567081",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-7.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/870573623",
+     "alt": "",
+     "w": 1080,
+     "h": 1922
+    },
+    {
+     "src": "2024/05/thumb-6-1.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/867559532",
+     "alt": "",
+     "w": 1080,
+     "h": 1922
+    },
+    {
+     "src": "2024/05/thumb-9-1.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/751824249",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2024/05/thumb-10.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/751835877",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2024/05/thumb-8.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/776378871",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2024/05/thumb-28.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/776375594",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2024/05/thumb-29.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/983994115#t=13",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2024/05/thumb-31.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/751834763#t=2",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    }
+   ]
+  },
+  "literati": {
+   "url": "/portfolio/literati/",
+   "title": "Literati",
+   "heroBg": "2025/09/LiteratiBanner.jpg",
+   "logo": "2025/09/Literati-Logo-02-e1757197535389.png",
+   "logoSet": [
+    [
+     "2025/09/Literati-Logo-02-e1757197535389.png",
+     612
+    ],
+    [
+     "2025/09/Literati-Logo-02-e1757197535389-300x99.png",
+     300
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "We have partnered with Literati as their dedicated content production team, supporting everything from video editing and graphic design to full-scale campaign content and animation. We work closely with their internal creative team and agency partners, develop assets tailored for paid ads, web assets, and their B2B model.",
+     "Our role has been to take Literati\u2019s mission \u2014 inspiring a love of reading in kids \u2014 and translate it into content that not only connects emotionally with families, but also performs across channels. From polished brand videos to playful motion graphics and quick-turn ad edits, every piece of content is crafted to both tell Literati\u2019s story and meet their marketing objectives.",
+     "What makes our collaboration effective is the way we integrate into their workflow. With Birdline\u2019s production model, we provide an always-on creative pipeline that adapts to testing, iteration, and performance insights. Every deliverable is built to drive immediate results while fueling the next campaign, creating a compounding effect of stronger messaging and higher returns.",
+     "We operate as an extension of the Literati team \u2014 not just a vendor, but a true production partner driving performance through content."
+    ],
+    "results": [],
+    "services": [
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Web Content",
+     "Internal / B2B Assets"
+    ],
+    "quotes": [
+     {
+      "name": "Megan Gray",
+      "title": "ECD at Literati",
+      "paras": [
+       "\"In any creative endeavor, trust is currency and key to successful outcomes, and that's exactly what they are known for. Our team can trust them to deliver flawlessly, beautifully, and consistently every time. They're a true mix of business acumen, strategic approach, creative vision, technical knowledge, and skilled leadership on set. They're a true creative partner and everything they touch turns to magic.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Gardyn",
+     "Route App",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2025/09/thumb-40.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471857#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-38.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471836#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-29.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116472019#t=0",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2025/09/thumb-27.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1116471922#t=0",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2025/09/thumb-33.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1116471943#t=3.976",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2025/09/thumb-44.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1116471803#t=0",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2025/09/thumb-36.jpg",
+     "asp": 1.0,
+     "href": "https://vimeo.com/1116472030#t=0",
+     "alt": "",
+     "w": 2160,
+     "h": 2160
+    },
+    {
+     "src": "2025/09/C4CR-Unboxing-Moments-1x1-V2-1.jpeg",
+     "asp": 1.0,
+     "href": "2025/09/C4CR-Unboxing-Moments-1x1-V2-1.jpeg",
+     "alt": "",
+     "w": 2160,
+     "h": 2160
+    },
+    {
+     "src": "2025/09/Literati-GrantPuckett10368-1.jpeg",
+     "asp": 1.5,
+     "href": "2025/09/Literati-GrantPuckett10368-1.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/09/Literati-GrantPuckett11228.jpeg",
+     "asp": 1.5,
+     "href": "2025/09/Literati-GrantPuckett11228.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/09/Literati-GrantPuckett10679.jpeg",
+     "asp": 1.5,
+     "href": "2025/09/Literati-GrantPuckett10679.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/09/thumb-43.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471822",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2025/09/thumb-37.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471892#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-30.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116472012#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-31.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471904",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-32.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471996#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-34.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471974#t=0",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2025/09/thumb-42.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471844#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-45.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471755#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/09/thumb-46.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1116471998#t=0",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    }
+   ]
+  },
+  "patrol": {
+   "url": "/portfolio/patrol/",
+   "title": "Patrol",
+   "heroBg": "2025/06/Patrol-GrantPuckett-02027-1-1.jpeg",
+   "logo": "2025/06/Patrol-Logo-White-1024x240.png",
+   "logoSet": [
+    [
+     "2025/06/Patrol-Logo-White-1024x240.png",
+     1024
+    ],
+    [
+     "2025/06/Patrol-Logo-White-300x70.png",
+     300
+    ],
+    [
+     "2025/06/Patrol-Logo-White-1536x360.png",
+     1536
+    ],
+    [
+     "2025/06/Patrol-Logo-White-2048x480.png",
+     2048
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "We partnered with Patrol as a full-service content team, leading creative development and production across campaigns that build awareness, trust, and adoption for the Patrol app. From premium brand commercials to authentic UGC storytelling, we\u2019ve helped shape Patrol\u2019s message around proactive, community-funded security \u2014 showing real families taking protection into their own hands.",
+     "What makes our partnership effective is the integration of our strategic creative approach with a nimble, always-on production workflow. We work end-to-end \u2014 from scripting through final edit \u2014 so the Patrol team can focus on growth while we handle the storytelling. Each piece of content is designed to drive performance now and feed the next campaign, creating a snowball effect of momentum and message consistency. We operate as an extension of the Patrol team \u2014 not just a vendor, but a production partner."
+    ],
+    "results": [
+     "1. Brand Commercials We launched two high-quality, narrative-driven brand spots titled \u201cWhen Seconds Matter\u201d and \u201cPrivate Patrol\u201d that positions Patrol as a game-changing tool for community safety.",
+     "2. UGC Campaigns We scripted, shot, and edited multiple user-generated-style videos. Our UGC pieces were designed to feel authentic and relatable, featuring real families, natural settings, and direct-to-camera storytelling.",
+     "3. Social Content & Paid Ads We created numerous short-form assets for Instagram and Meta, pulling from both our brand commercials and UGC campaigns. Our Private Patrol spot on X alone generated 12M views, 4K reposts, 8K likes, 3K saves, and 1.5K comments. All in one week."
+    ],
+    "services": [
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Profile Videos",
+     "Web & App Store Assets"
+    ],
+    "quotes": [
+     {
+      "name": "Nick Sarath",
+      "title": "CEO, Founder",
+      "paras": [
+       "\"As a founder, delegating video content work to Birdline Studios has been incredibly impactful. Their attention to detail and ability to bring ideas to life have been amazing. From lo-fi iPhone content to commercial-level productions, I trust Birdline to take my ideas and execute them while I focus on other aspects of my business.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Gardyn",
+     "Route App",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg",
+     "asp": 1.79,
+     "href": "https://vimeo.com/1095188946",
+     "alt": "",
+     "w": 3828,
+     "h": 2142
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg",
+     "asp": 1.79,
+     "href": "https://vimeo.com/1087155996",
+     "alt": "",
+     "w": 3824,
+     "h": 2142
+    },
+    {
+     "src": "2025/06/thumb-12.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1095189087",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1095189131",
+     "alt": "",
+     "w": 3822,
+     "h": 2142
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-10.39.55-PM.jpg",
+     "asp": 1.79,
+     "href": "https://vimeo.com/1095192934",
+     "alt": "",
+     "w": 3820,
+     "h": 2140
+    },
+    {
+     "src": "2025/06/Patrol-GrantPuckett-02027-1-1.jpeg",
+     "asp": 1.5,
+     "href": "2025/06/Patrol-GrantPuckett-02027-1-1.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/06/Patrol-GrantPuckett-00760-1-1.jpeg",
+     "asp": 1.5,
+     "href": "2025/06/Patrol-GrantPuckett-00760-1-1.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/06/Patrol-GrantPuckett-00504-1-1.jpeg",
+     "asp": 1.5,
+     "href": "2025/06/Patrol-GrantPuckett-00504-1-1.jpeg",
+     "alt": "",
+     "w": 4800,
+     "h": 3202
+    },
+    {
+     "src": "2025/06/thumb-14.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188789",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-9.50.14-PM.jpeg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188898",
+     "alt": "",
+     "w": 1368,
+     "h": 2442
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-9.50.46-PM.jpeg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188857",
+     "alt": "",
+     "w": 1376,
+     "h": 2446
+    },
+    {
+     "src": "2025/06/thumb-13.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188716",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2025/06/thumb-15.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188771",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2025/06/Screenshot-2025-06-20-at-9.51.26-PM.jpeg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1095188758",
+     "alt": "",
+     "w": 1376,
+     "h": 2450
+    }
+   ]
+  },
+  "public-rec": {
+   "url": "/portfolio/public-rec/",
+   "title": "Public Rec",
+   "heroBg": "2024/07/thumb-2.jpg",
+   "logo": "2024/05/PublicRecLogo-White-1024x311.png",
+   "logoSet": [
+    [
+     "2024/05/PublicRecLogo-White-1024x311.png",
+     1024
+    ],
+    [
+     "2024/05/PublicRecLogo-White-300x91.png",
+     300
+    ],
+    [
+     "2024/05/PublicRecLogo-White-1536x467.png",
+     1536
+    ],
+    [
+     "2024/05/PublicRecLogo-White.png",
+     2030
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "We provide Public Rec with a dedicated content team, ensuring a steady flow of high-quality video, photography, and edits each month. Our Birds handle recurring shoots to capture their full product line, leveraging top-tier talent and production crews to create compelling ads, social content, TV commercials, and more.",
+     "Beyond production, we collaborate directly with their creative and marketing teams\u2014developing large-scale commercial campaigns, refining performance-driven edits, and continuously optimizing content through real-time feedback loops. This ongoing partnership fuels their direct response ad success across Instagram, Facebook, TikTok, and YouTube."
+    ],
+    "results": [
+     "From 2021 to 2025, Public Rec invested under $1M in Birdline productions and creative partnership, turning that into over $53M in returns across TV and Meta.",
+     "For TV alone, $8M in total spend (including production) generated $32M in revenue, a 4x return, with one 30-second spot achieving a 51.7x ROAS\u2014all from existing footage.",
+     "As a result of our strategic collaboration, 7 national TV commercials, and compounding creative production process, Public Rec attracted its first institutional investor in 2023."
+    ],
+    "services": [
+     "Broadcast/OOT",
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Zach Goldstein",
+      "title": "CEO, Founder",
+      "paras": [
+       "\"They quickly picked up our brand's look and feel and has consistently executed for us. They have a great eye for what will look good on screen. I'm looking forward to continuing to work with them for many years.\""
+      ]
+     },
+     {
+      "name": "Megan Gray",
+      "title": "Executive Creative Director",
+      "paras": [
+       "\"In any creative endeavor, trust is currency and key to successful outcomes, and that's exactly what they're known for. Our team can trust them to deliver flawlessly, beautifully, and consistently every time. They're a true mix of business acumen, strategic approach, creative vision, technical knowledge, and skilled leadership on set. They're a true creative partner and everything they touch turns to magic.\""
+      ]
+     },
+     {
+      "name": "Howie Zisser",
+      "title": "Head of Marketing",
+      "paras": [
+       "\"I know I can hand off any ask or assignment to then and trust that they will get the job done at a very high level. From Direct Response video shoots and edits to full blown TV production shoots, they're a true master of their craft. Their willingness to jump in to help, problem solve, and eagerness to contribute new ideas are so valuable within a team and works to really up the quality of everyone's work. Working with them is a privilege, as they bring such a sharp eye, calm confidence, and extreme know-how to all production settings.\""
+      ]
+     }
+    ],
+    "next": [
+     "Route App",
+     "Gardyn",
+     "FreePower",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2024/05/Public-Rec-ADED.jpg",
+     "asp": 1.79,
+     "href": "https://vimeo.com/727138751",
+     "alt": "",
+     "w": 1904,
+     "h": 1066
+    },
+    {
+     "src": "2024/05/thumb.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/834223609",
+     "alt": "",
+     "w": 1280,
+     "h": 720
+    },
+    {
+     "src": "2024/05/thumb-2.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/716056347",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2024/05/thumb-3.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/369063020",
+     "alt": "",
+     "w": 5120,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-1.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/727138751",
+     "alt": "",
+     "w": 5120,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-4.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/516416135",
+     "alt": "",
+     "w": 5120,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/A9A5895-scaled-1.jpg",
+     "asp": 0.67,
+     "href": "2024/05/A9A5895-scaled-1.jpg",
+     "alt": "",
+     "w": 1707,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/000020670014-scaled-1.jpg",
+     "asp": 0.73,
+     "href": "2024/05/000020670014-scaled-1.jpg",
+     "alt": "",
+     "w": 1875,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/IMG1803-R01-033-scaled-1.jpg",
+     "asp": 0.67,
+     "href": "2024/05/IMG1803-R01-033-scaled-1.jpg",
+     "alt": "",
+     "w": 1710,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/IMG1803-R01-012-scaled-1.jpg",
+     "asp": 0.67,
+     "href": "2024/05/IMG1803-R01-012-scaled-1.jpg",
+     "alt": "",
+     "w": 1710,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/C55I9354-scaled-1.jpg",
+     "asp": 0.69,
+     "href": "2024/05/C55I9354-scaled-1.jpg",
+     "alt": "",
+     "w": 1759,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/2023-04-21-Public-Rec13954-Retouch-scaled-1.jpg",
+     "asp": 0.67,
+     "href": "2024/05/2023-04-21-Public-Rec13954-Retouch-scaled-1.jpg",
+     "alt": "",
+     "w": 1707,
+     "h": 2560
+    },
+    {
+     "src": "2024/05/thumb-11.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/840632761",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/05/thumb-6.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/844409086",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/05/thumb-9.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/873063801",
+     "alt": "",
+     "w": 1620,
+     "h": 2880
+    },
+    {
+     "src": "2024/05/thumb-13.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/840633039",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2024/05/thumb-24.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/1000153543",
+     "alt": "",
+     "w": 1728,
+     "h": 2160
+    },
+    {
+     "src": "2024/05/thumb-14.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/870583694",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    }
+   ]
+  },
+  "solidroad": {
+   "url": "/portfolio/solidroad/",
+   "title": "Solidroad",
+   "heroBg": "2026/08/Solidroad-GrantPuckett_0435.jpeg",
+   "logo": "2026/08/SortFull-Logo_White-1024x128.png",
+   "logoSet": [
+    [
+     "2026/08/SortFull-Logo_White-1024x128.png",
+     1024
+    ],
+    [
+     "2026/08/SortFull-Logo_White-300x38.png",
+     300
+    ],
+    [
+     "2026/08/SortFull-Logo_White-1536x192.png",
+     1536
+    ],
+    [
+     "2026/08/SortFull-Logo_White-2048x256.png",
+     2048
+    ]
+   ],
+   "copy": {
+    "overview": [
+     "Birdline\u2019s partnership with Solidroad has grown from an initial brand and product video project into an ongoing, embedded content partnership supporting nearly every part of their content engine. Together, we\u2019ve handled on-site productions, founder and team storytelling, event coverage, customer interviews, thought leadership, paid and organic social creative, custom animation, and ongoing post-production, working closely with the Solidroad team to quickly turn ideas and moments into a consistent stream of high-quality content across channels."
+    ],
+    "results": [
+     "Our partnership with Solidroad has helped turn individual productions into a scalable content engine. One two-day shoot alone generated 50+ pieces of content across customer stories, team perspectives, interviews, announcements, and social-first formats, giving the team a much deeper library of creative to use across organic, paid, events, and ongoing campaigns."
+    ],
+    "services": [
+     "Social Content",
+     "Paid Ads",
+     "Photography",
+     "GFX/Animations",
+     "Event Coverage",
+     "Profile Videos"
+    ],
+    "quotes": [
+     {
+      "name": "Kat Cooper",
+      "title": "Head of Marketing",
+      "paras": [
+       "\"I've had the pleasure of working with Mike and the Birdline team for years, first at my previous company and now at Solidroad, and they continue to exceed every expectation.",
+       "Mike is the ultimate professional. He's thoughtful, responsive, and consistently goes above and beyond to make sure every detail is right. No matter the project, I have total peace of mind and complete confidence that he'll understand the vision, elevate it, and deliver exceptional work.",
+       "One of the things I value most is how easy they are to work with. They're collaborative, proactive, and feel like an extension of our own team rather than an outside agency.",
+       "If you're looking for a creative partner you can trust to \"get it\" and absolutely crush every assignment, I couldn't recommend Birdline more highly.\""
+      ]
+     }
+    ],
+    "next": [
+     "Public Rec",
+     "Route App",
+     "Gardyn",
+     "686"
+    ]
+   },
+   "gal": [
+    {
+     "src": "2026/08/thumb-51.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1215871556&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-39.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1196463153&fl=sv&fe=ci",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2026/08/thumb-50.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1215871521&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/05/thumb-36.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1215871561&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-37.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1196463352&fl=sv&fe=ci",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0569.jpeg",
+     "asp": 1.5,
+     "href": "2026/08/Solidroad-GrantPuckett_0569.jpeg",
+     "alt": "",
+     "w": 3800,
+     "h": 2535
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0161.jpeg",
+     "asp": 1.5,
+     "href": "2026/08/Solidroad-GrantPuckett_0161.jpeg",
+     "alt": "",
+     "w": 3800,
+     "h": 2535
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0435.jpeg",
+     "asp": 1.5,
+     "href": "2026/08/Solidroad-GrantPuckett_0435.jpeg",
+     "alt": "",
+     "w": 3800,
+     "h": 2535
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0103.jpeg",
+     "asp": 0.67,
+     "href": "2026/08/Solidroad-GrantPuckett_0103.jpeg",
+     "alt": "",
+     "w": 2535,
+     "h": 3800
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0250.jpeg",
+     "asp": 0.67,
+     "href": "2026/08/Solidroad-GrantPuckett_0250.jpeg",
+     "alt": "",
+     "w": 2535,
+     "h": 3800
+    },
+    {
+     "src": "2026/08/Solidroad-GrantPuckett_0199.jpeg",
+     "asp": 0.67,
+     "href": "2026/08/Solidroad-GrantPuckett_0199.jpeg",
+     "alt": "",
+     "w": 2535,
+     "h": 3800
+    },
+    {
+     "src": "2026/08/thumb-43.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1215871551&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2026/08/thumb-52.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1215871520&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2026/08/thumb-45.jpg",
+     "asp": 0.56,
+     "href": "https://vimeo.com/1215871539&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1920
+    },
+    {
+     "src": "2026/08/thumb-46.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/1215871536&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2026/08/thumb-49.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/1215871582&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2026/08/thumb-48.jpg",
+     "asp": 0.8,
+     "href": "https://vimeo.com/1196463306&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1080,
+     "h": 1350
+    },
+    {
+     "src": "2026/08/thumb-42.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1196463006&fl=sv&fe=ci",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    },
+    {
+     "src": "2026/08/thumb-40.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1215871522&fl=sv&fe=ci",
+     "alt": "",
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "src": "2026/08/thumb-41.jpg",
+     "asp": 1.78,
+     "href": "https://vimeo.com/1196463008&fl=sv&fe=ci",
+     "alt": "",
+     "w": 3840,
+     "h": 2160
+    }
+   ]
+  }
+ }
+}
