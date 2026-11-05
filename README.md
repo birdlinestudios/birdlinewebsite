@@ -207,3 +207,26 @@ npm run typecheck      TypeScript check
 npm run content        regenerate content/, globals.css, public/js and public/img from tools/generator
 npm run videos:upload  upload public/video to the project's Vercel Blob store
 ```
+
+---
+
+## 5. The booking flow and email notifications
+
+Every **Book a call** / **Book a demo** button opens the booking modal (`public/js/birdline.js`, `[data-book]`): full name, work
+email (personal providers such as Gmail are refused), company name, company size and how they heard about Birdline. On submit
+the details are POSTed to **`/api/book`** (`app/api/book/route.ts`), then Calendly loads inside the modal, prefilled with the
+name and email, at https://calendly.com/birdlinestudios/birdline-exploratory-call. The homepage's "Get started" form is the
+same form laid into the page. Without JavaScript the buttons link straight to Calendly.
+
+`/api/book` emails each submission to the team through [Resend](https://resend.com) and writes it to the Vercel function log
+(project → Logs) as a backup. The visitor always reaches the calendar, whatever happens to the email.
+
+| Variable | Meaning |
+| --- | --- |
+| `RESEND_API_KEY` | From resend.com → API Keys, or the Resend integration in the Vercel Marketplace, which sets it for you. Without it, submissions are only logged. |
+| `BOOK_NOTIFY_TO` | Who gets the email; several addresses separated by commas. Default `mike@birdlinestudios.com`. |
+| `BOOK_NOTIFY_FROM` | The sender. Default `Birdline Website <onboarding@resend.dev>`, which Resend allows before a domain is verified (it then delivers only to the Resend account's own address). After verifying `birdlinestudios.com` in Resend (Domains → Add → the DNS records it shows), use an address on it, e.g. `Birdline Website <website@birdlinestudios.com>`. |
+
+To turn the emails on: sign up at resend.com with the address that should receive them, create an API key, add it as
+`RESEND_API_KEY` under the project's Settings → Environment Variables (Production and Preview), and redeploy. Submit the form
+once on the live site to confirm the email arrives (the reply-to is the visitor's address, so replying reaches them directly).

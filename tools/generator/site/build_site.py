@@ -197,7 +197,9 @@ def relink(html, root, on_home, hashes=False, local_ids=(), clean=False):
     html = re.sub(r'<a\b[^>]*>', fix, html)
     if clean:  # links written straight to a file ({{ROOT}}packages.html, {{ROOT}}case-studies/ufl.html) become routes too
         html = re.sub(r'\{\{ROOT\}\}((?:case-studies|services)/[a-z0-9-]+|[a-z0-9-]+)\.html', lambda m: route_for(m.group(1) + '.html'), html)
-    return html.replace('{{ROOT}}', root)
+    # the booking buttons: the Calendly link, and data-book so script.js opens the modal instead
+    html = re.sub(r'<a\b([^>]*?)href="\{\{CALENDLY\}\}"(?![^>]*\bdata-book\b)', r'<a\1href="{{CALENDLY}}" data-book', html)
+    return html.replace('{{ROOT}}', root).replace('{{CALENDLY}}', CALENDLY)
 
 def route_for(name):
     """the Next.js route of a page file: index.html -> /, portfolio.html -> /work, case-studies/ufl.html -> /case-studies/ufl"""
@@ -309,6 +311,46 @@ LIGHTBOX = '''<dialog class="lb" data-lb-dialog aria-label="Media viewer">
     <div class="lb-rail" data-lb-rail role="list" aria-label="More in this gallery"></div>
   </div>
 </dialog>'''
+# ---- booking: every "Book a call" / "Book a demo" button carries the Calendly link (the no-script path) and data-book, which
+# script.js turns into the modal below: the short form first (its details go to /api/book on the Next.js site, which emails
+# them to the team), then Calendly inline, prefilled with the name and email.
+CALENDLY = 'https://calendly.com/birdlinestudios/birdline-exploratory-call'
+SIZES = ['1-10', '11-50', '51-200', '201-500', '501-1000', '1000+']
+SOURCES = ['Referral', 'LinkedIn', 'Instagram or TikTok', 'Google search', 'Saw your work for a brand', 'Podcast or newsletter', 'An event', 'Other']
+def options(items, prompt='Select…'):
+    return '<option value="">%s</option>' % prompt + ''.join('<option>%s</option>' % x.replace('&', '&amp;') for x in items)
+BOOK = '''<dialog class="book" data-book-dialog aria-labelledby="book-title">
+  <div class="book-card">
+    <button class="book-x" type="button" data-book-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    <div class="book-step" data-book-step="form">
+      <span class="eyebrow">Book a call</span>
+      <h2 class="book-h" id="book-title">Let’s Talk About <span class="nowrap">Your Content.</span></h2>
+      <p class="book-sub">Tell us a little about you, then pick a time that works. We’ll come to the call with a first read on what your content could earn.</p>
+      <form class="lead" data-lead data-book-form novalidate>
+        <div class="lead-row">
+          <label for="book-name">Full name *<input id="book-name" name="name" type="text" autocomplete="name" required></label>
+          <label for="book-email">Work email *<input id="book-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email><small class="hint">Please use your company email. Personal email providers aren’t accepted.</small></label>
+        </div>
+        <div class="lead-row">
+          <label for="book-company">Company name<input id="book-company" name="company" type="text" autocomplete="organization"></label>
+          <label for="book-size">Company size<select id="book-size" name="size">%s</select></label>
+        </div>
+        <label for="book-source">How did you hear about Birdline?<select id="book-source" name="source" data-source>%s</select></label>
+        <label class="book-other" for="book-source-other" hidden>Tell us more<input id="book-source-other" name="source_other" type="text" data-source-other></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+        <button class="btn" type="submit">Continue to pick a time</button>
+        <p class="lead-msg" data-lead-msg aria-live="polite"></p>
+        <p class="book-fine">Your details go to the Birdline team to prepare for the call, nothing else.</p>
+      </form>
+    </div>
+    <div class="book-step" data-book-step="calendar" hidden>
+      <span class="eyebrow">Pick a time</span>
+      <h2 class="book-h">Thanks<span data-book-first></span>. Choose a time that suits you.</h2>
+      <div class="book-cal"><iframe title="Book a time with Birdline" data-book-cal></iframe></div>
+      <p class="book-fine">Calendar not showing? <a href="{{CALENDLY}}" target="_blank" rel="noopener" data-book-cal-link>Open it in a new tab</a>.</p>
+    </div>
+  </div>
+</dialog>''' % (options(SIZES), options(SOURCES))
 PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"></path></svg>'
 PAUSE = '<svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4.5h4.5v15H6zM13.5 4.5H18v15h-4.5z"></path></svg>'
 ZOOM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg>'
@@ -342,7 +384,7 @@ def document(title, description, inner, root, on_home=False, artifact=False):
     local_ids = set(re.findall(r'\sid="([^"]+)"', inner))
     if NEXT and not artifact:
         DOCS.append(dict(title=title, description=description, html=relink(inner, '/', on_home, local_ids=local_ids, clean=True)))
-    page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n</div>'
+    page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n' + BOOK + '\n</div>'
     page = relink(page, root, on_home, local_ids=local_ids)
     if artifact:
         return ('<title>%s</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n%s\n<style>\n%s</style>\n%s\n<script>\n%s</script>\n'
@@ -423,7 +465,7 @@ def gallery_toggle(tiles_html):
 
 def close_section(second_label, second_href, heading='Let’s Build Your Content Library.',
                   sub='We’ll help you leverage your existing videos, photos, and designs, then scale your library with new productions and monthly deliverables.',
-                  first=('Book a call', 'https://www.birdline.ai/'), note='', photo=None):
+                  first=('Book a call', '{{CALENDLY}}'), note='', photo=None):
     """the close; with photo=(file, w, h) a photograph sits behind it under the navy"""
     media = ('<div class="close-media" aria-hidden="true"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="" loading="lazy"></div>\n  ' % photo) if photo else ''
     return ('<section class="close close--simple%s on-dark" id="signup">\n  %s<div class="wrap"><div class="head"><span class="eyebrow">Get started</span>'
@@ -592,7 +634,7 @@ def portfolio_page():
             img = '<img src="{{ROOT}}img/%s" width="2200" height="1468" alt="" fetchpriority="high">' % asset('hero-moto')
             focal = '50% 45%'
             ctas = ('<a class="btn btn--light" %s aria-label="Play: the Birdline reel">%s Watch the reel</a>'
-                    '<a class="btn btn--ghost" href="https://www.birdline.ai/">Book a call</a>' % (play_attrs(vid, 'Birdline showreel'), PLAY))
+                    '<a class="btn btn--ghost" href="{{CALENDLY}}">Book a call</a>' % (play_attrs(vid, 'Birdline showreel'), PLAY))
         tag = 'h1' if i == 0 else 'h2'
         slides.append('<div class="tv-slide%s" data-ws-screen="%s" style="--focal:%s">%s<div class="wrap"><div class="tv-copy">'
                       '<span class="tv-eyebrow">%s</span><%s class="tv-title">%s</%s><ul class="tv-tags">%s</ul><p class="tv-desc">%s</p><div class="cta-row">%s</div></div></div></div>'
@@ -879,7 +921,7 @@ def packages_page():
             '  <div class="wrap"><div class="hero-copy"><span class="eyebrow">Packages</span>' % (left, right) +
             '<h1><span class="h1-l1">Get Unlimited Creative,</span> <span class="h1-l2 ai">With One Simple Plan</span></h1>'
             '<p class="lede">Plug our world-class talent into your team’s workflow and watch your creative take off. Get unlimited deliverables, seamless collaboration, and weekly creative support—without adding headcount.</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="#plans">See the packages</a></div>'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="#plans">See the packages</a></div>'
             '<a class="hero-link" %s aria-label="Play: hear from the CEO at Gardyn">%sHear from the CEO at Gardyn</a>'
             '</div></div>\n  <div class="flow flow--m" aria-hidden="true"><div class="flow-row"><ul class="flow-set">%s</ul><ul class="flow-set">%s</ul></div></div>\n</section>' % (play_attrs('1112070841', 'FX, CEO at Gardyn, on Birdline'), PLAY, row, row))
     pillars = ('<section class="band pillars-band">\n  <div class="wrap"><div class="head"><span class="eyebrow">Monthly Partnership</span><h2 class="h2">Built for Brands <span class="ai">That Can’t Slow Down.</span></h2>'
@@ -891,13 +933,13 @@ def packages_page():
         # the card: a tinted panel on top with the name, the price, the blurb and the button, then the lists on white below it
         plans.append('<li class="plan"><div class="plan-top"><div class="plan-head"><h3>%s</h3><span class="plan-k">Monthly package</span></div>'
                      '<div class="plan-price">%s<b>%s</b><span>%s</span></div><p class="plan-p">%s</p>'
-                     '<a class="btn plan-btn" href="https://www.birdline.ai/">Book a call</a></div>'
+                     '<a class="btn plan-btn" href="{{CALENDLY}}">Book a call</a></div>'
                      '<div class="plan-body">%s<span class="plan-wf">The Birdline Workflow</span>%s<p class="plan-note">Rolling monthly retainer, no fixed term. Cancel anytime with 60 days’ notice.</p></div></li>'
                      % (esc(pk['name']), '<em class="plan-from">Starting at</em>' if pk.get('starting') else '', esc(pk['price']), esc(pk['per']), esc(pk['blurb']), ck_list(pk['items']), ck_list(pk['workflow'])))
     prod = ('<div class="prod prod--navy"><div class="prod-media"><img src="{{ROOT}}img/production-set.webp" width="1600" height="1068" alt="A Birdline shoot: a camera on a tripod, two people in conversation on set, and a producer watching the monitor." loading="lazy"></div>'
             '<div class="prod-body"><span class="plan-k">Scoped separately, per project</span><h3>Productions</h3>'
             '<p>%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}services/production-process.html">Our production process</a></div></div></div>' % esc(ADDON))
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}services/production-process.html">Our production process</a></div></div></div>' % esc(ADDON))
     packages = ('<!-- ===== The packages: two monthly plans, each with the Birdline Workflow in it, and productions scoped per project ===== -->\n'
                 '<section class="band band--wash plans-band" id="plans">\n  <div class="wrap"><div class="head"><span class="eyebrow">Choose Your Package</span><h2 class="h2">Start With One, <span class="ai">or Combine Both.</span></h2>'
                 '<p class="sub">Each package is a rolling monthly retainer with a dedicated creative, unlimited deliverables, and the Birdline Workflow behind it: no fixed term, cancel anytime with 60 days’ notice. Productions are scoped separately, per project.</p></div>'
@@ -958,7 +1000,7 @@ def about_page():
             '<section class="hero hero--ab on-dark" id="top">\n  <div class="wrap"><div class="ab-hero">'
             '<div class="ab-hero-copy"><span class="eyebrow">About Birdline</span><h1>Endless Content, <span class="ai">Seamless Execution.</span></h1></div>'
             '<div class="ab-hero-side"><p class="lede">We provide brands with top-tier creators, unlimited deliverables, and an in-house production experience to maximize your content and streamline production workflows.</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">View the packages</a></div></div></div></div>\n'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">View the packages</a></div></div></div></div>\n'
             '  <div class="ab-banner" aria-hidden="true"><img src="{{ROOT}}img/production-set.webp" width="1600" height="1068" alt="" fetchpriority="high"></div>\n</section>')
     statement = ('<section class="band band--navy on-dark ab-state">\n  <div class="wrap"><p class="ab-statement">Not an agency. Not a bench of freelancers. Your in-house content team, without the overhead, ready whenever, and however, you need it.</p></div>\n</section>')
     marquee = logos_band[logos_band.index('<div class="logo-marquee">'):logos_band.rindex('</section>')]
@@ -1003,7 +1045,7 @@ def about_page():
     values = ('<!-- ===== The values: five rows on navy, each with its numeral, the statement and its copy ===== -->\n'
               '<section class="band band--navy on-dark ab-values">\n  <div class="wrap"><div class="head"><span class="eyebrow">How we work</span><h2 class="h2"><span class="ai">Our Values</span> Lead the Way.</h2>'
               '<p class="sub">This is what makes us who we are: content that keeps working, speed you can plan around, a team that feels like yours, and results you can measure.</p></div>'
-              '<ol class="vals">%s</ol><div class="more"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">View the packages</a></div></div>\n</section>'
+              '<ol class="vals">%s</ol><div class="more"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">View the packages</a></div></div>\n</section>'
               % ''.join('<li><span class="val-n" aria-hidden="true">%02d</span><div class="val-head"><span class="v-k">%s</span><h3>%s</h3></div><p>%s</p></li>'
                         % (i + 1, esc(lab), esc(t), esc(d)) for i, (k, lab, t, d) in enumerate(VALUES)))
     rows = ''.join('<li><span class="svc-ic" aria-hidden="true">%s</span><b>%s</b><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for (k, t), d in zip(DELIVER_ROWS, DELIVER))
@@ -1083,7 +1125,7 @@ def why_page():
             '  <div class="wrap"><div class="hero-copy"><span class="eyebrow">Why Birdline</span>'
             '<h1>Your Dollar <span class="ai">Matters.</span></h1>'
             '<p class="lede">%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>' % (hf, hw, hh, esc(HERO_LEDE)))
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>' % (hf, hw, hh, esc(HERO_LEDE)))
     # four reasons, each opening with a picture of the thing: the Birds, the work, a Slack thread, the app
     visuals = {
         'birds': '<span class="rs-vis rs-vis--birds" aria-hidden="true"><span class="rs-avs">%s</span><span class="rs-plus">+ your freelancers</span></span>'
@@ -1139,7 +1181,7 @@ def workspace_page():
             '  <div class="wrap"><div class="hero-copy"><span class="eyebrow">Birdline App</span>' % floaters +
             '<h1>The Production Workspace <span class="ai">for In‑House Content Teams</span></h1>'
             '<p class="lede">Birdline is where briefs, deliverables, and performance insights live as one connected campaign—so in-house content teams produce more and prove more.</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://app.birdline.ai/login?mode=signup">Start free trial</a><a class="btn btn--ghost" href="https://www.birdline.ai/">Book a demo</a></div>'
+            '<div class="cta-row"><a class="btn btn--light" href="https://app.birdline.ai/login?mode=signup">Start free trial</a><a class="btn btn--ghost" href="{{CALENDLY}}">Book a demo</a></div>'
             '<p class="hero-note">Start free for 30 days. No credit card required.</p></div>'
             '<div class="hero-still"><div class="ws-hero" data-ws-stage data-ws-auto="4500" aria-label="The Birdline App">'
             '<div class="ws-bar"><div class="ws-switch" role="tablist" aria-label="Workspace pages">%s</div></div>'
@@ -1164,7 +1206,7 @@ def workspace_page():
              '<p class="sub sub--wide">Every Monthly Partnership runs through the same workspace: our requests land in your Deliverables with the same owner, due date, and review status, and every shoot’s spend shows up in Insights.</p>'
              '<div class="cta-row"><a class="btn" href="{{ROOT}}packages.html">See the packages</a><a class="btn btn--outline" href="{{ROOT}}case-studies.html">Read the case studies</a></div></div></div>\n</section>')
     faq = faq_section(FAQ_APP, 'Questions About |the App.')
-    close = close_section('Book a demo', 'https://www.birdline.ai/', heading='Build Winning Campaigns with a Bird’s-Eye View',
+    close = close_section('Book a demo', '{{CALENDLY}}', heading='Build Winning Campaigns with a Bird’s-Eye View',
                           sub='Bring the campaign you’re working on now. Start free for 30 days, no credit card required.',
                           first=('Start free trial', 'https://app.birdline.ai/login?mode=signup'))
     inner = '\n\n'.join([hero, loop, product, around, calc_band, tiein, faq, close])
@@ -1258,7 +1300,7 @@ def services_page():
             '<section class="hero hero--page hero--svcs on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">Services</span>'
             '<h1>Many Ways <span class="ai">to Make It.</span></h1>'
             '<p class="lede">Every format your channels need, from one team, inside one workspace. Request any of them on the Monthly Partnership, or scope a production on its own.</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>')
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>')
     index = '<section class="band svc-index">\n  <div class="wrap"><ul class="svc-grid svc-grid--3">%s</ul></div>\n</section>' % ''.join(svc_card(s, large=True) for s in SERVICES)
     inner = '\n\n'.join([hero, index, testimonials, close_section('See the work', '{{ROOT}}portfolio.html')])
     return document('Services: Birdline', 'Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / CGI / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.', inner, '')
@@ -1269,7 +1311,7 @@ def service_page(svc):
     hero = ('<!-- ===== %s: the copy on navy, then a strip of the work that runs down into the next band ===== -->\n'
             '<section class="hero hero--page hero--svc on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><a class="crumb" href="{{ROOT}}services.html">%sAll services</a>'
             '<span class="eyebrow">Services · %s</span><h1>%s</h1><p class="lede">%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="#examples">See examples</a></div></div>'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="#examples">See examples</a></div></div>'
             '<div class="svc-strip" role="list" aria-label="%s">%s</div></div>\n</section>'
             % (name, ARROW_L, esc(GROUP_NAME[svc['cat']]), tt(svc['h1']), esc(svc['lede']), esc('Examples of ' + name.lower() if name not in ('UGC', 'CTV', 'OOH', '3D / CGI / VFX', 'AI Content') else 'Examples of ' + name), strip))
     facts = ''.join('<li><span>%s</span><b>%s</b></li>' % (esc(k), esc(v)) for k, v in svc['facts'])
@@ -1333,7 +1375,7 @@ def rops_page():
     hero = ('<!-- ===== ROPS & ROCS: the two numbers, as formulas, on navy ===== -->\n'
             '<section class="hero hero--page hero--rp on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">ROPS<sup class="mark-tm">™</sup> &amp; ROCS<sup class="mark-tm">™</sup></span>'
             '<h1>%s</h1><p class="lede">%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="#calculator">Try the calculator</a><a class="btn btn--ghost" href="https://www.birdline.ai/">Book a demo</a></div></div>'
+            '<div class="cta-row"><a class="btn btn--light" href="#calculator">Try the calculator</a><a class="btn btn--ghost" href="{{CALENDLY}}">Book a demo</a></div></div>'
             '<ul class="fx-row">%s</ul></div>\n</section>'
             % (tt(RP_HERO['h1']), esc(RP_HERO['lede']), ''.join(formula(*f) for f in FORMULAS)))
     why = rops_why_section()
@@ -1367,7 +1409,7 @@ def rops_page():
                '<ul class="rp-nums">%s</ul><p class="fine">%s</p></div>\n</section>'
                % (''.join('<li><b>%s</b><p>%s</p></li>' % (esc(n), esc(t)) for n, t in NUMBERS), esc(NUMBERS_NOTE)))
     faq = ('<section class="band band--wash faq" id="faq">\n  <div class="wrap"><div class="head"><span class="eyebrow">FAQ</span><h2 class="h2">Questions About <span class="ai">ROPS<sup class="mark-tm">™</sup> and ROCS<sup class="mark-tm">™</sup>.</span></h2></div>%s</div>\n</section>' % qa_list(RP_FAQ))
-    close = close_section('Book a demo', 'https://www.birdline.ai/', heading='Build Winning Campaigns with a Bird’s-Eye View',
+    close = close_section('Book a demo', '{{CALENDLY}}', heading='Build Winning Campaigns with a Bird’s-Eye View',
                           sub='Bring the campaign you’re working on now. Start free for 30 days, no credit card required.',
                           first=('Start free trial', 'https://app.birdline.ai/login?mode=signup'))
     inner = '\n\n'.join([hero, why, tells, measure, diy, faq, close])
@@ -1381,7 +1423,7 @@ def production_page():
             '  <div class="hero-media" aria-hidden="true"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="" fetchpriority="high"></div>\n'
             '  <div class="wrap"><div class="hero-copy"><a class="crumb" href="{{ROOT}}services.html">%sAll services</a>'
             '<span class="eyebrow">%s</span><h1>%s</h1><p class="lede">%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a><a class="btn btn--ghost" href="#library">See a year of content</a></div></div></div>\n</section>'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="#library">See a year of content</a></div></div></div>\n</section>'
             % (site_img('new/production-hero.jpg') + (ARROW_L, esc(PD_HERO['eyebrow']), tt(PD_HERO['h1']), esc(PD_HERO['lede']))))
     anywhere = ('<!-- ===== Crews wherever the shoot is ===== -->\n'
                 '<section class="band band--wash pd-anywhere" id="anywhere">\n  <div class="wrap"><div class="head"><span class="eyebrow">Anywhere</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>'
@@ -1437,7 +1479,7 @@ def home_page(artifact):
     _ls = inner.find('<ul class="lib-tiles"'); _le = inner.find('</ul>', _ls) + len('</ul>')
     inner = inner[:_ls] + lib_tiles_html() + inner[_le:]
     inner = resolve_imgs(inner)
-    page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n</div>'
+    page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n' + BOOK + '\n</div>'
     page = relink(page, '', True, hashes=artifact)
     title = 'Birdline: Unlimited Deliverables. One Production Workspace.'
     description = ('Birdline pairs a premium creative studio with a production workspace: unlimited deliverables every month, '
@@ -1540,7 +1582,7 @@ if NEXT:
     _hd = relink(header, '/', False, clean=True)
     chrome = dict(fonts=re.findall(r'href="([^"]+)"', FONTS.replace('&amp;', '&')),
                   topMark=element(_hd[:_hd.index('<header')]), header=element(_hd[_hd.index('<header'):]),
-                  footer=element(relink(footer, '/', False, clean=True)), lightbox=element(LIGHTBOX))
+                  footer=element(relink(footer, '/', False, clean=True)), lightbox=element(LIGHTBOX), book=element(relink(BOOK, '/', False, clean=True)))
     with open(os.path.join(NEXT, 'content', 'chrome.json'), 'w', encoding='utf-8') as fh:
         json.dump(chrome, fh, indent=1, ensure_ascii=False)
     with open(os.path.join(NEXT, 'content', 'videos.txt'), 'w') as fh:

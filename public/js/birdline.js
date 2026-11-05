@@ -175,20 +175,112 @@ function enhance(doc) {
     track.scrollBy({ left: btn.hasAttribute('data-carousel-next') ? step : -step, behavior: still ? 'auto' : 'smooth' });
   });
 
-  // the lead form: nothing is sent yet (see the TODO on the form); it checks the fields and confirms on the page
+  // Booking. Every "Book a call" button ([data-book]) opens the modal: the short form, then Calendly inline. The homepage form
+  // ([data-lead] at the close) is the same form laid into the page; a valid submit sends the details to /api/book (the Next.js
+  // site emails them to the team; on the static site the request simply fails and the flow carries on) and opens the calendar.
+  var CALENDLY = 'https://calendly.com/birdlinestudios/birdline-exploratory-call';
+  var PERSONAL = /^(gmail|googlemail|yahoo|ymail|rocketmail|hotmail|outlook|live|msn|icloud|me|mac|aol|protonmail|proton|pm|gmx|mail|zoho|yandex|fastmail|hey|duck|comcast|att|verizon|sbcglobal|cox|qq|163|126)\./i;
+  var WORK_EMAIL_HINT = 'Please use your company email. Personal email providers aren’t accepted.';
+  function emailDomain(value) { var m = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/.exec(String(value).trim()); return m ? m[1].toLowerCase() : ''; }
+  function isWorkEmail(value) { var d = emailDomain(value); return !!d && !PERSONAL.test(d); }
+  function field(form, name) { return form.querySelector('[name="' + name + '"]'); }
+  function value(form, name) { var f = field(form, name); return f ? f.value.trim() : ''; }
+  function firstName(name) { return name.trim().split(/\s+/)[0] || ''; }
+  // checks a lead form; returns the first bad field or null, and writes the message
+  function check(form) {
+    var msg = form.querySelector('[data-lead-msg]'), bad = null, text = '';
+    Array.prototype.forEach.call(form.querySelectorAll('[required],[data-work-email]'), function (f) {
+      var v = f.value.trim(), wrong = false;
+      if (f.hasAttribute('required') && !v) { wrong = true; text = text || 'Add your name and a work email and we’re set.'; }
+      else if (f.type === 'email' && v && !emailDomain(v)) { wrong = true; text = text || 'That email address doesn’t look complete.'; }
+      else if (f.hasAttribute('data-work-email') && v && !isWorkEmail(v)) { wrong = true; text = text || WORK_EMAIL_HINT; }
+      f.setAttribute('aria-invalid', wrong ? 'true' : 'false');
+      if (wrong && !bad) bad = f;
+    });
+    if (msg) { msg.textContent = bad ? text : ''; msg.classList.toggle('is-error', !!bad); }
+    return bad;
+  }
+  function leadData(form) {
+    var source = value(form, 'source'), other = value(form, 'source_other');
+    return { name: value(form, 'name'), email: value(form, 'email'), company: value(form, 'company'), size: value(form, 'size'),
+             source: source === 'Other' && other ? 'Other: ' + other : (source || other), website: value(form, 'website'),
+             page: win.location.pathname + win.location.hash, referrer: doc.referrer || '' };
+  }
+  // sends the details; always calls done, because the calendar must open whether or not the email went out
+  function sendLead(form, done) {
+    var btn = form.querySelector('button[type="submit"]'), label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'One moment…'; }
+    var finish = function (res) { if (btn) { btn.disabled = false; btn.textContent = label; } done(res || {}); };
+    var payload = leadData(form);
+    if (!win.fetch) return finish({ ok: false });
+    win.fetch('/api/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .then(function (r) { return r.json().then(function (j) { return j; }, function () { return { ok: r.ok }; }); })
+      .then(finish, function () { finish({ ok: false }); });
+  }
+  var bookDialog = null, bookForm = null;
+  function bindBook() {
+    bookDialog = doc.querySelector('[data-book-dialog]');
+    bookForm = bookDialog ? bookDialog.querySelector('[data-book-form]') : null;
+  }
+  function bookStep(name) {
+    if (!bookDialog) return;
+    Array.prototype.forEach.call(bookDialog.querySelectorAll('[data-book-step]'), function (s) { s.hidden = s.getAttribute('data-book-step') !== name; });
+    var card = bookDialog.querySelector('.book-card'); if (card) card.scrollTop = 0;
+  }
+  function openBook(step, lead) {
+    if (!bookDialog || typeof bookDialog.showModal !== 'function') return false;
+    if (step === 'calendar' && lead) {
+      var first = bookDialog.querySelector('[data-book-first]'), frame = bookDialog.querySelector('[data-book-cal]'), link = bookDialog.querySelector('[data-book-cal-link]');
+      var url = CALENDLY + '?hide_gdpr_banner=1&embed_type=Inline&embed_domain=' + encodeURIComponent(win.location.hostname) +
+                '&name=' + encodeURIComponent(lead.name) + '&email=' + encodeURIComponent(lead.email) + '&utm_source=website&utm_medium=book-a-call' +
+                '&primary_color=2547d0&text_color=0b1220&background_color=ffffff';
+      if (first) first.textContent = lead.name ? ', ' + firstName(lead.name) : '';
+      if (frame && frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+      if (link) link.setAttribute('href', CALENDLY + '?name=' + encodeURIComponent(lead.name) + '&email=' + encodeURIComponent(lead.email));
+    }
+    bookStep(step);
+    if (!bookDialog.open) bookDialog.showModal();
+    root.classList.add('book-open');
+    if (step === 'form' && bookForm) { var f = field(bookForm, 'name'); if (f && !f.value) setTimeout(function () { f.focus(); }, 50); }
+    return true;
+  }
+  function closeBook() { if (bookDialog && bookDialog.open) bookDialog.close(); }
+  listen('close', function (e) { if (e.target === bookDialog) root.classList.remove('book-open'); });
+  listen('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var open = t.closest('[data-book]');
+    if (open) { if (openBook('form')) e.preventDefault(); return; }
+    if (t.closest('[data-book-close]')) { closeBook(); return; }
+    if (bookDialog && t === bookDialog && bookDialog.open) closeBook();   // the backdrop
+  });
+  listen('change', function (e) {
+    var sel = e.target && e.target.closest ? e.target.closest('[data-source]') : null;
+    if (!sel) return;
+    var other = sel.closest('form').querySelector('.book-other');
+    if (other) { other.hidden = sel.value !== 'Other'; if (!other.hidden) { var i = other.querySelector('input'); if (i) i.focus(); } }
+  });
   listen('submit', function (e) {
     var form = e.target && e.target.closest ? e.target.closest('[data-lead]') : null;
     if (!form) return;
     e.preventDefault();
-    var msg = form.querySelector('[data-lead-msg]'), missing = [];
-    Array.prototype.forEach.call(form.querySelectorAll('[required]'), function (field) {
-      var bad = !field.value.trim() || (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value));
-      field.setAttribute('aria-invalid', bad ? 'true' : 'false');
-      if (bad) missing.push(field);
+    var bad = check(form);
+    if (bad) { bad.focus(); return; }
+    var lead = leadData(form), msg = form.querySelector('[data-lead-msg]');
+    sendLead(form, function () {
+      if (!openBook('calendar', lead)) { win.open(CALENDLY + '?name=' + encodeURIComponent(lead.name) + '&email=' + encodeURIComponent(lead.email), '_blank', 'noopener'); }
+      if (msg && !form.hasAttribute('data-book-form')) { msg.textContent = 'Thanks, ' + firstName(lead.name) + '. Pick a time in the calendar.'; msg.classList.remove('is-error'); }
     });
-    if (missing.length) { if (msg) msg.textContent = 'Add your name, a work email and your company and we\u2019re set.'; missing[0].focus(); return; }
-    if (msg) msg.textContent = 'Thanks, ' + form.querySelector('#lead-name').value.trim().split(' ')[0] + '. We\u2019ll reply within one business day with times for a call.';
-    form.querySelector('button[type="submit"]').disabled = true;
+  });
+  // the email field explains itself as soon as a personal address is typed
+  listen('blur', function (e) {
+    var f = e.target && e.target.closest ? e.target.closest('[data-work-email]') : null;
+    if (!f || !f.value.trim()) return;
+    var ok = isWorkEmail(f.value);
+    f.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    var msg = f.closest('form') && f.closest('form').querySelector('[data-lead-msg]');
+    if (msg && !ok) { msg.textContent = WORK_EMAIL_HINT; msg.classList.add('is-error'); }
+    else if (msg && msg.textContent === WORK_EMAIL_HINT) { msg.textContent = ''; msg.classList.remove('is-error'); }
   });
 
   // the stack of deliverables: every few seconds the front frame drops out and goes to the back, so the pile never ends
@@ -249,6 +341,7 @@ function enhance(doc) {
       seen.observe(el);
     });
     bindBar();
+    bindBook();
     bindTour();
   }
   scan();

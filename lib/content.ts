@@ -1,14 +1,14 @@
 // The site's content, as tools/generator writes it into content/:
 //   content/pages.json      every route with its fragment file, <title> and meta description
 //   content/pages/*.html    the inner HTML of each page's <main>, links already written as routes (/work, /case-studies/ufl ...)
-//   content/chrome.json     the header, footer and lightbox shared by every page, and the Google Fonts links
+//   content/chrome.json     the header, footer, media lightbox and booking modal shared by every page, and the Google Fonts links
 // Everything is read at build time (next build pre-renders every route), so nothing here runs on a request in production.
 import fs from "node:fs";
 import path from "node:path";
 
 export type Page = { route: string; file: string; title: string; description: string };
 export type Part = { tag: string; attrs: Record<string, string>; html: string };
-export type Chrome = { fonts: string[]; topMark: Part; header: Part; footer: Part; lightbox: Part };
+export type Chrome = { fonts: string[]; topMark: Part; header: Part; footer: Part; lightbox: Part; book: Part };
 
 const CONTENT = path.join(process.cwd(), "content");
 const read = (file: string) => fs.readFileSync(path.join(CONTENT, file), "utf8");

@@ -83,8 +83,8 @@
     </nav>
     <div class="top-cta">
       <a class="top-link" href="https://app.birdline.ai/login">Log in</a>
-      <!-- TODO: point every "Book a call" at the booking flow (Calendly, HubSpot or the Schedule Demo page). -->
-      <a class="btn btn--sm" href="https://www.birdline.ai/">Book a call</a>
+      <!-- every "Book a call" / "Book a demo" opens the booking modal (script.js, [data-book]); without script it goes straight to Calendly -->
+      <a class="btn btn--sm" href="{{CALENDLY}}">Book a call</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" data-menu>
         <svg class="ic-bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
         <svg class="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
@@ -106,7 +106,7 @@
       <h1><span class="h1-l1">Unlimited Deliverables.</span><br><span class="h1-l2 ai">One Production Workspace.</span></h1>
       <p class="lede">Get premium content every month—on demand, on brand, and streamlined through our production workspace.</p>
       <div class="cta-row">
-        <a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a>
+        <a class="btn btn--light" href="{{CALENDLY}}">Book a call</a>
         <a class="btn btn--ghost" href="https://app.birdline.ai/login?mode=signup">Start free trial</a>
       </div>
       <ul class="proof" aria-label="What you get">
@@ -266,7 +266,7 @@
       <li><i class="mk mk--yes" aria-label="Included"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"></path></svg></i>Included</li><li><i class="mk mk--var" aria-label="Varies"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 10h10"></path></svg></i>Varies</li><li><i class="mk mk--no" aria-label="Not included"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8"></path></svg></i>Not included</li>
     </ul>
     <div class="cta">
-      <a class="btn btn--light" href="https://www.birdline.ai/">Book a call</a>
+      <a class="btn btn--light" href="{{CALENDLY}}">Book a call</a>
     </div>
   </div>
 </section>
@@ -383,7 +383,7 @@
       </ul>
     </div>
     <div class="cta-row product-cta">
-      <a class="btn" href="https://www.birdline.ai/">Book a demo</a>
+      <a class="btn" href="{{CALENDLY}}">Book a demo</a>
     </div>
   </div>
 </section>
@@ -441,7 +441,7 @@
       <div class="lib-copy">
         <h2 class="h2">Let’s Scale <span class="ai">Your Content Library.</span></h2>
         <p class="sub">We’ll help you leverage your existing videos, photos, and designs, then scale your library with new productions and monthly deliverables.</p>
-        <div class="cta-row lib-cta"><a class="btn" href="https://www.birdline.ai/">Book a demo</a></div>
+        <div class="cta-row lib-cta"><a class="btn" href="{{CALENDLY}}">Book a demo</a></div>
       </div>
       <ul class="lib-tiles" aria-label="Work from client content libraries: commercials, social cutdowns, photography, motion graphics, UGC, 3D, paid social, illustration, VFX, design, brand film and animation">
         <li class="lib-tile" style="--x:1;--y:5;--w:16;--r:-4deg;--d:0s"><img src="{{GIF}}" data-img="cs-publicrec" width="960" height="540" alt="A Public Rec campaign mural on the side of a building." loading="lazy"><span>OOH</span></li>
@@ -526,7 +526,7 @@
 </section>
 
 <!-- ===== Closing call to action ===== -->
-<!-- TODO: wire the form to the booking flow or CRM (HubSpot, Calendly, or a form endpoint). Until then the script confirms on the page and sends nothing. -->
+<!-- The form posts to /api/book on the Next.js site (emails the details to the team), then opens the calendar step of the booking modal (script.js, [data-lead]). -->
 <section class="close on-dark" id="signup">
   <div class="close-media" aria-hidden="true"><img src="{{GIF}}" data-img="close-bar" width="2000" height="1125" alt="" loading="lazy"></div>
   <div class="wrap close-in">
@@ -538,12 +538,13 @@
     <form class="lead" data-lead novalidate>
       <div class="lead-row">
         <label for="lead-name">Name<input id="lead-name" name="name" type="text" autocomplete="name" required></label>
-        <label for="lead-email">Work email<input id="lead-email" name="email" type="email" autocomplete="email" required></label>
+        <label for="lead-email">Work email<input id="lead-email" name="email" type="email" autocomplete="email" inputmode="email" required data-work-email><small class="hint">Please use your company email. Personal email providers aren’t accepted.</small></label>
       </div>
       <div class="lead-row">
         <label for="lead-company">Company<input id="lead-company" name="company" type="text" autocomplete="organization" required></label>
-        <label for="lead-need">What do you need?<select id="lead-need" name="need"><option>Monthly Partnership</option><option>A production (video, photo, UGC)</option><option>The Birdline App only</option><option>Not sure yet</option></select></label>
+        <label for="lead-size">Company size<select id="lead-size" name="size"><option value="">Select…</option><option>1-10</option><option>11-50</option><option>51-200</option><option>201-500</option><option>501-1000</option><option>1000+</option></select></label>
       </div>
+      <label class="hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn--light" type="submit">Book a call</button>
       <p class="lead-msg" data-lead-msg aria-live="polite"></p>
     </form>

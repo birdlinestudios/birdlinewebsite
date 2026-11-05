@@ -1,6 +1,6 @@
 // The document every page shares: the fonts, the site's CSS (app/globals.css), the header, the page itself (<main>, from each
-// route's page.tsx), the footer, the media lightbox, and the site's scripts (public/js/birdline.js), which run after the page is
-// on screen. The header, footer and lightbox come from content/chrome.json as the generator wrote them.
+// route's page.tsx), the footer, the media lightbox, the booking modal, and the site's scripts (public/js/birdline.js), which run
+// after the page is on screen. The header, footer, lightbox and modal come from content/chrome.json as the generator wrote them.
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { createElement } from "react";
@@ -43,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Fragment part={c.footer} />
           <Fragment part={c.lightbox} />
+          <Fragment part={c.book} />
         </div>
         <Script src="/js/birdline.js" strategy="afterInteractive" />
       </body>
