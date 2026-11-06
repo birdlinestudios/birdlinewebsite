@@ -170,6 +170,8 @@ TEAM = [
     ('trevor', 'Trevor Hollander', 'Producer / DP', 'Nike, Clippers, Fender'),
     ('bryan', 'Bryan Bartleson', 'Video Editor', 'Marvel, Disney, Sony'),
     ('james', 'James Mackenzie', 'Designer & 3D Animator', 'Jaguar, Hume, Willie’s Remedy'),
+    ('joey', 'Joey Breese', 'Filmmaker', 'Nike, Adidas, Chivas'),
+    ('megan', 'Megan Gray', 'Creative Director & Designer', 'Mattel, Casper, Netflix'),
 ]
 WITHOUT = ['Limited deliverables from expensive shoots', 'Fragmented workflows', 'Scattered production emails', 'Slow turnaround times', 'Assets sent through email and random links', 'No system for iterations or measuring ROI', 'Juggling multiple agencies and contractors']
 WITH = ['Unlimited deliverables', 'Dedicated project manager & creators', 'Direct communication via Slack', 'Weekly project tracker', 'Premium assets delivered via Frame.io', 'Biweekly creative & marketing meetings', 'World-class creators, all under one roof']
