@@ -1583,12 +1583,23 @@ if NEXT:
     os.makedirs(cdir, exist_ok=True)
     for f in os.listdir(cdir):
         os.remove(os.path.join(cdir, f))
+    # Every image goes out under a name that carries its content hash (bird-mike.3f9c1e2a.webp), and the pages point at that
+    # name: a replaced photo is a new address, so no browser or CDN keeps showing the old one, and the files themselves can be
+    # cached for good (next.config.ts marks /img immutable).
+    fingerprints = {}
+    for f in used:
+        with open(os.path.join(OUT, 'img', f), 'rb') as fh:
+            digest = hashlib.md5(fh.read()).hexdigest()[:8]
+        stem, ext = os.path.splitext(f)
+        fingerprints[f] = '%s.%s%s' % (stem, digest, ext)
+    def fingerprint(text):
+        return re.sub(r'/img/([A-Za-z0-9._-]+)', lambda m: '/img/' + fingerprints.get(m.group(1), m.group(1)), text)
     manifest = []
     for name, doc in zip(names, DOCS):
         route = route_for(name)
         file = ('index' if route == '/' else route.strip('/').replace('/', '__')) + '.html'
         with open(os.path.join(cdir, file), 'w', encoding='utf-8') as fh:
-            fh.write(doc['html'].strip() + '\n')
+            fh.write(fingerprint(doc['html'].strip()) + '\n')
         manifest.append(dict(route=route, file=file, title=doc['title'], description=doc['description']))
     with open(os.path.join(NEXT, 'content', 'pages.json'), 'w', encoding='utf-8') as fh:
         json.dump(manifest, fh, indent=1, ensure_ascii=False)
@@ -1604,7 +1615,7 @@ if NEXT:
                   topMark=element(_hd[:_hd.index('<header')]), header=element(_hd[_hd.index('<header'):]),
                   footer=element(relink(footer, '/', False, clean=True)), lightbox=element(LIGHTBOX), book=element(relink(BOOK, '/', False, clean=True)))
     with open(os.path.join(NEXT, 'content', 'chrome.json'), 'w', encoding='utf-8') as fh:
-        json.dump(chrome, fh, indent=1, ensure_ascii=False)
+        fh.write(fingerprint(json.dumps(chrome, indent=1, ensure_ascii=False)))
     with open(os.path.join(NEXT, 'content', 'videos.txt'), 'w') as fh:
         fh.write('\n'.join(sorted(site_videos)) + '\n')
     os.makedirs(os.path.join(NEXT, 'app'), exist_ok=True)
@@ -1615,9 +1626,12 @@ if NEXT:
         fh.write(script)
     pub_img = os.path.join(NEXT, 'public', 'img'); os.makedirs(pub_img, exist_ok=True)
     for f in used:
-        shutil.copyfile(os.path.join(OUT, 'img', f), os.path.join(pub_img, f))
+        dst = os.path.join(pub_img, fingerprints[f])
+        if not os.path.exists(dst):
+            shutil.copyfile(os.path.join(OUT, 'img', f), dst)
+    _keep = set(fingerprints.values())
     for f in os.listdir(pub_img):
-        if f not in used:
+        if f not in _keep:
             os.remove(os.path.join(pub_img, f))
     pub_vid = os.path.join(NEXT, 'public', 'video'); os.makedirs(pub_vid, exist_ok=True)
     _vcopied = 0

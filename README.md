@@ -8,7 +8,8 @@ The Birdline Studios site (`birdlinestudios.com`) as a [Next.js](https://nextjs.
 - **`content/`** — the pages as generated HTML: `pages.json` (every route with its title and description),
   `pages/*.html` (the body of each page) and `chrome.json` (header, footer, lightbox). **Generated, don't hand-edit**:
   see "Changing the content" below.
-- **`public/`** — files served as they are: `img/` (447 images), `video/` (the videos; not in git, see "Videos"),
+- **`public/`** — files served as they are: `img/` (the images, each named with its content hash, e.g. `bird-mike.3f9c1e2a.webp`,
+  so a replaced image is a new address and browsers never show a stale one), `video/` (the videos; not in git, see "Videos"),
   `js/birdline.js` (the site's scripts: menus, carousels, galleries, lightbox, calculator, radio player).
 - **`lib/content.ts`** — reads `content/` at build time.
 - **`tools/generator/`** — the Python generator that writes `content/`, `app/globals.css`, `public/js` and `public/img`
@@ -164,8 +165,9 @@ After an edit, regenerate (needs Python 3, which macOS has):
 npm run content
 ```
 
-That rewrites `content/`, `app/globals.css`, `public/js/birdline.js` and `public/img/`; the dev server picks the change up
-immediately. Commit the generated files along with the source so Vercel builds without Python.
+That rewrites `content/`, `app/globals.css`, `public/js/birdline.js` and `public/img/` (a changed image gets a new hashed
+name, and the pages point at it); the dev server picks the change up immediately. Commit the generated files along with the
+source so Vercel builds without Python.
 
 Editing `content/pages/*.html` directly works for a quick experiment, but the next `npm run content` overwrites it.
 

@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 // Everything the site serves is static: the pages are pre-rendered at build time from content/, the images and videos are files
-// under public/. Image names stay the same when an image is replaced, so browsers keep them for an hour and then re-check
-// (a cheap 304 when nothing changed); the videos under public/ are only used locally, so they can be kept longer.
-const IMAGES = "public, max-age=3600, stale-while-revalidate=86400";
+// under public/. Every image name carries its content hash (the generator renames them, and the pages point at the hashed
+// names), so a replaced image is a new address and the files can be cached for good. The videos under public/ are only used
+// locally; in production they come from the Blob store.
+const IMAGES = "public, max-age=31536000, immutable";
 const VIDEOS = "public, max-age=86400, stale-while-revalidate=604800";
 
 const nextConfig: NextConfig = {
