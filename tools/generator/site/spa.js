@@ -93,6 +93,7 @@
     if (window.__siteMasonry) window.__siteMasonry(target.main);
     if (window.__birdlineCalc) window.__birdlineCalc(target.main);
     if (window.__siteVideo) window.__siteVideo(target.main);
+    if (window.__siteLoops) window.__siteLoops(target.main);
     if (window.__siteWs) window.__siteWs(target.main);
     if (window.__siteFloat) window.__siteFloat(target.main);
     if (window.__siteTv) window.__siteTv(target.main);

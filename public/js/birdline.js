@@ -619,6 +619,27 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
   scan(document);
 })();
 
+/* A cover loop (the short silent clip over a case study's still) plays while it is on screen and rests off it, and stays on its
+   still for anyone who asked for reduced motion. Autoplay alone is not enough everywhere: some browsers hold a clip that starts
+   off screen until it is asked to play. */
+(function () {
+  "use strict";
+  if (!('IntersectionObserver' in window)) return;
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      var v = e.target;
+      if (e.isIntersecting && !still) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      else v.pause();
+    });
+  }, { rootMargin: '120px' });
+  function scan(root) {
+    Array.prototype.forEach.call((root || document).querySelectorAll('video.cover-loop'), function (v) { if (!v.__loop) { v.__loop = true; io.observe(v); } });
+  }
+  window.__siteLoops = scan;
+  scan(document);
+})();
+
 /* A screen switch that advances on its own (data-ws-auto, in ms) until someone picks a page, and rests while pointed at. Its screens
    are the [data-ws-screen] elements (a key may appear twice, for a wide and a narrow copy); tabs ([data-ws-tab]) and arrows
    ([data-ws-prev], [data-ws-next]) pick one. */

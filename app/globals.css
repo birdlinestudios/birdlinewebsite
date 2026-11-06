@@ -892,7 +892,10 @@ h1 .ai,h2 .ai{color:#5b7bff}
   .lb-open{display:none}
 }
 /* video tiles: the video itself, framed like a still, previewing on hover */
-.gi video{display:block;width:100%;height:auto;background:#0f1a4a;transition:transform .6s var(--ease)}
+.gi video{display:block;width:100%;height:auto;object-fit:cover;transition:transform .6s var(--ease)}
+/* a cover that moves: the loop sits over its still, and stays off for anyone who asked for less motion */
+.cover-loop{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.cover-loop{display:none}}
 @media(hover:hover){.gi a:hover video{transform:scale(1.04)}}
 .gi.is-hidden{display:none}
 body:has(.lb[open]){overflow:hidden}

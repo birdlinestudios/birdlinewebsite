@@ -392,11 +392,25 @@ def document(title, description, inner, root, on_home=False, artifact=False):
             % (esc(title), esc(description), FONTS, style, page, script))
 
 # ---- pieces
+def cover_loop(slug):
+    """the short silent loop some covers carry (CARDS[slug]['loop'], an .mp4 beside the still in the assets): it plays over the still
+    in the card and the still stays underneath for the no-motion and no-script cases. Served from img/ with the still, not from the
+    video store"""
+    c = CARDS[slug]
+    if not c.get('loop'):
+        return ''
+    src = os.path.join(ASSETS, c['loop'])
+    if not os.path.exists(os.path.join(OUT, 'img', c['loop'])):
+        shutil.copyfile(src, os.path.join(OUT, 'img', c['loop']))
+    site_imgs.add(c['loop'])
+    return ('<video class="cover-loop" src="{{ROOT}}img/%s" poster="{{ROOT}}img/%s" width="960" height="540" autoplay muted loop playsinline '
+            'disablepictureinpicture aria-hidden="true" tabindex="-1"></video>' % (c['loop'], asset(c['cover'])))
+
 def cs_card(slug, light=False):
     c = CARDS[slug]
-    return ('<li class="cs"><a href="{{ROOT}}case-studies/%s.html"><span class="cs-media"><img src="{{ROOT}}img/%s" width="960" height="540" alt="%s" loading="lazy"></span>'
+    return ('<li class="cs"><a href="{{ROOT}}case-studies/%s.html"><span class="cs-media"><img src="{{ROOT}}img/%s" width="960" height="540" alt="%s" loading="lazy">%s</span>'
             '<span class="cs-body"><b class="cs-brand">%s</b><span class="cs-stat">%s</span><span class="cs-tags">%s</span></span></a></li>'
-            % (slug, asset(c['cover']), esc(c['alt']), esc(c['brand']), esc(c['stat']), esc(c['tags'])))
+            % (slug, asset(c['cover']), esc(c['alt']), cover_loop(slug), esc(c['brand']), esc(c['stat']), esc(c['tags'])))
 
 def brand_of(src):
     low = src.lower()
@@ -407,6 +421,14 @@ def brand_of(src):
 
 def shape_of(w, h):
     return 'wide' if w / h >= 1.3 else ('tall' if w / h <= 0.8 else 'square')
+
+# Stills that stand in for the live site's, by Vimeo id: the site's still had other proportions than the video (a square card
+# over a vertical or a wide film), so the tile is sized by the video and these frames, cut from the videos themselves, fill it
+POSTERS = {
+    '892462752': 'new/poster-686-hydra-thermagraph.jpg',               # 686 Hydra Thermagraph jacket, 9:16
+    '750741312': 'new/poster-686-atp-trail-running.jpg',               # 686 ATP Collection, trail running, 16:9
+    '1095192934': 'new/poster-patrol-like-nothing-ever-happened.jpg',  # Patrol, Like Nothing Ever Happened, 2.39:1
+}
 
 def tile(item, kind):
     """a gallery tile. A self-hosted video (item['video']) is the video itself, muted, showing a frame from its first second and
@@ -429,6 +451,8 @@ def tile(item, kind):
     m = re.match(r'https://vimeo\.com/(\d+)', item['href'])
     if m and hosted(m.group(1)):
         v = hosted(m.group(1)); site_videos.add(v['file']); vw, vh = v['w'], v['h']
+        if m.group(1) in POSTERS:   # a frame of the video itself, where the live site's still had different proportions
+            f, _, _ = site_img(POSTERS[m.group(1)])
         if not label and not re.search(r'_|\d+x\d+|\bv\d|\bV\d', v['title']): label = v['title']  # a readable Vimeo title, never a file name
         a = '<a %s aria-label="%s">' % (play_attrs(m.group(1), label or v['title'], f).replace('data-asp="', 'data-shape="%s" data-asp="' % shape_of(vw, vh), 1), esc('Play: ' + (label or v['title'])))
         media = ('<video src="{{ROOT}}video/%s" width="%d" height="%d" style="aspect-ratio:%d / %d" poster="{{ROOT}}img/%s" muted playsinline preload="metadata" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
@@ -653,8 +677,8 @@ def portfolio_page():
     cases = []
     for slug in ORDER:
         c = CARDS[slug]
-        cases.append('<li class="tv-tile tv-tile--wide"><a href="{{ROOT}}case-studies/%s.html"><span class="tv-media"><img src="{{ROOT}}img/%s" width="960" height="540" alt="%s" loading="lazy" decoding="async"></span>'
-                     '<span class="tv-cap"><b>%s</b><span>%s</span></span></a></li>' % (slug, asset(c['cover']), esc(c['alt']), esc(c['brand']), esc(c['stat'])))
+        cases.append('<li class="tv-tile tv-tile--wide"><a href="{{ROOT}}case-studies/%s.html"><span class="tv-media"><img src="{{ROOT}}img/%s" width="960" height="540" alt="%s" loading="lazy" decoding="async">%s</span>'
+                     '<span class="tv-cap"><b>%s</b><span>%s</span></span></a></li>' % (slug, asset(c['cover']), esc(c['alt']), cover_loop(slug), esc(c['brand']), esc(c['stat'])))
     shelves.append(tv_shelf('cases', 'Case studies', cases, link=('See all', '{{ROOT}}case-studies.html'), note='The partnerships, the numbers behind them, and what the teams say.'))
     # Commercial: the spots and brand films the Commercial service page shows, in its order, then the other wide videos
     by_src = {v['src']: v for v in videos}
@@ -1472,6 +1496,9 @@ def home_page(artifact):
     _ls = inner.find('<ul class="lib-tiles"'); _le = inner.find('</ul>', _ls) + len('</ul>')
     inner = inner[:_ls] + lib_tiles_html() + inner[_le:]
     inner = resolve_imgs(inner)
+    for _slug, _c in CARDS.items():   # the case cards whose cover is a loop get it here too, over the still
+        if _c.get('loop'):
+            inner = re.sub(r'(<span class="cs-media"><img src="\{\{ROOT\}\}img/%s[^>]*>)' % re.escape(asset(_c['cover'])), lambda m: m.group(1) + cover_loop(_slug), inner, count=1)
     page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n' + BOOK + '\n</div>'
     page = relink(page, '', True, hashes=artifact)
     title = 'Birdline: Unlimited Deliverables. One Production Workspace.'

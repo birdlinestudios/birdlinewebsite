@@ -2190,10 +2190,10 @@
   "bytes": 122404
  },
  "new/ai-luxonis-oak4-hero.jpg": {
-  "file": "ai-luxonis-oak4-hero.webp",
+  "file": "ai-luxonis-oak4-cover.webp",
   "w": 1280,
   "h": 720,
-  "bytes": 22642
+  "bytes": 25896
  },
  "new/ai-gardyn-real-mom-talk.jpg": {
   "file": "ai-gardyn-real-mom-talk.webp",
@@ -2236,5 +2236,23 @@
   "w": 1080,
   "h": 1080,
   "bytes": 65742
+ },
+ "new/poster-686-hydra-thermagraph.jpg": {
+  "file": "poster-686-hydra-thermagraph.webp",
+  "w": 720,
+  "h": 1280,
+  "bytes": 48472
+ },
+ "new/poster-686-atp-trail-running.jpg": {
+  "file": "poster-686-atp-trail-running.webp",
+  "w": 1280,
+  "h": 720,
+  "bytes": 43188
+ },
+ "new/poster-patrol-like-nothing-ever-happened.jpg": {
+  "file": "poster-patrol-like-nothing-ever-happened.webp",
+  "w": 1280,
+  "h": 536,
+  "bytes": 29922
  }
 }
