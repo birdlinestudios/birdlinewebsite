@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -1458,11 +1458,15 @@ def production_page():
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
 # A video is named by its Vimeo id (its curated still, playing from the library); a photograph or design by its still.
+# The hero's two rows (November 5, 2026): the seven photos that were there, and the videos Mike picked, by Vimeo id or by the
+# file name of a file-backed piece. Wide, square and vertical frames alternate, and no brand sits next to itself.
 HOME_HERO = [
-    ['1035100357', 'protect-static-v2.webp', 'grantpuckett-studio-product.webp', 'grantpuckett-product.webp', '1215871556', 'grantpuckett-active-4.webp',
-     '750741312', 'grant-puckett-ab-9.webp', '1116471922', '910315870'],
-    ['1087155996', 'grantpuckett-product-36.webp', '845139513', '1217480327', '716056347', '916190659', '1217481666', '918117865', '916190712', 'c4cr-unboxing-moments-1x1-v2-1.webp'],
+    ['1119136322', 'grantpuckett-studio-product.webp', '1217480327', 'edjy-01.mp4', '984139678', '1000153543', 'protect-static-v2.webp', '847156288',
+     'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '833777565', '753024501', 'grantpuckett-active-4.webp', '727974264'],
+    ['640557935', 'gardyn-ugc-hana-new-year.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
+     '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '727138751', '895391449'],
 ]
+HERO_PACE = [7.2, 9.0]   # seconds per tile-height of track, per row: the rows keep the speeds they had with ten tiles each
 def hero_marquee():
     by_file = {}
     for _pane in content['portfolio']['panes']:
@@ -1471,12 +1475,22 @@ def hero_marquee():
     for _slug, _cs in content['cases'].items():
         for _it in _cs.get('gal', []):
             if _it.get('src') in imap: by_file.setdefault(imap[_it['src']]['file'], ('photo', dict(_it, alt=_it.get('alt') or CARDS[_slug]['brand'])))
+    file_items = {}   # the file-backed pieces, by file name
+    for _lst in list(ADDED_WORK.values()) + [AI_WORK] + [_cs.get('gal', []) for _cs in content['cases'].values()]:
+        for _it in _lst:
+            if isinstance(_it, dict) and _it.get('video'): file_items.setdefault(_it['video'], _it)
     def tile(key):
         if key.isdigit():
-            it = VIDEO_ITEMS[key]; f, w, h = site_img(it['src']); info = hosted(key)
+            it = VIDEO_ITEMS[key]; info = hosted(key)
+            f, w, h = site_img(POSTERS[key]) if key in POSTERS else site_img(it['src'])
             label = it.get('alt') or brand_of(it['src']) or info['title']
             return ('<li class="m-tile" style="--asp:%.4f"><a %s aria-label="%s"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy">'
                     '<span class="m-play" aria-hidden="true">%s</span></a></li>' % (w / h, play_attrs(key, label, f), esc('Play: ' + label), f, w, h, esc(label + ' — video still'), PLAY))
+        if key.endswith('.mp4'):
+            it = file_items[key]; site_videos.add(key); f, w, h = site_img(it['poster'])
+            return ('<li class="m-tile" style="--asp:%.4f"><a %s aria-label="%s"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy">'
+                    '<span class="m-play" aria-hidden="true">%s</span></a></li>'
+                    % (it['w'] / it['h'], play_attrs(None, it['alt'], f, file=key, w=it['w'], h=it['h']), esc('Play: ' + it['alt']), f, w, h, esc(it['alt'] + ' — video still'), PLAY))
         kind, it = by_file[key]; f, w, h = site_img(it['src'])
         label = it.get('alt') or brand_of(it['src']) or ('Design' if kind == 'design' else PHOTO_KIND_BY_SRC.get(it['src'], 'Photograph'))
         what = 'Design' if kind == 'design' else 'Photo'
@@ -1485,8 +1499,9 @@ def hero_marquee():
     rows = []
     for i, keys in enumerate(HOME_HERO):
         tiles = ''.join(tile(k) for k in keys)
-        rows.append('<div class="m-row m-row--%s"><div class="m-track"><ul class="m-set">%s</ul><ul class="m-set" aria-hidden="true">%s</ul></div></div>'
-                    % ('l' if i == 0 else 'r', tiles, tiles.replace('<a ', '<a tabindex="-1" ')))
+        span = sum(float(x) for x in re.findall(r'--asp:([0-9.]+)', tiles))   # the set's width in tile heights
+        rows.append('<div class="m-row m-row--%s"><div class="m-track" style="animation-duration:%ds"><ul class="m-set">%s</ul><ul class="m-set" aria-hidden="true">%s</ul></div></div>'
+                    % ('l' if i == 0 else 'r', round(span * HERO_PACE[i]), tiles, tiles.replace('<a ', '<a tabindex="-1" ')))
     return '<div class="marquee" aria-label="Selected work">\n    %s\n  </div>' % '\n    '.join(rows)
 
 def home_page(artifact):
