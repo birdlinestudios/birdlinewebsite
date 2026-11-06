@@ -130,7 +130,7 @@ HEADSHOTS = {
     'Jake Slatnick': ('av-slatnick', 96), 'Zach Goldstein': ('av-goldstein', 98), 'Chelsea Moon': ('av-moon', 98), 'Brent Sandor': ('av-sandor', 98),
     'Howie Zisser': ('av-zisser', 98), 'Megan Gray': ('av-gray', 98), 'FX Rouxel': ('av-rouxel', 192), 'Zack McCabe': ('av-mccabe', 192),
     'Kat Cooper': ('av-cooper', 192), 'Kristen Connors': ('av-connors', 98), 'Nick Sarath': ('av-sarath', 192), 'Shannon Douglas': ('av-douglas', 192),
-    'Adam Walker': ('av-walker', 192),
+    'Adam Walker': ('av-walker', 192), 'John Bradford': ('av-bradford', 192),
 }
 
 # the thirteen formats on the Work page, as listed on birdlinestudios.com/portfolio
@@ -254,8 +254,8 @@ HERO_TILES = {
 }
 
 # ---- Willie's Remedy (November 1, 2026): the Green Guide series and James's 3D product animation, from Mike's draft. The stills are frames
-# pulled from the delivered episodes and the 3D clips; the cover is the frame Mike supplied. The testimonial from Adam Walker is still to
-# come: the quote card shows his name and photo with a placeholder line until it does.
+# pulled from the delivered episodes and the 3D clips; the cover is the frame Mike supplied. Adam Walker's testimonial and photo came in
+# on November 5, 2026.
 def _wr(src, alt, w, h):
     return dict(src=src, asp=round(w / h, 2), href=src, alt=alt, w=w, h=h)
 WR_CASE = dict(
@@ -271,7 +271,10 @@ WR_CASE = dict(
             'Three episodes, delivered monthly: Episode 1, What Are THC Drinks? (March 2), Episode 2, THC Drinks vs Alcohol (April 7), and Episode 3, Finding Your Perfect THC Drink Dose (May 8). A repeatable template, from the intro to the pacing, now carries the series forward.',
         ],
         services=['YouTube Series', 'GFX/Animations', 'Illustration', '3D/CGI'],
-        quotes=[dict(name='Adam Walker', title='Marketing Director, Content & Brand Story at JuneShine Brands', paras=['Testimonial coming soon.'], placeholder=True)],
+        quotes=[dict(name='Adam Walker', title='Content Director',
+                     paras=['Super creative. Super fast. Simply put, Birdline gets it done—and makes it fun. Working with them feels like an extension of our team. '
+                            'Besides just being ridiculously talented on the tools, they’re great communicators. Guesswork never enters the picture. '
+                            'Clear direction, effective collaboration and deliverables that help move the needle. Peace of mind, by design.'])],
         next=['Literati', 'Gardyn', 'WHOOP', 'Public Rec'],
     ),
     gal=[
