@@ -1459,12 +1459,14 @@ def production_page():
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
 # A video is named by its Vimeo id (its curated still, playing from the library); a photograph or design by its still.
 # The hero's two rows (November 5, 2026): the seven photos that were there, and the videos Mike picked, by Vimeo id or by the
-# file name of a file-backed piece. Wide, square and vertical frames alternate, and no brand sits next to itself.
+# file name of a file-backed piece. Wide, square and vertical frames alternate, and no brand sits next to itself, the loop's
+# seam included (a row's first and last frames meet). Public Rec's Zero Short came out November 6, 2026: its still is the same
+# DTLA scene as All Day Every Day's, so the two read as one video shown twice.
 HOME_HERO = [
     ['1119136322', 'grantpuckett-studio-product.webp', '1217480327', 'edjy-01.mp4', '984139678', '1000153543', 'protect-static-v2.webp', '847156288',
      'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '833777565', '753024501', 'grantpuckett-active-4.webp', '727974264'],
     ['640557935', 'gardyn-ugc-hana-new-year.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
-     '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '727138751', '895391449'],
+     '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '895391449'],
 ]
 HERO_PACE = [7.2, 9.0]   # seconds per tile-height of track, per row: the rows keep the speeds they had with ten tiles each
 def hero_marquee():
