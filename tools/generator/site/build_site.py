@@ -451,16 +451,6 @@ def tile(item, kind):
     lab = ('<span class="gi-label">%s</span>' % esc(label)) if label else ''
     return '<div class="gi" role="listitem" data-gkind="%s">%s<img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async">%s%s</a></div>' % (gkind, a, f, w, h, esc(alt), icon, lab)
 
-def gallery_toggle(tiles_html):
-    """All / Video / Photo, with counts, over a gallery that holds both kinds; nothing when it holds one"""
-    nv, np_ = tiles_html.count('data-gkind="video"'), tiles_html.count('data-gkind="photo"')
-    if not nv or not np_:
-        return ''
-    return ('<div class="gseg" role="group" aria-label="Show" data-gfilter>'
-            '<button class="is-on" type="button" aria-pressed="true" data-show="all">All <i>%d</i></button>'
-            '<button type="button" aria-pressed="false" data-show="video">Video <i>%d</i></button>'
-            '<button type="button" aria-pressed="false" data-show="photo">Photo <i>%d</i></button></div>' % (nv + np_, nv, np_))
-
 def close_section(second_label, second_href, heading='Let’s Build Your Content Library.',
                   sub='We’ll help you leverage your existing videos, photos, and designs, then scale your library with new productions and monthly deliverables.',
                   first=('Book a call', '{{CALENDLY}}'), note='', photo=None):
@@ -1320,19 +1310,14 @@ def service_page(svc):
              '<div class="cs-text">%s<ul class="svc-facts">%s</ul></div></div>'
              '<div class="svc-formats"><span class="works-k">What we deliver</span><ul class="chips chips--tint">%s</ul></div></div>\n</section>'
              % (tt(svc['intro_h2']), ''.join('<p>%s</p>' % esc(p) for p in svc['purpose']), facts, ''.join('<li>%s</li>' % esc(f) for f in svc['formats'])))
-    why = ('<section class="band band--wash svc-why">\n  <div class="wrap"><div class="head"><span class="eyebrow">Why it works</span><h2 class="h2">%s</h2></div>'
+    # "Why it works" sits on navy (the one dark band between the hero and the close); the step-by-step process band was retired
+    why = ('<section class="band band--navy on-dark svc-why">\n  <div class="wrap"><div class="head"><span class="eyebrow">Why it works</span><h2 class="h2">%s</h2></div>'
            '<ul class="pillars">%s</ul></div>\n</section>'
            % (tt(svc['why_h2']), ''.join('<li class="pillar"><span class="svc-ic" aria-hidden="true">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for k, t, d in svc['benefits'])))
-    steps = ''.join('<li><span class="step-n">%02d</span><h3>%s</h3><p>%s</p></li>' % (i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(svc['steps']))
-    process = ('<section class="band band--navy on-dark svc-process">\n  <div class="wrap"><div class="head"><span class="eyebrow">The process</span><h2 class="h2">From Brief <span class="ai">to Delivery.</span></h2>'
-               '<p class="sub">%s</p></div>'
-               '<ol class="steps">%s</ol><p class="fine">%s</p></div>\n</section>'
-               % (esc(svc.get('process_sub', 'Every project runs through the Birdline App: the brief, the shot list, every deliverable with its owner and due date, and the results that brief the next one.')), steps,
-                  esc(svc.get('process_fine', 'Talk to us on Slack, review on Frame.io, and track it all in the weekly project tracker: the Birdline Workflow, included with every package.'))))
     tiles = '\n'.join(svc_tile(piece(r)) for r in svc['gallery'])
     work = ('<section class="band svc-work" id="examples">\n  <div class="wrap"><div class="head"><span class="eyebrow">Examples of work</span><h2 class="h2">%s</h2>'
-            '<p class="sub">Tap a frame to play it or see it at full size.</p>%s</div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Examples of %s">\n%s\n  </div>'
-            '<div class="more"><a class="btn btn--outline" href="{{ROOT}}portfolio.html">See all the work</a></div></div>\n</section>' % (tt(svc['examples_h2']), gallery_toggle(tiles), esc(name), tiles))
+            '<p class="sub">Tap a frame to play it or see it at full size.</p></div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Examples of %s">\n%s\n  </div>'
+            '<div class="more"><a class="btn btn--outline" href="{{ROOT}}portfolio.html">See all the work</a></div></div>\n</section>' % (tt(svc['examples_h2']), esc(name), tiles))
     cases = ('<section class="band band--wash svc-cases">\n  <div class="wrap"><div class="head"><span class="eyebrow">Case studies</span><h2 class="h2">Brands <span class="ai">That Use It.</span></h2></div>'
              '<ul class="cs-grid cs-grid--4 cs-grid--light">%s</ul><div class="more"><a class="btn" href="{{ROOT}}case-studies.html">All case studies</a></div></div>\n</section>'
              % ''.join(cs_card(s, light=True) for s in svc['cases']))
@@ -1348,7 +1333,7 @@ def service_page(svc):
         hero = hero.replace('<a class="btn btn--ghost" href="#examples">See examples</a>', '')
     if not svc['cases']:
         cases = ''
-    inner = '\n\n'.join(x for x in [hero, intro, why, process, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
+    inner = '\n\n'.join(x for x in [hero, intro, why, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
     return document('%s: Birdline' % name, svc['lede'], inner, '../')
 
 # ---- the ROPS & ROCS page: what the two numbers are, why they are measured, what they are worth, and how the app measures them

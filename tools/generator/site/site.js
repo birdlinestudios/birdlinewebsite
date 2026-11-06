@@ -148,20 +148,6 @@
   }, true);
 })();
 
-/* The All / Video / Photo switch over a gallery: hides the tiles of the other kind and lays the masonry out again. */
-(function () {
-  "use strict";
-  document.addEventListener('click', function (e) {
-    var b = e.target && e.target.closest ? e.target.closest('[data-gfilter] button') : null; if (!b) return;
-    var seg = b.closest('[data-gfilter]'), list = seg.closest('.wrap').querySelector('[data-masonry]'), show = b.getAttribute('data-show');
-    Array.prototype.forEach.call(seg.querySelectorAll('button'), function (x) { var on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-    // every tile the masonry knows, not only those on the page: the ones hidden earlier are out of the DOM until shown again
-    var tiles = list.__items || Array.prototype.slice.call(list.querySelectorAll('.gi'));
-    tiles.forEach(function (t) { t.classList.toggle('is-hidden', show !== 'all' && t.getAttribute('data-gkind') !== show); });
-    if (window.__siteMasonry && window.__siteMasonry.relayout) window.__siteMasonry.relayout(list);
-  });
-})();
-
 /* The masonry: without script the tiles flow down CSS columns, which can leave one column short. With it, the tiles are dealt one at
    a time into the shortest column (their heights known from each image's width and height), so the columns end together.
    window.__siteMasonry(root) lays out any masonry under root that is new, for content added to the page later. The tiles stay in

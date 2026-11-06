@@ -137,14 +137,6 @@ h1 .ai,h2 .ai{color:#5b7bff}
 .gi video{display:block;width:100%;height:auto;background:#0f1a4a;transition:transform .6s var(--ease)}
 @media(hover:hover){.gi a:hover video{transform:scale(1.04)}}
 .gi.is-hidden{display:none}
-/* the All / Video / Photo switch */
-.gseg{display:inline-flex;gap:4px;margin-top:18px;padding:4px;border-radius:999px;background:var(--tint)}
-.gseg button{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 14px;border:0;border-radius:999px;background:transparent;font:600 13.5px/1 var(--text);color:var(--ink-2);cursor:pointer;transition:background-color .2s,color .2s,box-shadow .2s}
-.gseg button i{font-style:normal;font-weight:600;font-size:11.5px;padding:2px 7px;border-radius:999px;background:rgba(15,26,74,.08);color:var(--muted)}
-.gseg button:hover{color:var(--navy)}
-.gseg button.is-on{background:#ffffff;color:var(--navy);box-shadow:0 1px 2px rgba(15,26,74,.12),0 0 0 1px rgba(15,26,74,.06)}
-.gseg button.is-on i{background:var(--tint);color:var(--blue)}
-.gseg button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 body:has(.lb[open]){overflow:hidden}
 
 /* a case study: the cover behind the brand's mark, a headline and the facts; then the story in two columns */
@@ -238,6 +230,11 @@ body:has(.lb[open]){overflow:hidden}
 .pillar h3{font:700 22px/1.25 var(--display);letter-spacing:-.01em}
 .pillar p{font-size:16px;line-height:1.55;color:var(--ink-2);text-wrap:pretty}
 @media(min-width:900px){.pillars{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.pillar{padding:32px 30px 34px}}
+/* the same cards on a navy band (the services' "Why it works"): glass, like the dark bands elsewhere */
+.on-dark .pillar{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.05)}
+.on-dark .pillar .svc-ic{background:rgba(143,163,255,.16);color:var(--peri)}
+.on-dark .pillar h3{color:#ffffff}
+.on-dark .pillar p{color:var(--on-navy-2)}
 
 /* the two packages, side by side: each card has a soft tinted panel on top (the name, the price, the blurb and the button, like a
    pricing card) and the lists on white below it, with outlined check marks */
