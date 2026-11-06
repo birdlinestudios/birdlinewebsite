@@ -239,7 +239,7 @@ FLOW_COLUMNS = [
     [('2024/05/thumb-15-2.jpg', 'Gardyn · CTV spot'), ('2024/06/GrantPuckett-Active-4.jpeg', 'Lifestyle photography'), ('2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', 'Literati · Illustration'),
      ('2025/08/GrantPuckett-Product.jpeg', 'Product photography'), ('2024/06/686-Outerwear-Drop-2023.jpg', '686 · Social'), ('2024/06/686-WINTER-Goggles-Color-Grid.jpg', '686 · Social'),
      ('2024/05/thumb-19.jpg', 'Public Rec · Paid social'), ('2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Route · Profile video'),
-     ('2025/10/create_a_cgi_rendered_product_shot_of9-e1790789913659.jpg', 'Literati · AI content'), ('2024/05/thumb-21-1.jpg', 'Humiint · Animation')],
+     ('2025/09/thumb-33.jpg', 'Literati · Commercial'), ('2024/05/thumb-21-1.jpg', 'Humiint · Animation')],
     [('2026/08/thumb-54.jpg', 'WHOOP · Paid social'), ('2024/05/Gardyn-Summer.jpg', 'Gardyn · Hero spot'), ('2025/08/GrantPuckett-Studio-Product.jpeg', 'Studio photography'), ('2024/05/thumb-2-1.jpg', 'Route · 3D / CGI'),
      ('2026/08/thumb-53.jpg', 'WHOOP · VFX'), ('2024/06/IMG1803-R01-012-scaled-1.jpg', 'Shot on film'), ('2024/05/thumb-14-1.jpg', 'Gardyn · Paid social'), ('2025/09/PublicRec-DTLA-DD-33.jpeg', 'Public Rec · Photography')],
 ]
@@ -260,7 +260,7 @@ LIB_TILES = [
     (71.5, 58, 15.5, '-3deg', '0.8s', '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Profiles'),
     (89, 52, 8.5, '2deg', '0.88s', '2026/08/thumb-62.jpg', 'Video Podcasts'),
     (76, 79, 8, '3deg', '0.96s', '2024/06/IMG1803-R01-012-scaled-1.jpg', 'Film'),
-    (43, 81, 16, '3deg', '1.04s', '2025/10/create_a_cgi_rendered_product_shot_of9-e1790789913659.jpg', 'AI Content'),
+    # the AI Content tile returns once the AI work is in (November 5, 2026)
 ]
 def lib_tiles_html():
     out = []
@@ -1322,8 +1322,10 @@ def service_page(svc):
            % (tt(svc['why_h2']), ''.join('<li class="pillar"><span class="svc-ic" aria-hidden="true">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for k, t, d in svc['benefits'])))
     steps = ''.join('<li><span class="step-n">%02d</span><h3>%s</h3><p>%s</p></li>' % (i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(svc['steps']))
     process = ('<section class="band band--navy on-dark svc-process">\n  <div class="wrap"><div class="head"><span class="eyebrow">The process</span><h2 class="h2">From Brief <span class="ai">to Delivery.</span></h2>'
-               '<p class="sub">Every project runs through the Birdline App: the brief, the shot list, every deliverable with its owner and due date, and the results that brief the next one.</p></div>'
-               '<ol class="steps">%s</ol><p class="fine">Talk to us on Slack, review on Frame.io, and track it all in the weekly project tracker: the Birdline Workflow, included with every package.</p></div>\n</section>' % steps)
+               '<p class="sub">%s</p></div>'
+               '<ol class="steps">%s</ol><p class="fine">%s</p></div>\n</section>'
+               % (esc(svc.get('process_sub', 'Every project runs through the Birdline App: the brief, the shot list, every deliverable with its owner and due date, and the results that brief the next one.')), steps,
+                  esc(svc.get('process_fine', 'Talk to us on Slack, review on Frame.io, and track it all in the weekly project tracker: the Birdline Workflow, included with every package.'))))
     tiles = '\n'.join(svc_tile(piece(r)) for r in svc['gallery'])
     work = ('<section class="band svc-work" id="examples">\n  <div class="wrap"><div class="head"><span class="eyebrow">Examples of work</span><h2 class="h2">%s</h2>'
             '<p class="sub">Tap a frame to play it or see it at full size.</p>%s</div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Examples of %s">\n%s\n  </div>'
@@ -1338,7 +1340,12 @@ def service_page(svc):
     others = (order[i:] + order[:i])[:5]
     more = ('<section class="band band--wash svc-more">\n  <div class="wrap"><div class="head"><span class="eyebrow">More services</span><h2 class="h2">Other Ways <span class="ai">to Make It.</span></h2></div>'
             '<ul class="svc-grid">%s</ul><div class="more"><a class="btn btn--outline" href="{{ROOT}}services.html">All services</a></div></div>\n</section>' % ''.join(svc_card(s) for s in others))
-    inner = '\n\n'.join([hero, intro, why, process, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')])
+    if not svc['gallery']:   # nothing to show yet: no examples section, and no "See examples" button in the hero
+        work = ''
+        hero = hero.replace('<a class="btn btn--ghost" href="#examples">See examples</a>', '')
+    if not svc['cases']:
+        cases = ''
+    inner = '\n\n'.join(x for x in [hero, intro, why, process, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
     return document('%s: Birdline' % name, svc['lede'], inner, '../')
 
 # ---- the ROPS & ROCS page: what the two numbers are, why they are measured, what they are worth, and how the app measures them
