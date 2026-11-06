@@ -349,6 +349,35 @@ def _new(name, alt, w, h, svc=None):
     d = dict(video=name + '.mp4', poster='new/' + name + '.jpg', alt=alt, w=w, h=h)
     if svc: d['svc'] = svc
     return d
+# ---- the AI Content page (November 5, 2026): the AI work from Mike's AI Content folder, brand first in every caption. Videos
+# are web encodes of the originals (public/video on the Next.js site, the Blob store in production); the two renders are stills.
+def _ai(name, alt, w, h):
+    return dict(video=name + '.mp4', poster='new/' + name + '.jpg', alt=alt, w=w, h=h, svc='AI Content')
+AI_WORK = [
+    _ai('ai-luxonis-oak4-hero', 'Luxonis · OAK 4 Series hero film', 1280, 720),
+    _ai('ai-venus-et-fleur-roses', 'Venus et Fleur · Eternity roses', 720, 1280),
+    _ai('ai-freepower-wayfair', 'FreePower · Wayfair vanity spot', 1280, 1280),
+    _ai('ai-gardyn-farmers-market', 'Gardyn · Farmers’ market price', 1280, 720),
+    _ai('ai-gardyn-limited-edition', 'Gardyn · Limited-edition fall launch', 1024, 1280),
+    _ai('ai-freepower-countertop-16x9', 'FreePower · Power, built into your countertop', 1280, 720),
+    _ai('ai-gardyn-kelby-harvest-happiness', 'Gardyn · Harvest happiness anywhere', 720, 1280),
+    ('site', 'ai/gardyn-living-room-1.jpg', 'Gardyn · Living room render'),
+    _ai('ai-freepower-countertop-4x5', 'FreePower · Built into your countertop', 1024, 1280),
+    _ai('ai-gardyn-24-7-care', 'Gardyn · 24/7 care with Kelby', 1024, 1280),
+    _ai('ai-gardyn-real-mom-talk', 'Gardyn · Real mom talk', 720, 1280),
+    _ai('ai-freepower-countertop-glow', 'FreePower · Countertop charging', 1280, 720),
+    _ai('ai-gardyn-home-vs-competition', 'Gardyn · Gardyn Home vs. the competition', 720, 1280),
+    _ai('ai-gardyn-spring-savings', 'Gardyn · Spring savings', 720, 1280),
+    ('site', 'ai/gardyn-living-room-2.jpg', 'Gardyn · Living room render'),
+    _ai('ai-gardyn-diy-horror', 'Gardyn · DIY horror', 720, 1280),
+    _ai('ai-gardyn-grocery-store-rebel', 'Gardyn · Grocery store rebel', 720, 1280),
+    _ai('ai-gardyn-variety-showcase', 'Gardyn · Variety showcase', 720, 1280),
+    _ai('ai-gardyn-ypod-lettuce', 'Gardyn · yPod variety, lettuce', 1080, 1080),
+    _ai('ai-gardyn-ypod-variety-blue', 'Gardyn · yPod variety, 120+ varieties', 1080, 1080),
+    _ai('ai-gardyn-ypod-variety-cream', 'Gardyn · yPod variety, year-round', 1080, 1080),
+]
+AI_HERO = [AI_WORK[0], AI_WORK[1], AI_WORK[2]]   # Luxonis, Venus et Fleur, FreePower across the hero
+
 ADDED_WORK = {
     'literati': [_new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
     '686': [_new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles'),

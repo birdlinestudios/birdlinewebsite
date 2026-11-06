@@ -6,6 +6,8 @@
 # Every example is a piece from the Work page or a case-study gallery, named by its source path in content.json; ('asset', key, alt)
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
+from extras import AI_WORK, AI_HERO
+
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
     ('design', 'Design & motion', 'Statics, animation, illustration, 3D and generative work.'),
@@ -487,12 +489,9 @@ SERVICES = [
                ('Edit & finish', 'Bring the elements into the final piece through editing, design, compositing, color, and sound as needed. Review for brand alignment and quality.'),
                ('Deliver & build on results', 'Deliver the approved assets in the formats you need, then use feedback and performance insights to inform future creative.')],
         formats=['Concept frames & visual development', 'AI-assisted product renders', 'Image & video variations', 'Background extensions', 'Generated shot lists & visual references', 'Final & scratch voice-over', 'Generative video', 'Upscaling & cleanup'],
-        # the AI work itself is still to come (November 5, 2026): until then the strip shows AI inside the workflow, the app's
-        # generated shot list and a brief with its references, and the examples and case-study sections stay off the page
-        hero=[('asset', 'app2-shots', 'Birdline App', 'The Shot list tab of a brief in gallery view: generated shots, each with a visual, its framing and a short description.'),
-              ('asset', 'app4-brief', 'Birdline App', 'A brief in Birdline with its Connections dropdown open, beside the brief’s text and reference images.')],
-        gallery=[],
-        cases=[],
+        hero=AI_HERO,
+        gallery=AI_WORK,
+        cases=['gardyn', 'freepower'],
         faq=[('Will people know it’s AI?', 'We tell you what was generated, and anything customer-facing is finished by our designers and editors so it holds up next to your photography. Where a platform or your policy requires disclosure, we label it.'),
              ('What do you generate with?', 'A mix of tools chosen per task, always under a creative’s direction. Your brand guidelines and references, and the brand library in the Birdline App, anchor every generation so the visuals stay on brand.'),
              ('Can AI replace a shoot?', 'Sometimes it should: a render before the product exists, a variation that doesn’t need a crew. For the hero spot, real people and real light still win, and our Birds know the difference.')],

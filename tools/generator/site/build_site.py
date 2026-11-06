@@ -239,7 +239,7 @@ FLOW_COLUMNS = [
     [('2024/05/thumb-15-2.jpg', 'Gardyn · CTV spot'), ('2024/06/GrantPuckett-Active-4.jpeg', 'Lifestyle photography'), ('2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', 'Literati · Illustration'),
      ('2025/08/GrantPuckett-Product.jpeg', 'Product photography'), ('2024/06/686-Outerwear-Drop-2023.jpg', '686 · Social'), ('2024/06/686-WINTER-Goggles-Color-Grid.jpg', '686 · Social'),
      ('2024/05/thumb-19.jpg', 'Public Rec · Paid social'), ('2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Route · Profile video'),
-     ('2025/09/thumb-33.jpg', 'Literati · Commercial'), ('2024/05/thumb-21-1.jpg', 'Humiint · Animation')],
+     ('new/ai-freepower-countertop-16x9.jpg', 'FreePower · AI content'), ('2024/05/thumb-21-1.jpg', 'Humiint · Animation')],
     [('2026/08/thumb-54.jpg', 'WHOOP · Paid social'), ('2024/05/Gardyn-Summer.jpg', 'Gardyn · Hero spot'), ('2025/08/GrantPuckett-Studio-Product.jpeg', 'Studio photography'), ('2024/05/thumb-2-1.jpg', 'Route · 3D / CGI'),
      ('2026/08/thumb-53.jpg', 'WHOOP · VFX'), ('2024/06/IMG1803-R01-012-scaled-1.jpg', 'Shot on film'), ('2024/05/thumb-14-1.jpg', 'Gardyn · Paid social'), ('2025/09/PublicRec-DTLA-DD-33.jpeg', 'Public Rec · Photography')],
 ]
@@ -260,7 +260,7 @@ LIB_TILES = [
     (71.5, 58, 15.5, '-3deg', '0.8s', '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Profiles'),
     (89, 52, 8.5, '2deg', '0.88s', '2026/08/thumb-62.jpg', 'Video Podcasts'),
     (76, 79, 8, '3deg', '0.96s', '2024/06/IMG1803-R01-012-scaled-1.jpg', 'Film'),
-    # the AI Content tile returns once the AI work is in (November 5, 2026)
+    (43, 81, 16, '3deg', '1.04s', 'new/ai-gardyn-farmers-market.jpg', 'AI Content'),
 ]
 def lib_tiles_html():
     out = []
@@ -1258,6 +1258,9 @@ def asset_wh(key):
 def piece(ref):
     """an example as the dict tile() takes: a source path on the live site; ('site', path, label) for a live-site image outside the
     galleries; ('asset', key, label, alt) for one of the homepage's own images"""
+    if isinstance(ref, dict):   # a self-hosted video (or a still) declared where the service lists it, as tile() takes it
+        d = dict(ref); d.setdefault('kind', 'video' if d.get('video') else 'photo'); d['asp'] = d['w'] / d['h']
+        return d
     if isinstance(ref, tuple):
         if ref[0] == 'site':
             f = imap[ref[1]]
