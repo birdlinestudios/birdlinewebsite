@@ -357,7 +357,6 @@ AI_WORK = [
     _ai('ai-luxonis-oak4-hero', 'Luxonis · OAK 4 Series hero film', 1280, 720),
     _ai('ai-venus-et-fleur-roses', 'Venus et Fleur · Eternity roses', 720, 1280),
     _ai('ai-freepower-wayfair', 'FreePower · Wayfair vanity spot', 1280, 1280),
-    _ai('ai-gardyn-farmers-market', 'Gardyn · Farmers’ market price', 1280, 720),
     _ai('ai-gardyn-limited-edition', 'Gardyn · Limited-edition fall launch', 1024, 1280),
     _ai('ai-freepower-countertop-16x9', 'FreePower · Power, built into your countertop', 1280, 720),
     _ai('ai-gardyn-kelby-harvest-happiness', 'Gardyn · Harvest happiness anywhere', 720, 1280),

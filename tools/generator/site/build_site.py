@@ -260,7 +260,7 @@ LIB_TILES = [
     (71.5, 58, 15.5, '-3deg', '0.8s', '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Profiles'),
     (89, 52, 8.5, '2deg', '0.88s', '2026/08/thumb-62.jpg', 'Video Podcasts'),
     (76, 79, 8, '3deg', '0.96s', '2024/06/IMG1803-R01-012-scaled-1.jpg', 'Film'),
-    (43, 81, 16, '3deg', '1.04s', 'new/ai-gardyn-farmers-market.jpg', 'AI Content'),
+    (43, 81, 16, '3deg', '1.04s', 'new/ai-luxonis-oak4-hero.jpg', 'AI Content'),
 ]
 def lib_tiles_html():
     out = []
