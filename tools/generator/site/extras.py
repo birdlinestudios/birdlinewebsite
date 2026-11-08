@@ -26,8 +26,8 @@ CARDS = {
                   alt='A WHOOP band with sleep, recovery and strain readouts.'),
     'willies-remedy': dict(brand='Willie’s Remedy', stat='A three-episode explainer series', tags='YouTube · Animation · Illustration · 3D', cover='cs-willies',
                            alt='A frosted bottle of Willie’s Remedy THC-infused social tonic, lit warm and close.'),
-    'edjy': dict(brand='EDJY', stat='From one launch to a full video engine', tags='Paid social · UGC · Photo · Production', cover='cs-edjy',
-                 alt='A woman reacting to the EDJY tweezers, from the real reactions ad.'),
+    'edjy': dict(brand='EDJY', stat='From one launch to a full video engine', tags='Paid social · UGC · Photo · Production', cover='cs-edjy-colors',
+                 alt='EDJY fingernail cutters in pink, blue, black and silver on cream blocks, from the new colors launch.'),
     'ufl': dict(brand='UFL', stat='A full season of content, at game speed', tags='Broadcast TV · Social · In-stadium · Radio', cover='cs-ufl',
                 alt='A Storm player in a black and orange uniform grins and points across the field before a UFL game.'),
 }
@@ -158,7 +158,7 @@ WORKFLOW_WIDE = 'Campaign Workspace: every brief, deliverable, and result in the
 PRODUCTION_TYPES = ['Commercials', 'UGC Videos', 'Paid Ads', 'Social Content', 'Profile Videos', 'Webpage Videos', 'Product Photography', 'Lifestyle Shoots', 'Studio Shoots', 'Webpage Images', 'Campaign Photos']
 PILLARS = [
     ('The Outcome', 'Get unlimited deliverables each month with fast turnarounds and scalable production, so your content pipeline and team never slows down.'),
-    ('The Talent', 'Partner with world-class creatives across video, photo, design, AI, and animation—operating as an extension of your in-house team.'),
+    ('The Birds', 'Partner with world-class creatives across video, photo, design, AI, and animation—operating as an extension of your in-house team.'),
     ('The System', 'Streamline your workflow in Slack with a dedicated PM, recurring creative and marketing calls, and weekly tracking to keep every project moving smoothly.'),
 ]
 TEAM = [
@@ -172,12 +172,20 @@ TEAM = [
     ('james', 'James Mackenzie', 'Designer & 3D Animator', 'Jaguar, Hume, Willie’s Remedy'),
     ('joey', 'Joey Breese', 'Filmmaker', 'Nike, Adidas, Chivas'),
     ('megan', 'Megan Gray', 'Creative Director & Designer', 'Mattel, Casper, Netflix'),
+    ('rebecca', 'Rebecca Hedayat', 'Photographer', 'Ford, Aviator Nation, Route'),
 ]
 WITHOUT = ['Limited deliverables from expensive shoots', 'Fragmented workflows', 'Scattered production emails', 'Slow turnaround times', 'Assets sent through email and random links', 'No system for iterations or measuring ROI', 'Juggling multiple agencies and contractors']
 WITH = ['Unlimited deliverables', 'Dedicated project manager & creators', 'Direct communication via Slack', 'Weekly project tracker', 'Premium assets delivered via Frame.io', 'Biweekly creative & marketing meetings', 'World-class creators, all under one roof']
 DELIVER = ['Organize and schedule ongoing shoots, regardless of the project size', 'Capture content anywhere with our extensive Birdline network', 'Provide initial assets within a week on average, Monday through Friday', 'Ensure cohesive and consistent quality throughout all your content']
 COLLAB = ['Communicate directly via Slack and schedule recurring meetings with our Birds', 'Funnel all your content into our system for centralized access and fast iterations', 'Connect our Birds with your existing team, internal workflow, and the Birdline App', 'Maximize your marketing content with no deliverable or revision limits']
-FAQ_PACKAGES = ['What counts as a deliverable?', 'How fast do deliverables come back?', 'Why wouldn\'t I just hire a full-time editor?', 'Do I own the media and the project files?', 'Can I cancel?', 'How do we start?']
+FAQ_PACKAGES = ['What counts as a deliverable?', 'How fast do deliverables come back?', 'Why wouldn\'t I just hire a full-time editor?', 'Do I own the media and the project files?',
+                'What do we cover on recurring strategy calls?', 'Can I cancel?', 'How do we start?']
+# questions that are not on the home page's FAQ (which the other lists draw on): added November 8, 2026
+FAQ_EXTRA = {
+    'What do we cover on recurring strategy calls?': 'We meet every other week, with weekly calls as needed. We review what’s been delivered, what’s in progress, and what’s coming up. '
+                                                     'We also discuss which content is performing well and where there’s room to improve, then use what we learn to set the next creative priorities. '
+                                                     'That could mean creating new deliverables from existing assets or planning a new production.',
+}
 
 # ---- the Birdline App page (October 28, 2026): copy from birdline.ai and the Birdline Knowledge Base
 LOOP = [
@@ -272,7 +280,7 @@ WR_CASE = dict(
         results=[
             'Three episodes, delivered monthly: Episode 1, What Are THC Drinks? (March 2), Episode 2, THC Drinks vs Alcohol (April 7), and Episode 3, Finding Your Perfect THC Drink Dose (May 8). A repeatable template, from the intro to the pacing, now carries the series forward.',
         ],
-        services=['YouTube Series', 'GFX/Animations', 'Illustration', '3D/CGI'],
+        services=['YouTube Series', 'GFX/Animations', 'Illustration', '3D / VFX'],
         quotes=[dict(name='Adam Walker', title='Content Director',
                      paras=['Super creative. Super fast. Simply put, Birdline gets it done—and makes it fun. Working with them feels like an extension of our team. '
                             'Besides just being ridiculously talented on the tools, they’re great communicators. Guesswork never enters the picture. '
@@ -382,11 +390,39 @@ AI_WORK = [
 ]
 AI_HERO = [AI_WORK[0], AI_WORK[1], AI_WORK[2]]   # Luxonis, Venus et Fleur, FreePower across the hero
 
+# ---- November 8, 2026: the pieces Mike sent that day, transcoded for the web (video/<name>.mp4) with a frame of each as its still.
+# svc names the service line the Work page shows under the tile.
+NOV8 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
+    ('commercial-chivas-nike-paisa-boys', 'Chivas × Nike × Paisa Boys · Commercial', 1280, 960, 'Commercial'),
+    ('commercial-nike-paisa-boys-mexico', 'Nike × Paisa Boys, Mexico · Commercial', 1280, 880, 'Commercial'),
+    ('publicrec-ugc-dealmaker-pant-interview', 'Deal Maker pant interview · UGC', 720, 1280, 'UGC'),
+    ('whoop-dr-eric-verdin-trailer', 'Dr. Eric Verdin · Podcast trailer', 720, 1280, 'Audio'),
+    ('whoop-refreshed-creator-comp-9x16', 'Refreshed creator compilation · UGC', 720, 1280, 'UGC'),
+    ('impactce-intro', 'ImpactCE · Intro animation', 1280, 720, 'Motion Graphics'),
+    ('literati-treasured-tales-intro', 'Treasured Tales · Intro animation', 1280, 720, 'Motion Graphics'),
+    ('literati-treasured-tales-store-promo', 'Treasured Tales · Store promo', 1280, 720, 'Motion Graphics'),
+    ('whoop-al-standalone-4x5', 'Advanced Labs · Paid media', 1024, 1280, 'Paid Social'),
+    ('whoop-refreshed-creator-july-16x9', 'Refreshed creator compilation, July · Paid social', 1280, 720, 'Paid Social'),
+    ('whoop-psg-giant-screen-ad', 'PSG giant-screen ad · OOH', 1280, 720, 'OOH'),
+    ('whoop-behind-the-drivers-seat-lewis', 'From Behind the Driver’s Seat, Lewis Hamilton · Cutdown', 720, 1280, 'Profiles'),
+    ('whoop-perfmedia-customizable-4x5', 'Customizable · Performance media', 1024, 1280, 'Paid Social'),
+    ('whoop-perfmedia-product-render-16x9', 'Refreshed product render · Performance media', 1280, 720, '3D / VFX'),
+    ('whoop-peloton-partnership-launch-4x5', 'Peloton partnership launch · Paid social', 1024, 1280, 'Paid Social'),
+]}
+# the pieces with no case study of their own (the Paisa Boys spots, the ImpactCE intro): on the service pages and the Work page's shelves
+NO_CASE_WORK = [NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro']]
+# Willie's Remedy's 3D product animations, for the 3D / VFX page
+WR_3D = [it for it in WR_CASE['gal'] if it['video'].startswith('wr-3d')]
+
 ADDED_WORK = {
-    'literati': [_new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
+    'whoop': [NOV8[k] for k in ('whoop-behind-the-drivers-seat-lewis', 'whoop-al-standalone-4x5', 'whoop-refreshed-creator-comp-9x16', 'whoop-psg-giant-screen-ad', 'whoop-perfmedia-product-render-16x9',
+                                'whoop-peloton-partnership-launch-4x5', 'whoop-perfmedia-customizable-4x5', 'whoop-refreshed-creator-july-16x9', 'whoop-dr-eric-verdin-trailer')],
+    'literati': [NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
+                 _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
     '686': [_new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles'),
             _new('686-wntr-goggles-color-jump', 'WNTR Goggles, color jump · 686', 1280, 720, 'Paid Social')],
-    'public-rec': [_new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
+    'public-rec': [NOV8['publicrec-ugc-dealmaker-pant-interview'],
+                   _new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
                    _new('publicrec-ugc-anton-gamechanger', 'Gamechanger Rec pants · UGC with Anton', 720, 1280, 'UGC'),
                    _new('publicrec-ugc-anton-dealmaker', 'Deal Maker 5 pants · UGC with Anton', 720, 1280, 'UGC')],
     'freepower': [_new('freepower-partnership-overview', 'The Cosentino partnership · Interview at KBIS', 1280, 720, 'Profiles'),

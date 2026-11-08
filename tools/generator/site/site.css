@@ -92,8 +92,6 @@ h1 .ai,h2 .ai{color:#5b7bff}
 .lb-meta span{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--on-navy-2)}
 .lb-meta em{font-style:normal;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--peri)}
 .lb-meta i{font-style:normal;font-variant-numeric:tabular-nums}
-.lb-open{display:inline-flex;align-items:center;min-height:40px;font-size:13px;font-weight:600;color:var(--on-navy-2);text-decoration:none;white-space:nowrap}
-.lb-open:hover{color:#ffffff}
 .lb-x{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px 0 10px;border:0;border-radius:999px;background:rgba(255,255,255,.1);font:600 14px/1 var(--text);color:#ffffff;cursor:pointer;transition:background-color .2s}
 .lb-x:hover{background:rgba(255,255,255,.2)}
 .lb-x svg{width:18px;height:18px}
@@ -131,7 +129,6 @@ h1 .ai,h2 .ai{color:#5b7bff}
   .lb-stage{margin-bottom:0}
   .lb-x span{display:none}
   .lb-x{padding:0 10px}
-  .lb-open{display:none}
 }
 /* video tiles: the video itself, framed like a still, previewing on hover */
 .gi video{display:block;width:100%;height:auto;object-fit:cover;transition:transform .6s var(--ease)}
@@ -1141,3 +1138,29 @@ body:has(.lb[open]){overflow:hidden}
 .places li:last-child{color:var(--blue)}
 .pd-anywhere .pillars{margin-top:28px}
 @media(min-width:900px){.pd-anywhere .pillars{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ===== The policy and support pages: a compact navy hero, then one column of text with the document's own headings, lists and tables ===== */
+.hero--doc{padding-bottom:56px}
+.hero--doc h1{font-size:clamp(34px,4.4vw,56px)}
+.doc-date{margin-top:18px;font-size:15px;font-weight:500;color:var(--on-navy-2)}
+.doc{padding-block:56px var(--sec)}
+.doc-body{max-width:760px;margin-inline:auto;font-size:17px;line-height:1.65;color:var(--ink-2)}
+.doc-body h2{margin:44px 0 14px;font:700 clamp(24px,2.4vw,30px)/1.2 var(--display);letter-spacing:-.018em;color:var(--ink);text-wrap:balance}
+.doc-body h3{margin:30px 0 10px;font:700 20px/1.3 var(--display);letter-spacing:-.01em;color:var(--ink)}
+.doc-body h4{margin:22px 0 6px;font:600 17px/1.4 var(--text);color:var(--ink)}
+.doc-body p{margin:0 0 14px;text-wrap:pretty}
+.doc-body ul,.doc-body ol{margin:0 0 16px;padding-left:26px}
+.doc-body ul{list-style:disc}
+.doc-body ol{list-style:decimal}
+.doc-body li+li{margin-top:6px}
+.doc-body li{margin:0 0 8px;padding-left:4px}
+.doc-body li::marker{color:var(--blue)}
+.doc-body strong{font-weight:600;color:var(--ink)}
+.doc-body a{color:var(--blue);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.doc-body a:hover{color:var(--blue-2)}
+.doc-body code{font:500 .92em/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;padding:1px 6px;border-radius:6px;background:var(--tint);color:var(--navy)}
+.doc-body table{width:100%;margin:8px 0 24px;border-collapse:collapse;font-size:15.5px;line-height:1.5}
+.doc-body th,.doc-body td{padding:12px 14px;border-bottom:1px solid var(--line-2);text-align:left;vertical-align:top}
+.doc-body th{font-weight:600;color:var(--ink);background:var(--wash)}
+.doc-body tr:last-child td{border-bottom:0}
+@media(max-width:640px){.doc-body{font-size:16px}.doc-body table{display:block;overflow-x:auto}}

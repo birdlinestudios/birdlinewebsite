@@ -158,6 +158,7 @@ into `content/`:
 | Scripts | `tools/generator/script.js` and `site/site.js` |
 | Images | `tools/generator/assets/` (homepage, by key) and `site/img/` + `site/img_map.json` (everything else) |
 | Videos | `site/video_index.tsv` (the Vimeo library) and the file-backed items in `extras.py` |
+| Privacy Policy, Terms, Support, Data Deletion | `site/legal/*.html`, converted from the PDFs with `site/legal/pdf2html.py <pdf> <out.html>`; titles and dates in `DOC_PAGES` in `build_site.py` |
 
 After an edit, regenerate (needs Python 3, which macOS has):
 

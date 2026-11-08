@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -217,6 +217,8 @@ testimonials = re.sub(r'\s*<div class="wrap">\s*<div class="more">.*?</div>\s*</
 lg_start = body.index('<section class="logos"')
 logos_band = body[lg_start:body.index('</section>', lg_start) + len('</section>')]
 faq_items = dict(re.findall(r'(<details class="qa"[^>]*>\s*<summary>(.*?)<span class="qa-ic".*?</details>)', body, flags=re.S)[i][::-1] for i in range(len(re.findall(r'<details class="qa"', body))))
+for _q, _a in FAQ_EXTRA.items():   # the questions only some pages ask, in the same shape as the home page's
+    faq_items[_q] = '<details class="qa" name="faq">\n        <summary>%s<span class="qa-ic" aria-hidden="true"></span></summary>\n        <div class="qa-a">%s</div>\n      </details>' % (H.escape(_q, quote=False), H.escape(_a, quote=False))
 why_start = body.index('<section class="band band--navy on-dark why"')
 matrix_band = resolve_imgs(body[why_start:body.index('</section>', why_start) + len('</section>')])
 calc_start = body.index('<section class="band band--navy on-dark calc"')
@@ -254,7 +256,7 @@ LIB_TILES = [
     (3, 29, 10, '2deg', '0.32s', '2025/08/GrantPuckett-Product-36.jpeg', 'Photography'),
     (16, 42, 10, '-5deg', '0.4s', '2026/08/thumb-57.jpg', 'Motion Graphics'),
     (73.5, 31, 11, '5deg', '0.48s', '2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', 'Design'),
-    (88.5, 25, 7.5, '-4deg', '0.56s', 'wr/wr-3d-bottle.jpg', '3D / CGI / VFX'),
+    (88.5, 25, 7.5, '-4deg', '0.56s', 'wr/wr-3d-bottle.jpg', '3D / VFX'),
     (3, 64, 8.5, '-3deg', '0.64s', '2024/05/thumb-19.jpg', 'Paid Social'),
     (14.5, 79, 15.5, '4deg', '0.72s', '2025/09/thumb-27.jpg', 'Illustrations'),
     (71.5, 58, 15.5, '-3deg', '0.8s', '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Profiles'),
@@ -303,7 +305,6 @@ header, footer, testimonials, logos_band = resolve_imgs(header), resolve_imgs(fo
 LIGHTBOX = '''<dialog class="lb" data-lb-dialog aria-label="Media viewer">
   <div class="lb-in">
     <div class="lb-top"><div class="lb-meta"><b data-lb-title></b><span><em data-lb-kind></em><i data-lb-count></i></span></div>
-      <a class="lb-open" data-lb-open href="https://vimeo.com/" target="_blank" rel="noopener">Open on Vimeo ↗</a>
       <button class="lb-x" type="button" data-lb-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg><span>Close</span></button></div>
     <div class="lb-stage"><button class="lb-nav lb-nav--prev" type="button" data-lb-prev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
       <div class="lb-frame" data-lb-body></div>
@@ -531,6 +532,10 @@ def tv_videos():
                 out.append(dict(src=it['poster'], asp=it['w'] / it['h'], vid=None, file=it['video'], w=it['w'], h=it['h'], label=it.get('alt') or CARDS[slug]['brand'], slug=slug, svc=it.get('svc')))
                 continue
             add(it, it.get('alt') or CARDS[slug]['brand'], slug)
+    for it in NO_CASE_WORK:   # the pieces with no case study of their own (November 8, 2026)
+        if it['video'] not in seen:
+            seen.add(it['video'])
+            out.append(dict(src=it['poster'], asp=it['w'] / it['h'], vid=None, file=it['video'], w=it['w'], h=it['h'], label=it['alt'], slug=None, svc=it.get('svc')))
     for vid, info in VIDEO_INDEX.items():
         it = VIDEO_ITEMS.get(vid)
         if not it and ('web/%s.jpg' % vid) in imap:  # no still in the content: the frame pulled from the transcode stands in
@@ -555,8 +560,8 @@ for _slug in SVC_PRIORITY:
     if not _s: continue
     for _ref in _s.get('hero', []) + _s.get('gallery', []):
         if isinstance(_ref, str): SVC_BY_SRC.setdefault(_ref, SVC_NAME[_slug])
-TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV', 'Paid social': 'Paid Social', 'UGC': 'UGC', 'Social': 'Paid Social', 'Animation': 'Motion Graphics', 'VFX': '3D / CGI / VFX',
-           'Video': 'Film', 'YouTube': 'Film', '3D': '3D / CGI / VFX', 'Illustration': 'Illustrations', 'Design': 'Design', 'Photo': 'Photography', 'Production': 'Film'}
+TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV', 'Paid social': 'Paid Social', 'UGC': 'UGC', 'Social': 'Paid Social', 'Animation': 'Motion Graphics', 'VFX': '3D / VFX',
+           'Video': 'Film', 'YouTube': 'Film', '3D': '3D / VFX', 'Illustration': 'Illustrations', 'Design': 'Design', 'Photo': 'Photography', 'Production': 'Film'}
 UGC_WORDS = re.compile(r'ugc|interview|reactions|mashup|testimonial|review|pov|unboxing|comment', re.I)
 
 def service_for(v):
@@ -570,7 +575,7 @@ def service_for(v):
     if info and info['folder'] == 'Additional Profile Work': return 'Profiles'
     if info and info['folder'] == 'Additional Animation Work': return 'Motion Graphics'
     if info and info['folder'] == 'Additional Commercial Work': return 'Commercial'
-    if v.get('slug') == 'willies-remedy': return '3D / CGI / VFX' if '3D' in (v.get('label') or '') else 'Motion Graphics'
+    if v.get('slug') == 'willies-remedy': return '3D / VFX' if '3D' in (v.get('label') or '') else 'Motion Graphics'
     if UGC_WORDS.search(title) and ('UGC' in tags or v.get('slug') == 'edjy'): return 'UGC'
     if shape == 'wide':
         for t in ('Commercial', 'Video', 'YouTube', 'TV', 'Paid social', 'Social'):
@@ -665,10 +670,12 @@ def portfolio_page():
     kinds = {'wide': 'Video', 'tall': 'Vertical video', 'square': 'Square cut'}
     # Featured: the newest videos, photographs and designs, interleaved, each at its own proportions in a row of one height
     recent = [v for v in videos if tv_shape(v['asp']) == 'wide' and v['slug'] not in ('edjy', 'willies-remedy')][:8]
+    lead = [v for v in videos if v.get('file') in ('whoop-behind-the-drivers-seat-lewis.mp4', 'whoop-al-standalone-4x5.mp4')]   # the two WHOOP pieces Mike asked to feature (November 8, 2026)
+    recent = lead[:1] + recent[:2] + lead[1:] + recent[2:]
     photos = panes['photo'][:6]
     designs = panes['graphic'][:6]
     featured = []
-    for i in range(8):
+    for i in range(len(recent)):
         if i < len(recent): featured.append(tv_tile(recent[i], None, 'film'))
         if i < len(photos): featured.append(tv_still_tile(photos[i], 'photo'))
         if i < len(designs): featured.append(tv_still_tile(designs[i], 'design'))
@@ -755,6 +762,16 @@ def index_page():
 NAME_TO_SLUG = {'Public Rec': 'public-rec', 'Route App': 'route', 'Route': 'route', 'Gardyn': 'gardyn', 'FreePower': 'freepower', '686': '686',
                 'Patrol': 'patrol', 'Literati': 'literati', 'Solidroad': 'solidroad', 'WHOOP': 'whoop', 'Willie’s Remedy': 'willies-remedy', 'EDJY': 'edjy', 'UFL': 'ufl'}
 
+def radio_section(r, eyebrow='On air', heading=None, sub=None):
+    """the radio spots as a player: one reel (r['file']) and a button per spot that plays its own stretch (site.js, [data-radio])"""
+    site_videos.add(r['file'])
+    spots = ''.join('<li class="radio-spot"><button type="button" data-radio-play data-start="%.2f" data-end="%.2f" aria-pressed="false" aria-label="%s">'
+                    '<span class="radio-btn" aria-hidden="true">%s%s</span><span class="radio-cap"><b>%s</b><span>%s</span></span><span class="radio-time">%s</span><i class="radio-bar" aria-hidden="true"></i></button></li>'
+                    % (sp['start'], sp['end'], esc('Play: %s, %s' % (sp['name'], sp['note'])), PLAY.replace('<svg ', '<svg class="ic-play" ', 1), PAUSE, esc(sp['name']), esc(sp['note']), ':%02d' % round(sp['end'] - sp['start'])) for sp in r['spots'])
+    return ('<section class="band cs-radio" id="radio">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n'
+            '  <div class="radio" data-radio><audio preload="metadata" src="{{ROOT}}video/%s"></audio><ol class="radio-list" aria-label="Radio spots">%s</ol></div></div>\n</section>'
+            % (esc(eyebrow), tt(heading or r['heading']), esc(sub or r['sub']), r['file'], spots))
+
 def quote_card(q, slug):
     brand = CARDS[slug]['brand']
     paras = [p.strip() for p in q['paras'] if p.strip()]
@@ -838,15 +855,7 @@ def case_page(slug):
     work = ('<section class="band band--wash cs-work" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">The work</span><h2 class="h2">Selected Work <span class="ai">for %s</span></h2>'
             '<p class="sub">Tap a frame to play it or see it at full size.</p>%s</div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Work for %s">\n%s\n  </div></div>\n</section>'
             % (esc(brand), '', esc(brand), tiles))
-    radio = ''
-    if copy.get('radio'):
-        r = copy['radio']; site_videos.add(r['file'])
-        spots = ''.join('<li class="radio-spot"><button type="button" data-radio-play data-start="%.2f" data-end="%.2f" aria-pressed="false" aria-label="%s">'
-                        '<span class="radio-btn" aria-hidden="true">%s%s</span><span class="radio-cap"><b>%s</b><span>%s</span></span><span class="radio-time">%s</span><i class="radio-bar" aria-hidden="true"></i></button></li>'
-                        % (sp['start'], sp['end'], esc('Play: %s, %s' % (sp['name'], sp['note'])), PLAY.replace('<svg ', '<svg class="ic-play" ', 1), PAUSE, esc(sp['name']), esc(sp['note']), ':%02d' % round(sp['end'] - sp['start'])) for sp in r['spots'])
-        radio = ('<section class="band cs-radio" id="radio">\n  <div class="wrap"><div class="head"><span class="eyebrow">On air</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n'
-                 '  <div class="radio" data-radio><audio preload="metadata" src="{{ROOT}}video/%s"></audio><ol class="radio-list" aria-label="Radio spots">%s</ol></div></div>\n</section>'
-                 % (tt(r['heading']), esc(r['sub']), r['file'], spots))
+    radio = radio_section(copy['radio']) if copy.get('radio') else ''
     nxt = [NAME_TO_SLUG[nm] for nm in copy['next'] if NAME_TO_SLUG.get(nm) and NAME_TO_SLUG[nm] != slug][:4]
     more = ('<section class="band cs-more">\n  <div class="wrap"><div class="head"><span class="eyebrow">More case studies</span><h2 class="h2">Keep <span class="ai">Reading</span></h2></div>'
             '<ul class="cs-grid cs-grid--4 cs-grid--light">%s</ul><div class="more"><a class="btn" href="{{ROOT}}case-studies.html">All case studies</a></div></div>\n</section>'
@@ -917,6 +926,24 @@ def faq_section(questions, heading):
     return ('<section class="band band--wash faq" id="faq">\n  <div class="wrap"><div class="head"><span class="eyebrow">FAQ</span><h2 class="h2">%s</h2></div>'
             '<div class="faq-list">%s</div></div>\n</section>' % (tt(heading), '\n'.join(items)))
 
+# ---- the policy and support pages (November 8, 2026): the four documents Mike exported as PDFs (Privacy Policy, Terms of
+# Service, Support, Data Deletion Instructions), converted to HTML by legal/pdf2html.py and kept in legal/. Each is a compact navy
+# hero (the eyebrow, the title, the date) over one column of text.
+DOC_PAGES = [
+    ('privacy', 'Legal', 'Privacy Policy', 'November 6, 2026', 'How Birdline collects, uses and shares personal information across the Sites, the App and Birdline Studios, and the choices you have.'),
+    ('terms', 'Legal', 'Terms of Service', 'November 6, 2026', 'The terms that govern the Birdline Sites, the Birdline App and Birdline Studios services.'),
+    ('support', 'Help', 'Support', 'November 8, 2026', 'How to reach Birdline support, connect integrations, manage your team and billing, and find our privacy and data pages.'),
+    ('data-deletion', 'Help', 'Data Deletion Instructions', 'November 8, 2026', 'How to delete your Birdline account, your organization’s workspace, or the data Birdline synced from a platform you connected.'),
+]
+
+def doc_page(slug, eyebrow, title, updated, description):
+    body_html = open(os.path.join(HERE, 'legal', slug + '.html'), encoding='utf-8').read()
+    body_html = re.sub(r'<h1>.*?</h1>\n?', '', body_html, count=1)
+    hero = ('<section class="hero hero--page hero--doc on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">%s</span><h1>%s</h1>'
+            '<p class="doc-date">Last updated %s</p></div></div>\n</section>' % (esc(eyebrow), esc(title), esc(updated)))
+    doc = '<section class="band doc">\n  <div class="wrap"><article class="doc-body">\n%s\n  </article></div>\n</section>' % body_html
+    return document('%s: Birdline' % title, description, hero + '\n\n' + doc, '')
+
 # ---- the Packages page
 def packages_page():
     for key, *_ in TEAM:
@@ -957,7 +984,7 @@ def packages_page():
                 '<p class="sub">Each package is a rolling monthly retainer with a dedicated creative, unlimited deliverables, and the Birdline Workflow behind it: no fixed term, cancel anytime with 60 days’ notice. Productions are scoped separately, per project.</p></div>'
                 '<ul class="plans">%s</ul>%s</div>\n</section>' % (''.join(plans), prod))
     team = ('<!-- ===== The talent: the Birds as the same row of cards as on the About page, running edge to edge and looping (the set sits in the track twice); pointing at it pauses it ===== -->\n'
-            '<section class="band talent the-birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Talent</span><h2 class="h2">World-Class Creatives, <span class="ai">One Seamless Workflow.</span></h2>'
+            '<section class="band talent the-birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Birds</span><h2 class="h2">World-Class Creatives, <span class="ai">One Seamless Workflow.</span></h2>'
             '<p class="sub">Skip the bloated agencies, unreliable freelancers, and wasted spend. Get full creative support across video, design, photo, AI, and animation—just a Slack message away.</p></div></div>\n'
             '  %s\n  <div class="wrap"><div class="more"><a class="btn btn--outline" href="{{ROOT}}about.html">Meet the Birds</a></div></div>\n</section>' % team_loop())
     faq = faq_section(FAQ_PACKAGES, 'Questions About |the Packages.')
@@ -982,25 +1009,31 @@ VALUES = [
 ]
 DELIVER_ROWS = [('calls', 'Ongoing shoots, any size'), ('camera', 'Anywhere, with the Birdline network'), ('tracker', 'A week, on average'), ('layers', 'Consistent quality')]
 # client stories: the quotes are the case studies' own, cut to their first sentences; the figures are each study's
-STORIES = [
-    ('public-rec', 'Zach Goldstein', 'CEO, Founder at Public Rec', 'av-goldstein',
-     'They quickly picked up our brand’s look and feel and has consistently executed for us. They have a great eye for what will look good on screen.',
-     [('$53M+', 'in returns across TV and Meta'), ('4×', 'return on $8M of TV spend'), ('51.7×', 'ROAS on one 30-second spot')]),
+STORIES = [   # in the order Mike set on November 8, 2026, with John (EDJY) and Adam (Willie's Remedy) added
     ('gardyn', 'FX Rouxel', 'CEO at Gardyn', 'av-rouxel',
      'Birdline has been one of our key creative partners, helping us design a wide range of assets, videos, and campaigns. They’ve truly taken our brand to places we didn’t think were possible.',
      [('28%', 'year-over-year lift in CTR'), ('50%', 'better watch-through rates'), ('45M+', 'organic views')]),
+    ('whoop', 'Zack McCabe', 'Video and Motion GFX Director at WHOOP', 'av-mccabe',
+     'Birdline has become an incredibly valuable extension of our team, giving us the flexibility to execute across everything from bespoke long-form content and paid campaign deliverables to high-leverage work across our sports and culture partnerships.',
+     []),
+    ('solidroad', 'Kat Cooper', 'Head of Marketing at Solidroad', 'av-cooper',
+     'They’re collaborative, proactive, and feel like an extension of our own team rather than an outside agency.',
+     [('50+', 'pieces of content from one shoot'), ('2', 'days on set')]),
+    ('public-rec', 'Zach Goldstein', 'CEO, Founder at Public Rec', 'av-goldstein',
+     'They quickly picked up our brand’s look and feel and has consistently executed for us. They have a great eye for what will look good on screen.',
+     [('$53M+', 'in returns across TV and Meta'), ('4×', 'return on $8M of TV spend'), ('51.7×', 'ROAS on one 30-second spot')]),
     ('freepower', 'Jake Slatnick', 'CEO, Founder at FreePower', 'av-slatnick',
      'This video production company is full-service and one of a kind. They handle every detail from concept through post-production, making the process seamless and stress-free.',
      [('15M', 'views in 12 months'), ('170K', 'link clicks'), ('23M', 'users reached')]),
     ('patrol', 'Nick Sarath', 'CEO, Founder at Patrol', 'av-sarath',
      'As a founder, delegating video content work to Birdline Studios has been incredibly impactful. Their attention to detail and ability to bring ideas to life have been amazing.',
      [('12M', 'views in one week'), ('4K', 'reposts'), ('8K', 'likes')]),
-    ('solidroad', 'Kat Cooper', 'Head of Marketing at Solidroad', 'av-cooper',
-     'They’re collaborative, proactive, and feel like an extension of our own team rather than an outside agency.',
-     [('50+', 'pieces of content from one shoot'), ('2', 'days on set')]),
-    ('whoop', 'Zack McCabe', 'Video and Motion GFX Director at WHOOP', 'av-mccabe',
-     'Birdline has become an incredibly valuable extension of our team, giving us the flexibility to execute across everything from bespoke long-form content and paid campaign deliverables to high-leverage work across our sports and culture partnerships, often on tight timelines.',
+    ('edjy', 'John Bradford', 'Creative Director at EDJY', 'av-bradford',
+     'Mike and the Birdline team have been a thoughtful creative partner for EDJY. They bring a strong editorial eye to our footage and help shape it into engaging, social-first videos.',
      []),
+    ('willies-remedy', 'Adam Walker', 'Content Director at Willie’s Remedy', 'av-walker',
+     'Super creative. Super fast. Simply put, Birdline gets it done—and makes it fun. Working with them feels like an extension of our team.',
+     [('3', 'episodes of The Green Guide'), ('8', '3D product animations')]),
 ]
 REEL = '1049385390'
 
@@ -1030,7 +1063,7 @@ def about_page():
               '<ul class="clicks">%s</ul></div>\n</section>'
               % ''.join('<li><span class="svc-ic" aria-hidden="true">%s</span><span class="click-k">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(lab), esc(t), esc(d)) for k, lab, t, d in CLICKS))
     team = ('<!-- ===== The Birds: a row of cards that runs edge to edge and loops (the set sits in the track twice); pointing at it pauses it ===== -->\n'
-            '<section class="band the-birds ab-team" id="team">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Birds</span><h2 class="h2">World-Class Creatives, <span class="ai">Under One Roof.</span></h2>'
+            '<section class="band the-birds ab-team" id="team">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Birds</span><h2 class="h2">World-Class Creatives, <span class="ai">All On One Line.</span></h2>'
             '<p class="sub">Partner with world-class creatives across video, photo, design, AI, and animation—operating as an extension of your in-house team.</p></div></div>\n'
             '  %s\n</section>' % team_loop())
     tabs, panels = [], []
@@ -1318,7 +1351,7 @@ def services_page():
             '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>')
     index = '<section class="band svc-index">\n  <div class="wrap"><ul class="svc-grid svc-grid--3">%s</ul></div>\n</section>' % ''.join(svc_card(s, large=True) for s in SERVICES)
     inner = '\n\n'.join([hero, index, testimonials, close_section('See the work', '{{ROOT}}portfolio.html')])
-    return document('Services: Birdline', 'Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / CGI / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.', inner, '')
+    return document('Services: Birdline', 'Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.', inner, '')
 
 def service_page(svc):
     slug, name = svc['slug'], svc['name']
@@ -1328,7 +1361,7 @@ def service_page(svc):
             '<span class="eyebrow">Services · %s</span><h1>%s</h1><p class="lede">%s</p>'
             '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="#examples">See examples</a></div></div>'
             '<div class="svc-strip" role="list" aria-label="%s">%s</div></div>\n</section>'
-            % (name, ARROW_L, esc(GROUP_NAME[svc['cat']]), tt(svc['h1']), esc(svc['lede']), esc('Examples of ' + name.lower() if name not in ('UGC', 'CTV', 'OOH', '3D / CGI / VFX', 'AI Content') else 'Examples of ' + name), strip))
+            % (name, ARROW_L, esc(GROUP_NAME[svc['cat']]), tt(svc['h1']), esc(svc['lede']), esc('Examples of ' + name.lower() if name not in ('UGC', 'CTV', 'OOH', '3D / VFX', 'AI Content') else 'Examples of ' + name), strip))
     facts = ''.join('<li><span>%s</span><b>%s</b></li>' % (esc(k), esc(v)) for k, v in svc['facts'])
     intro = ('<section class="band svc-intro">\n  <div class="wrap"><div class="cs-cols"><div class="cs-side"><span class="eyebrow">What it is</span><h2>%s</h2></div>'
              '<div class="cs-text">%s<ul class="svc-facts">%s</ul></div></div>'
@@ -1357,7 +1390,11 @@ def service_page(svc):
         hero = hero.replace('<a class="btn btn--ghost" href="#examples">See examples</a>', '')
     if not svc['cases']:
         cases = ''
-    inner = '\n\n'.join(x for x in [hero, intro, why, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
+    radio = ''
+    if svc.get('radio') == 'ufl':   # the Audio page: the UFL's game-day radio spots, as on the UFL case study
+        radio = radio_section(content['cases']['ufl']['copy']['radio'], eyebrow='On air', heading='Game-Day Radio |for the UFL.',
+                              sub='Six of the spots we wrote, voiced and mixed for the league’s teams, most of them turned around in a day. Read how the season ran on the UFL case study.')
+    inner = '\n\n'.join(x for x in [hero, intro, why, work, radio, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
     return document('%s: Birdline' % name, svc['lede'], inner, '../')
 
 # ---- the ROPS & ROCS page: what the two numbers are, why they are measured, what they are worth, and how the app measures them
@@ -1463,9 +1500,9 @@ def production_page():
 # seam included (a row's first and last frames meet). Public Rec's Zero Short came out November 6, 2026: its still is the same
 # DTLA scene as All Day Every Day's, so the two read as one video shown twice.
 HOME_HERO = [
-    ['1119136322', 'grantpuckett-studio-product.webp', '1217480327', 'edjy-01.mp4', '984139678', '1000153543', 'protect-static-v2.webp', '847156288',
+    ['1119136322', 'grantpuckett-studio-product.webp', 'whoop-behind-the-drivers-seat-lewis.mp4', '984139678', '1217480327', 'edjy-01.mp4', '1000153543', 'protect-static-v2.webp', '847156288',
      'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '833777565', '753024501', 'grantpuckett-active-4.webp', '727974264'],
-    ['640557935', 'gardyn-ugc-hana-new-year.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
+    ['640557935', 'gardyn-ugc-hana-new-year.mp4', 'whoop-al-standalone-4x5.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
      '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '895391449'],
 ]
 HERO_PACE = [7.2, 9.0]   # seconds per tile-height of track, per row: the rows keep the speeds they had with ten tiles each
@@ -1541,6 +1578,8 @@ pages['rops.html'] = rops_page()
 pages['services/production-process.html'] = production_page()
 for svc in SERVICES:
     pages['services/%s.html' % svc['slug']] = service_page(svc)
+for _slug, _eyebrow, _title, _updated, _desc in DOC_PAGES:
+    pages[_slug + '.html'] = doc_page(_slug, _eyebrow, _title, _updated, _desc)
 if site_videos:
     os.makedirs(os.path.join(OUT, 'video'), exist_ok=True)
     for f in site_videos:

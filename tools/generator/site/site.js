@@ -7,7 +7,7 @@
   "use strict";
   var dlg = document.querySelector('[data-lb-dialog]');
   if (!dlg || typeof dlg.showModal !== 'function') return;
-  var stage = dlg.querySelector('[data-lb-body]'), open = dlg.querySelector('[data-lb-open]'), title = dlg.querySelector('[data-lb-title]'),
+  var stage = dlg.querySelector('[data-lb-body]'), title = dlg.querySelector('[data-lb-title]'),
       kind = dlg.querySelector('[data-lb-kind]'), count = dlg.querySelector('[data-lb-count]'), rail = dlg.querySelector('[data-lb-rail]'),
       prev = dlg.querySelector('[data-lb-prev]'), next = dlg.querySelector('[data-lb-next]');
   var items = [], at = 0;
@@ -52,20 +52,17 @@
           stage.replaceChild(holder, v);
         });
         stage.appendChild(v);
-        open.href = href; open.textContent = 'Open the file ↗';
       } else {
         var frame = document.createElement('iframe');
         frame.src = 'https://player.vimeo.com/video/' + link.getAttribute('data-vimeo') + '?autoplay=1&title=0&byline=0&portrait=0&dnt=1';
         frame.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture'); frame.setAttribute('allowfullscreen', '');
         frame.setAttribute('title', link.getAttribute('data-title') || 'Video');
         stage.appendChild(frame);
-        open.href = href; open.textContent = 'Open on Vimeo ↗';
       }
     } else {
       dlg.classList.add('lb--img');
       var img = document.createElement('img'); img.src = href; img.alt = link.getAttribute('data-title') || '';
       stage.appendChild(img);
-      open.href = href; open.textContent = 'Open the image ↗';
     }
     title.textContent = link.getAttribute('data-title') || '';
     kind.textContent = link.getAttribute('data-kind') || (k === 'video' ? 'Video' : 'Photo');
