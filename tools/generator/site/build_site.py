@@ -92,6 +92,12 @@ if VIDEO_INDEX:
 
 for _slug, _items in ADDED_WORK.items():  # the videos Mike sent for a case study, newest first
     content['cases'][_slug]['gal'] = list(_items) + content['cases'][_slug].get('gal', [])
+# pieces Mike wants lower in a case study's gallery: (slug, file) -> the position they move to (November 9, 2026)
+GAL_MOVE = {('freepower', 'freepower-partnership-overview.mp4'): 9}
+for (_slug, _file), _at in GAL_MOVE.items():
+    _gal = content['cases'][_slug]['gal']
+    _i = next((i for i, it in enumerate(_gal) if it.get('video') == _file), None)
+    if _i is not None: _gal.insert(min(_at, len(_gal) - 1), _gal.pop(_i))
 
 def hosted(vid):
     """the self-hosted file for a Vimeo id, or None"""
@@ -508,12 +514,12 @@ TV_FEATURED = [
     # (slide key, slug or None for the reel, eyebrow, title, tags, description, watch: vimeo id or None for the brand's first wide video)
     ('reel', None, 'Birdline · Showreel', 'Our |Bird’s Work', ['Video', 'Photo', 'Design & Animation'],
      'Our creators don’t just make content at scale, but work that makes an impact.', '1049385390'),
-    # the case slides, in the order Mike changed them to on November 9, 2026
-    ('gardyn', 'gardyn', 'Case study · Gardyn', None, None, None, None),
-    ('public-rec', 'public-rec', 'Case study · Public Rec', None, None, None, None),
+    # the case slides, in the order Mike changed them to (twice) on November 9, 2026
     ('patrol', 'patrol', 'Case study · Patrol', None, None, None, None),
-    ('route', 'route', 'Case study · Route', None, None, None, None),
     ('686', '686', 'Case study · 686', None, None, None, None),
+    ('gardyn', 'gardyn', 'Case study · Gardyn', None, None, None, None),
+    ('route', 'route', 'Case study · Route', None, None, None, None),
+    ('public-rec', 'public-rec', 'Case study · Public Rec', None, None, None, None),
 ]
 TV_BRAND_WORDS = [('public rec', 'public-rec'), ('route', 'route'), ('gardyn', 'gardyn'), ('freepower', 'freepower'), ('686', '686'),
                   ('patrol', 'patrol'), ('literati', 'literati'), ('solidroad', 'solidroad'), ('whoop', 'whoop')]
@@ -584,11 +590,9 @@ TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV', 'Paid social': 'Paid Social'
            'Video': 'Film', 'YouTube': 'Film', '3D': '3D / VFX', 'Illustration': 'Illustrations', 'Design': 'Design', 'Photo': 'Photography', 'Production': 'Film'}
 UGC_WORDS = re.compile(r'ugc|interview|reactions|mashup|testimonial|review|pov|unboxing|comment', re.I)
 
-SVC_OVERRIDE = {'876232748': 'Profiles'}   # 686 UNWORK (Tyler Ravelle): a profile, listed on no video service page since November 9, 2026
 def service_for(v):
     """the service line under a Work-page video tile"""
     if v.get('svc'): return v['svc']  # a gallery item that names its service
-    if v.get('vid') in SVC_OVERRIDE: return SVC_OVERRIDE[v['vid']]
     if v['src'] in SVC_BY_SRC and SVC_BY_SRC[v['src']] != 'Photography': return SVC_BY_SRC[v['src']]
     info = hosted(v['vid']) if v.get('vid') else None
     title = (info['title'] if info else '') + ' ' + (v.get('label') or '')
@@ -744,12 +748,12 @@ def portfolio_page():
     kinds = {'wide': 'Video', 'tall': 'Vertical video', 'square': 'Square cut'}
     # Featured: the newest videos, photographs and designs, interleaved, each at its own proportions in a row of one height
     by_key = {vkey(v): v for v in videos}
-    # the Featured videos, in Mike's order (November 9, 2026): What No Can Do leads, the two WHOOP pieces stay, 686 UNWORK leaves
-    FEATURED_VIDEOS = ['ufl-nobull-what-no-can-do.mp4', 'whoop-behind-the-drivers-seat-lewis.mp4', '1119136322', '833777565', 'whoop-al-standalone-4x5.mp4', '1087155996',
-                       '640557935', '844754785', '1087156021', '1035100357']
+    # the Featured videos, reshuffled again on November 9, 2026: Lewis leads, then the new Gardyn :30, What No Can Do, and the rest
+    FEATURED_VIDEOS = ['whoop-behind-the-drivers-seat-lewis.mp4', 'gardyn-song-30.mp4', '1087155996', 'ufl-nobull-what-no-can-do.mp4', '844754785', 'whoop-al-standalone-4x5.mp4',
+                       '640557935', '1119136322', '1087156021', '833777565']
     recent = [by_key[k] for k in FEATURED_VIDEOS if k in by_key]
-    photos = panes['photo'][3:9]
-    designs = [it for it in panes['graphic'] if it['src'] != '2024/05/thumb-20-1.jpg'][1:7]   # not the 16:9 Gardyn static
+    photos = panes['photo'][9:12] + panes['photo'][0:3]
+    designs = [it for it in panes['graphic'] if it['src'] != '2024/05/thumb-20-1.jpg'][7:13]   # not the 16:9 Gardyn static
     featured = []
     for i in range(len(recent)):
         if i < len(recent): featured.append(tv_tile(recent[i], None, 'film'))

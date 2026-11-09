@@ -433,6 +433,7 @@ body:has(.lb[open]){overflow:hidden}
 .tv-tags{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0;padding:0;list-style:none}
 .tv-tags li{padding:4px 8px;border:1px solid rgba(255,255,255,.4);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.9)}
 .tv-desc{max-width:540px;margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.88)}
+@media(max-width:720px){.tv-desc{display:none}}   /* on a phone the slide shows the headline and the tags only (November 9, 2026) */
 .tv-copy .cta-row{margin-top:8px}
 .tv-copy .btn svg{width:20px;height:20px;margin:0 2px 0 -4px;vertical-align:-3px}
 .tv-slide.is-on .tv-copy{animation:tv-rise .8s var(--ease) both}
@@ -1355,3 +1356,6 @@ body:has(.lb[open]){overflow:hidden}
 .hw-brand-grid small{display:block;overflow:hidden;font:500 12.5px/1.35 var(--text);color:var(--muted);text-overflow:ellipsis;white-space:nowrap}
 @media(min-width:560px){.hw-brand-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:900px){.hw-brand-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+
+/* About, How we deliver: the Gardyn set photo sits high in its panel, so the crew stays in the frame on a phone's wide panel (November 9, 2026) */
+.ab-deliver .dpanel-media img{object-position:50% 22%}

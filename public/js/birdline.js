@@ -56,11 +56,10 @@ function enhance(doc) {
     paintBar();
   }
   // the menu on small screens
-  var phoneNav = win.matchMedia ? win.matchMedia('(max-width:999px)') : null;
   var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
   function setAccordion(item, open) {
     item.classList.toggle('is-open', open);
-    var head = item.querySelector(':scope > a');
+    var head = item.querySelector('.nav-acc');
     if (head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   function setMenu(open) {
@@ -75,15 +74,16 @@ function enhance(doc) {
     var btn = e.target && e.target.closest ? e.target.closest('[data-menu]') : null;
     if (btn) { setMenu(!bar.classList.contains('is-open')); return; }
     if (!(bar && bar.classList.contains('is-open') && e.target.closest)) return;
-    if (e.target === bar) { setMenu(false); return; }   // the scrim behind the phone sheet
-    // in the phone sheet, Work and Services open as accordions; their pages are the buttons inside
-    var head = e.target.closest('.nav-item > a');
-    if (head && phoneNav && phoneNav.matches) {
-      e.preventDefault();
+    // in the phone sheet, Work and Services are accordion buttons; their pages are the rows inside
+    var head = e.target.closest('.nav-acc');
+    if (head) {
       var item = head.parentNode, open = !item.classList.contains('is-open');
       each(bar.querySelectorAll('.nav-item.is-open'), function (it) { if (it !== item) setAccordion(it, false); });
       setAccordion(item, open);
-      if (open) win.setTimeout(function () { if (head.scrollIntoView) head.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 60);
+      if (open) win.setTimeout(function () {
+        var sheet = bar.querySelector('.nav');
+        if (sheet) sheet.scrollTo({ top: head.offsetTop - 4, behavior: 'smooth' });
+      }, 60);
       return;
     }
     if (e.target.closest('.nav a')) setMenu(false);

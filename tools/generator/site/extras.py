@@ -408,6 +408,7 @@ NOV8 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('whoop-perfmedia-product-render-16x9', 'Refreshed product render · Performance media', 1280, 720, '3D / VFX'),
     ('whoop-peloton-partnership-launch-4x5', 'Peloton partnership launch · Paid social', 1024, 1280, 'Paid Social'),
 ]}
+UNWORK_KEEGAN = _new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles')   # on the 686 case study and the Profiles page
 # the five Gardyn pieces Mike sent on November 9, 2026 (web encodes of the finals; the originals' names are in FALLBACK)
 GARDYN_NOV9 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('gardyn-song-30', 'The Gardyn Song · :30 commercial', 1280, 720, 'Commercial'),
@@ -451,7 +452,7 @@ ADDED_WORK = {
                                 'whoop-peloton-partnership-launch-4x5', 'whoop-perfmedia-customizable-4x5', 'whoop-refreshed-creator-july-16x9', 'whoop-dr-eric-verdin-trailer')],
     'literati': [NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
                  _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
-    '686': [_new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles')],   # the WNTR goggles colour jump left on November 9, 2026
+    '686': [UNWORK_KEEGAN],   # the WNTR goggles colour jump left on November 9, 2026
     'public-rec': [NOV8['publicrec-ugc-dealmaker-pant-interview'],
                    _new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
                    _new('publicrec-ugc-anton-gamechanger', 'Gamechanger Rec pants · UGC with Anton', 720, 1280, 'UGC'),

@@ -96,25 +96,28 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .menu-btn .ic-x,.top.is-open .menu-btn .ic-bars{display:none}
 .top.is-open .menu-btn .ic-x{display:block}
 @media(max-width:999px){
-  /* the phone sheet (November 9, 2026): it hangs from the bar (the bar, not the grid inside it, is its containing block, so it spans
-     the screen), scrolls on its own, and rounds off at the bottom. Each page is one row; Work and Services are accordions whose
-     sheets (the same markup the desktop menus use) open under the row, with the lead card's title and buttons and the groups stacked. */
-  .top.is-open .nav{display:block;position:absolute;left:0;right:0;top:100%;max-height:calc(100dvh - var(--top-h) - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
-    padding:4px max(var(--gutter),env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(var(--gutter),env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);border-radius:0 0 22px 22px;background:#ffffff;color:var(--ink);font-size:16px;box-shadow:0 30px 50px -24px rgba(11,18,32,.4)}
-  .top.is-open .nav > a,.top.is-open .nav-item > a{display:flex;align-items:center;width:100%;min-height:56px;padding:0 4px;border-bottom:1px solid var(--line);font:600 17px/1.2 var(--display);letter-spacing:-.01em;color:var(--navy)}
-  .top.is-open .nav > a:hover,.top.is-open .nav-item > a:hover{color:var(--blue)}
+  /* the phone sheet (November 9, 2026): fixed under the bar, filling the screen and scrolling on its own. Each page is one row; Work and
+     Services are accordion buttons (the desktop links are hidden here) whose sheets open under the row: All Work / All Services first,
+     then the groups the desktop menus use, stacked. */
+  .top.is-open{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .top.is-open .nav{display:block;position:fixed;left:0;right:0;top:calc(var(--top-h) + env(safe-area-inset-top,0px));bottom:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    padding:4px max(var(--gutter),env(safe-area-inset-right,0px)) max(28px,env(safe-area-inset-bottom,0px)) max(var(--gutter),env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:#ffffff;color:var(--ink);font-size:16px}
+  .top.is-open .nav > a,.top.is-open .nav-acc{display:flex;align-items:center;width:100%;min-height:56px;margin:0;padding:0 4px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;font:600 17px/1.2 var(--display);letter-spacing:-.01em;color:var(--navy);text-align:left;cursor:pointer}
+  .top.is-open .nav > a:hover,.top.is-open .nav-acc:hover{color:var(--blue)}
   .top.is-open .nav-item{display:block;position:static;height:auto}
-  .top.is-open .nav-item > a .nav-caret{display:block;width:20px;height:20px;margin-left:auto;opacity:.7;transition:rotate .25s var(--ease)}
-  .top.is-open .nav-item.is-open > a{border-bottom-color:transparent}
-  .top.is-open .nav-item.is-open > a .nav-caret{rotate:180deg}
+  .top.is-open .nav-item > a{display:none}
+  .top.is-open .nav-acc .nav-caret{display:block;width:20px;height:20px;margin-left:auto;opacity:.7;transition:rotate .25s var(--ease)}
+  .top.is-open .nav-item.is-open > .nav-acc{border-bottom-color:transparent}
+  .top.is-open .nav-item.is-open > .nav-acc .nav-caret{rotate:180deg}
   .top.is-open .nav-item > .menu{display:none}
-  .top.is-open .nav-item.is-open > .menu{display:block;position:static;padding:0 0 16px;border:0;border-bottom:1px solid var(--line);box-shadow:none;animation:menu-in .22s var(--ease)}
-  .top.is-open .menu-in{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:none;padding:0}
-  .top.is-open .menu-lead{gap:8px;padding:16px 16px 14px;border-radius:14px}
-  .top.is-open .menu-lead p{display:none}
-  .top.is-open .menu-title{font-size:17px}
-  .top.is-open .menu-ctas{margin-top:4px}
-  .top.is-open .nav .menu-all{min-height:38px;font-size:13.5px}
+  .top.is-open .nav-item.is-open > .menu{display:block;position:static;padding:0 0 18px;border:0;border-bottom:1px solid var(--line);box-shadow:none;animation:menu-in .22s var(--ease)}
+  .top.is-open .menu-top{display:grid;gap:6px;margin-bottom:16px}
+  .top.is-open .nav .menu-top a{display:flex;align-items:center;gap:8px;min-height:50px;padding:0 16px;border-radius:12px;background:var(--wash);font:600 16px/1.2 var(--text);color:var(--navy)}
+  .top.is-open .nav .menu-top a svg{width:16px;height:16px;margin-left:auto;color:var(--blue)}
+  .top.is-open .nav .menu-top .menu-top-all{background:var(--navy);color:#ffffff}
+  .top.is-open .nav .menu-top .menu-top-all svg{color:#ffffff}
+  .top.is-open .menu-in{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;max-width:none;padding:0}
+  .top.is-open .menu-lead{display:none}
   .top.is-open .menu-cols,.top.is-open .menu--work .menu-cols{grid-template-columns:minmax(0,1fr);gap:16px;padding-top:0}
   .top.is-open .menu-2col{grid-template-columns:minmax(0,1fr);gap:0}
   .top.is-open .menu-g b{margin:0 6px 4px;padding:0 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#4f5c88}
@@ -125,13 +128,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .top.is-open .nav-new{margin-left:8px}
   .top.is-open .nav-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:18px}
   .top.is-open .nav-foot .btn{width:100%;min-height:50px}
-  /* a scrim over the page behind the open sheet; tapping it closes the menu (script.js) */
-  .top.is-open::after{content:"";position:fixed;inset:0;z-index:-1;background:rgba(15,26,74,.42);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
-  .bar-open body{overflow:hidden}
+  .bar-open,.bar-open body{overflow:hidden}
 }
 @media(min-width:560px){.top-link{display:inline-flex}}
-/* the sheet's foot (Book a call, Log in) is for phones and tablets; the desktop bar carries both */
-.nav-foot{display:none}
+/* the sheet's foot (Book a call, Log in), the accordion buttons and the sheets' top rows are for phones and tablets; the desktop bar and menus carry these */
+.nav-foot,.nav-acc,.menu-top{display:none}
 @media(min-width:1000px){.nav{display:flex}.menu-btn{display:none}}
 
 /* hero: the copy, then the work scrolling across the page. Flat navy; no shadows, no fades, nothing follows the scroll.
@@ -1222,6 +1223,7 @@ body:has(.lb[open]){overflow:hidden}
 .tv-tags{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0;padding:0;list-style:none}
 .tv-tags li{padding:4px 8px;border:1px solid rgba(255,255,255,.4);border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.9)}
 .tv-desc{max-width:540px;margin:0;font-size:17px;line-height:1.5;color:rgba(255,255,255,.88)}
+@media(max-width:720px){.tv-desc{display:none}}   /* on a phone the slide shows the headline and the tags only (November 9, 2026) */
 .tv-copy .cta-row{margin-top:8px}
 .tv-copy .btn svg{width:20px;height:20px;margin:0 2px 0 -4px;vertical-align:-3px}
 .tv-slide.is-on .tv-copy{animation:tv-rise .8s var(--ease) both}
@@ -2144,3 +2146,6 @@ body:has(.lb[open]){overflow:hidden}
 .hw-brand-grid small{display:block;overflow:hidden;font:500 12.5px/1.35 var(--text);color:var(--muted);text-overflow:ellipsis;white-space:nowrap}
 @media(min-width:560px){.hw-brand-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:900px){.hw-brand-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+
+/* About, How we deliver: the Gardyn set photo sits high in its panel, so the crew stays in the frame on a phone's wide panel (November 9, 2026) */
+.ab-deliver .dpanel-media img{object-position:50% 22%}

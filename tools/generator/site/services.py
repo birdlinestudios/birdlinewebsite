@@ -6,7 +6,7 @@
 # Every example is a piece from the Work page or a case-study gallery, named by its source path in content.json; ('asset', key, alt)
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
-from extras import AI_WORK, AI_HERO, NOV8, WR_3D, GARDYN_NOV9, UFL_WNCD
+from extras import AI_WORK, AI_HERO, NOV8, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN
 
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
@@ -204,8 +204,10 @@ SERVICES = [
                ('Sound & music', 'Sound design, licensed music and the mix, for sound-on and sound-off viewing.'),
                ('Deliver', 'Every ratio and length in Deliverables, with the project files and toolkit alongside.')],
         formats=['Explainer animations', 'Feature callouts', 'Logo animation', 'Lower thirds & titles', 'Kinetic typography', 'Animated social posts', 'Video banners', 'Email GIFs'],
-        hero=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2024/05/thumb-20-1.jpg'],
-        gallery=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2024/05/thumb-20-1.jpg', NOV8['literati-treasured-tales-store-promo'], '2025/09/thumb-36.jpg', '2026/08/thumb-59.jpg',
+        hero=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2025/09/thumb-36.jpg'],
+        # November 9, 2026: the rough Gardyn animation left; the animated statics from the Design page (Bezel, 686, Public Rec, Route, Brekky, Gardyn) joined
+        gallery=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2024/05/thumb-2-2.jpg', NOV8['literati-treasured-tales-store-promo'], '2025/09/thumb-36.jpg', '2024/05/thumb-18.jpg', '2026/08/thumb-59.jpg',
+                 '2024/05/thumb-13-2.jpg', '2024/05/thumb-8-2.jpg', '2024/05/thumb-12-2.jpg', '2024/05/thumb-11-2.jpg', '2024/05/thumb-10-2.jpg', '2024/05/thumb-7-2.jpg', '2024/05/thumb-26.jpg',
                  '2025/09/thumb-32.jpg', '2025/09/thumb-34.jpg', NOV8['impactce-intro'], '2025/09/thumb-27.jpg',
                  '2024/05/thumb-27.jpg', '2024/05/thumb-4-4.jpg', '2024/05/thumb-4-3-e1721004821170.jpg'],
         cases=['literati', 'whoop', 'willies-remedy', 'route'],
@@ -237,9 +239,10 @@ SERVICES = [
                ('Deliver & iterate', 'Files and sources in Deliverables, and the next pieces briefed from the results.')],
         formats=['Static ads', 'Landing page graphics', 'Email visuals', 'PDP & PLP content', 'Presentation decks', 'Social post templates', 'Key art', 'Brand assets'],
         hero=['2024/05/Protect-Static-v2.jpg', '2024/05/0001_THE-EVERYWHERE-HYBRID-SHORT.jpg', '2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', '2024/05/Affirm-Pricing-1x1-v2-1.jpeg'],
+        # stills only since November 9, 2026: the animated pieces moved to the Motion Graphics page
         gallery=['2024/05/Protect-Static-v2.jpg', '2024/05/0001_THE-EVERYWHERE-HYBRID-SHORT.jpg', '2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', '2024/05/Affirm-Pricing-1x1-v2-1.jpeg',
-                 '2024/05/Gardyn-Static-BT4W-1x1-3.jpeg', '2024/05/DOUBLE-KNIT-ORION-GALLERY5.jpg', '2024/05/thumb-2-2.jpg', '2024/05/thumb-18.jpg', '2024/05/thumb-21-1.jpg', '2024/05/thumb-13-2.jpg',
-                 '2024/05/thumb-8-2.jpg', '2024/05/thumb-12-2.jpg', '2024/05/thumb-11-2.jpg', '2024/05/thumb-10-2.jpg', '2024/05/thumb-7-2.jpg', '2024/05/OPTION-1A.jpg', '2024/05/EVERYWHERE_1080x2160_Ad.jpg', '2024/05/thumb-26.jpg'],
+                 '2024/05/Gardyn-Static-BT4W-1x1-3.jpeg', '2024/05/DOUBLE-KNIT-ORION-GALLERY5.jpg', '2024/05/IMG_8421.jpg', '2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png',
+                 '2024/05/OPTION-1A.jpg', '2024/05/EVERYWHERE_1080x2160_Ad.jpg'],
         cases=['route', 'literati', 'gardyn', '686'],
         faq=[('Which tools do you design in?', 'Figma and Adobe Creative Cloud, and whatever your team already uses. Briefs can sync from Google Docs, Sheets, Slides and Notion in the Birdline App.'),
              ('Can you work inside our existing brand system?', 'Yes, that’s the default. We work from your brand library and guidelines, and extend the system when a campaign needs something new.'),
@@ -303,10 +306,10 @@ SERVICES = [
                ('Series & cutdowns', 'The trailer, vertical clips and stills, and the next episode planned from the first.')],
         formats=['Founder & profile videos', 'Docu-series episodes', 'Customer stories', 'Athlete & rider features', 'Long-form YouTube', 'Trailers', 'Vertical clips', 'Interview stills'],
         hero=[NOV8['whoop-behind-the-drivers-seat-lewis'], '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', '2024/06/Culture-Shifters-Morgan-Collett.jpg'],
-        gallery=[NOV8['whoop-behind-the-drivers-seat-lewis'], '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', '2024/06/Culture-Shifters-Morgan-Collett.jpg', '2024/06/686-x-James-Coffman-Design-1.jpg', '2024/06/Route-22In-The-Studio22-with-DEUX.jpg',
+        gallery=[NOV8['whoop-behind-the-drivers-seat-lewis'], '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', '2024/06/686-UNWORK-Tyler-Ravelle.jpg', '2024/06/Culture-Shifters-Morgan-Collett.jpg', '2024/06/686-x-James-Coffman-Design-1.jpg', UNWORK_KEEGAN, '2024/06/Route-22In-The-Studio22-with-DEUX.jpg',
                  '2024/06/Noah-Collins-Design-e1721025792448.jpg', '2024/06/Culture-Shifters-Jake-Burghart.jpg', '2024/05/FreePower-HDExpo-Dala-Interview.jpg', '2024/06/FreePower-JakeS.jpg',
                  '2024/06/Logan-Hollowell-X-Route.jpg', '2024/06/Route-x-Daily-Drills.jpg', '2024/06/686-Gore-Tex-Pro-Review-Matt-Belzile.jpg', '2024/06/686-30-Years-of-Independence.jpg',
-                 '2026/05/thumb-36.jpg', '2026/08/thumb-51.jpg', '2024/05/Bezel-Work-Persona-e1715122673128.jpg', '2026/08/thumb-56.jpg'],
+                 '2026/05/thumb-36.jpg', '2026/08/thumb-51.jpg', '2026/08/thumb-56.jpg'],   # Bezel left and the two 686 UNWORK profiles joined on November 9, 2026
         cases=['route', 'solidroad', '686', 'freepower'],
         faq=[('How long is a profile?', 'Whatever the story needs. Most run a few minutes for web and YouTube, with a 60-second trailer and vertical clips alongside.'),
              ('Can this become a series?', 'Yes, and series are where profiles earn the most. A repeatable format, a recurring crew and a release cadence turn one shoot into a channel.'),
