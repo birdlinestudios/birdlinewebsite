@@ -6,7 +6,7 @@
 //
 //   headers: x-sync-key: <BLOB_SYNC_SECRET>      the project's env var; without it the route refuses everything
 //   body:    { "src": "https://…", "name": "whoop-lewis.mp4", "contentType": "video/mp4" }
-//   src must be on a Vercel Sandbox host or our own Blob store (a copy or a rename); anything else is refused.
+//   src must be on a Vercel Sandbox port (sb-<id>.vercel.run) or our own Blob store (a copy or a rename); anything else is refused.
 //
 // The deployment's own protection (Vercel Authentication) sits in front of this as well, so a caller also has to be signed in
 // to the team — the Browser pane in a working session is.
@@ -16,7 +16,7 @@ import { put } from "@vercel/blob";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const ALLOWED_HOST = /(^|\.)vercel-sandbox\.com$|\.public\.blob\.vercel-storage\.com$/;
+const ALLOWED_HOST = /(^|\.)vercel\.run$|(^|\.)vercel-sandbox\.com$|\.public\.blob\.vercel-storage\.com$/;   // a sandbox port is served at sb-<id>.vercel.run
 const NAME = /^[A-Za-z0-9][A-Za-z0-9._ ()-]{0,180}\.(mp4|mov|webm|mp3|m4a|jpg|jpeg|png|webp)$/;
 
 export async function POST(req: Request) {
