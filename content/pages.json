@@ -138,6 +138,12 @@
   "description": "How a Birdline partnership runs: you send briefs in Slack or the Birdline App, our Birds make the work, finals land in your library, and we meet every other week to decide what is next. Unlimited deliverables, productions shot for the library, and results traced back to the creative."
  },
  {
+  "route": "/testimonials",
+  "file": "testimonials.html",
+  "title": "Testimonials: Birdline",
+  "description": "What fifteen brands say about working with Birdline as their creative team: WHOOP, Gardyn, Public Rec, Route, Literati, Patrol, FreePower, 686, Solidroad, EDJY, Willie’s Remedy and more, in their own words."
+ },
+ {
   "route": "/services/commercial",
   "file": "services__commercial.html",
   "title": "Commercial: Birdline",

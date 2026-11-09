@@ -2031,3 +2031,34 @@ body:has(.lb[open]){overflow:hidden}
 
 /* About, How we deliver: the Gardyn set photo sits high in its panel, so the crew stays in the frame on a phone's wide panel (November 9, 2026) */
 .ab-deliver .dpanel-media img{object-position:50% 22%}
+
+/* ===== Testimonials (November 9, 2026): every quote in full. The hero carries three numbers; the wall is a column layout of white
+   cards on the wash, each with a big periwinkle quotation mark, the words, the person and the brand's logo. ===== */
+.hero--tmp{padding-bottom:0}
+.hero--tmp .hero-copy{max-width:900px}
+.tmp-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:760px;margin:44px auto 64px;padding:0;list-style:none}
+.tmp-stats li{display:grid;gap:6px;padding-top:16px;border-top:1px solid rgba(255,255,255,.2);text-align:left}
+.tmp-stats b{font:600 clamp(26px,3vw,38px)/1.05 var(--display);letter-spacing:-.03em;color:#ffffff;font-variant-numeric:tabular-nums}
+.tmp-stats span{font-size:14px;line-height:1.45;color:var(--on-navy-2);text-wrap:pretty}
+.tmp-wall{padding-top:56px}
+.tmp-grid{columns:1;column-gap:18px;margin:0;padding:0;list-style:none}
+.tmp-card{position:relative;display:grid;gap:18px;break-inside:avoid;margin:0 0 18px;padding:34px 28px 28px;border:1px solid var(--line-2);border-radius:20px;background:#ffffff;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.tmp-card:hover{transform:translateY(-2px);box-shadow:0 24px 48px -28px rgba(15,26,74,.35)}
+.tmp-mark{position:absolute;top:14px;right:24px;font:700 84px/1 var(--display);letter-spacing:-.04em;color:var(--peri);opacity:.55;pointer-events:none}
+.tmp-card blockquote{display:grid;gap:12px;margin:0;padding:0;border:0}
+.tmp-card blockquote p{margin:0;font-size:17px;line-height:1.6;color:var(--ink);text-wrap:pretty}
+.tmp-card blockquote p:first-child{padding-right:52px}   /* room for the quotation mark */
+.tmp-card--long blockquote p{font-size:16px}
+.tmp-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;border-top:1px solid var(--line)}
+.tmp-foot .who{display:flex;align-items:center;gap:12px;min-width:0}
+.tmp-foot .who-av{flex:none;width:44px;height:44px;overflow:hidden;border-radius:50%;background:var(--wash)}
+.tmp-foot .who-av img{width:100%;height:100%;object-fit:cover;display:block}
+.tmp-foot .who-name{display:grid;gap:2px;min-width:0}
+.tmp-foot .who-name b{font:600 15.5px/1.2 var(--display);color:var(--navy)}
+.tmp-foot .who-name span{font-size:13px;line-height:1.35;color:var(--muted)}
+.tmp-logo{flex:none;display:inline-flex;align-items:center;height:44px}
+.tmp-logo img{display:block;width:auto;height:var(--lh,20px);max-width:150px;object-fit:contain}
+.tmp-card .hw-link{margin-top:-4px;font-size:14.5px}
+@media(min-width:680px){.tmp-grid{columns:2}}
+@media(min-width:1040px){.tmp-grid{columns:3;column-gap:20px}.tmp-card{margin-bottom:20px}}
+@media(max-width:560px){.tmp-stats{grid-template-columns:minmax(0,1fr);gap:12px;margin:36px 0 44px}.tmp-stats li{text-align:left}.tmp-card{padding:30px 22px 24px}.tmp-mark{font-size:72px;right:18px}}

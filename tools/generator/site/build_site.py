@@ -12,6 +12,7 @@ from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
 import how as HW
+import testimonials as TM
 from why import HERO_LEDE, REASONS, REASONS_LINE, LIBRARY_INTRO, PRODUCTIONS, CAMPAIGNS, MONTHS, LIBRARY_STATS, LIBRARY_STATEMENT, ROPS_INTRO, METRICS, PROOF, PROOF_NOTE, APP_SUB, APP_CHAIN, APP_TAIL
 
 ASSETS, OUT = sys.argv[1], sys.argv[2]
@@ -204,6 +205,8 @@ def relink(html, root, on_home, hashes=False, local_ids=(), clean=False):
             new = '#rops' if hashes else root + 'rops.html'
         elif p == '/how-it-works':
             new = '#how-it-works' if hashes else root + 'how-it-works.html'
+        elif p == '/testimonials':
+            new = '#testimonials' if hashes else root + 'testimonials.html'
         elif p.startswith('/services/'):
             new = ('#svc-' + p.split('/')[-1]) if hashes else root + 'services/' + p.split('/')[-1] + '.html'
         elif h.startswith('#') and not on_home and not (h[1:] in local_ids and h != '#top'):
@@ -1668,6 +1671,51 @@ def how_page():
     inner = '\n\n'.join([hero, short, run, tools, shoot, birds, returns, cases, faq, close])
     return document('How It Works: Birdline', 'How a Birdline partnership runs: you send briefs in Slack or the Birdline App, our Birds make the work, finals land in your library, and we meet every other week to decide what is next. Unlimited deliverables, productions shot for the library, and results traced back to the creative.', inner, '')
 
+# ---- Testimonials (November 9, 2026): every client quote, in full, on one page. The people and their headshots, titles and logos
+# come from the homepage's Client Stories cards; the words from the brand's case study where it has one.
+def testimonials_page():
+    cards = {}
+    for c in re.findall(r'<li class="tm-card">(.*?)</li>', body, re.S):
+        name = H.unescape(re.search(r'<b>(.*?)</b>', c).group(1))
+        if name in cards: continue
+        logo = re.search(r'data-img="(logo2-[^"]+)" width="(\d+)" height="(\d+)" alt="([^"]*)" style="--lh:(\d+)px"', c)
+        cards[name] = dict(role=H.unescape(re.search(r'<b>.*?</b><span>(.*?)</span>', c).group(1)), quote=[H.unescape(re.search(r'<p>(.*?)</p>', c, re.S).group(1))],
+                           av=re.search(r'data-img="(av-[^"]+)"', c).group(1), logo=(logo.group(1), int(logo.group(2)), int(logo.group(3)), H.unescape(logo.group(4)), int(logo.group(5))) if logo else None)
+    def case_quote(slug, name):
+        for q in content['cases'][slug].get('copy', {}).get('quotes', []):
+            if q.get('name') == name and not q.get('placeholder'):
+                return [re.sub(r'^[“"]|[”"]$', '', p.strip()) for p in q['paras']]
+        return None
+    items = []
+    for name, qslug, cslug in TM.PEOPLE:
+        c = cards[name]
+        paras = (case_quote(qslug, name) if qslug else None) or c['quote']
+        av = '<img src="{{ROOT}}img/%s" width="192" height="192" alt="" loading="lazy">' % asset(c['av'])
+        logo = ''
+        if c['logo']:
+            key, lw, lh, alt, h = c['logo']
+            logo = '<span class="tmp-logo" style="--lh:%dpx"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></span>' % (h, asset(key), lw, lh, esc(alt))
+        link = ('<a class="hw-link" href="{{ROOT}}case-studies/%s.html">Read the %s case study%s</a>' % (cslug, esc(CARDS[cslug]['brand']), ARROW_GO)) if cslug else ''
+        items.append('<li class="tmp-card%s"><span class="tmp-mark" aria-hidden="true">“</span><blockquote>%s</blockquote>'
+                     '<div class="tmp-foot"><div class="who"><span class="who-av" aria-hidden="true">%s</span><div class="who-name"><b>%s</b><span>%s</span></div></div>%s</div>%s</li>'
+                     % (' tmp-card--long' if sum(len(x) for x in paras) > 420 else '', ''.join('<p>%s</p>' % esc(x) for x in paras), av, esc(name), esc(c['role']), logo, link))
+    h = TM.HERO
+    hero = ('<!-- ===== Testimonials: the copy on navy ===== -->\n'
+            '<section class="hero hero--page hero--tmp on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">%s</span><h1>%s</h1><p class="lede">%s</p>'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}case-studies.html">See the case studies</a></div>'
+            '<ul class="tmp-stats" aria-label="In numbers">%s</ul></div></div>\n</section>'
+            % (esc(h['eyebrow']), tt(h['h1']), esc(h['lede']), ''.join('<li><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in TM.STATS)))
+    wall = ('<!-- ===== Every quote, in full ===== -->\n'
+            '<section class="band band--wash tmp-wall" id="testimonials">\n  <div class="wrap"><ul class="tmp-grid" aria-label="Client testimonials">%s</ul></div>\n</section>' % ''.join(items))
+    w = TM.WORK
+    work = ('<!-- ===== The case studies behind the words ===== -->\n'
+            '<section class="band svc-cases" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
+            '<ul class="cs-grid cs-grid--4 cs-grid--light">%s</ul><div class="more"><a class="btn" href="{{ROOT}}case-studies.html">All case studies</a></div></div>\n</section>'
+            % (esc(w['eyebrow']), tt(w['h2']), ''.join(cs_card(slug, light=True) for slug in w['slugs'])))
+    close = close_section('See the work', '{{ROOT}}work.html', heading=TM.CLOSE['heading'], sub=TM.CLOSE['sub'], photo=site_img(TM.CLOSE['photo']))
+    return document('Testimonials: Birdline', 'What fifteen brands say about working with Birdline as their creative team: WHOOP, Gardyn, Public Rec, Route, Literati, Patrol, FreePower, 686, Solidroad, EDJY, Willie’s Remedy and more, in their own words.',
+                    '\n\n'.join([hero, wall, work, close]), '')
+
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
 # A video is named by its Vimeo id (its curated still, playing from the library); a photograph or design by its still.
@@ -1753,6 +1801,7 @@ pages['why-us.html'] = why_page()
 pages['rops.html'] = rops_page()
 pages['services/production-process.html'] = production_page()
 pages['how-it-works.html'] = how_page()
+pages['testimonials.html'] = testimonials_page()
 for svc in SERVICES:
     pages['services/%s.html' % svc['slug']] = service_page(svc)
 for _slug, _eyebrow, _title, _updated, _desc in DOC_PAGES:
