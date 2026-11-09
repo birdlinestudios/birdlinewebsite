@@ -11,6 +11,7 @@ from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WO
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
+import how as HW
 from why import HERO_LEDE, REASONS, REASONS_LINE, LIBRARY_INTRO, PRODUCTIONS, CAMPAIGNS, MONTHS, LIBRARY_STATS, LIBRARY_STATEMENT, ROPS_INTRO, METRICS, PROOF, PROOF_NOTE, APP_SUB, APP_CHAIN, APP_TAIL
 
 ASSETS, OUT = sys.argv[1], sys.argv[2]
@@ -185,6 +186,8 @@ def relink(html, root, on_home, hashes=False, local_ids=(), clean=False):
             new = '#why-us' if hashes else root + 'why-us.html'
         elif p == '/rops':
             new = '#rops' if hashes else root + 'rops.html'
+        elif p == '/how-it-works':
+            new = '#how-it-works' if hashes else root + 'how-it-works.html'
         elif p.startswith('/services/'):
             new = ('#svc-' + p.split('/')[-1]) if hashes else root + 'services/' + p.split('/')[-1] + '.html'
         elif h.startswith('#') and not on_home and not (h[1:] in local_ids and h != '#top'):
@@ -1492,6 +1495,132 @@ def production_page():
     inner = '\n\n'.join([hero, library, anywhere, process, rops_why_section('How we measure productions', wash=True, heading=RP_HERO['h1'], sub=RP_HERO['lede']), rops_diy_section(), close_section('See the packages', '{{ROOT}}packages.html', photo=(pf, pw, ph))])
     return document('Production Process: Birdline', 'How Birdline plans and runs full-service productions for commercial, photo and UGC-style shoots: scoped per project, planned in the Birdline App, crewed wherever the shoot is, and built so one day on set feeds campaigns for years.', inner, '../')
 
+# ---- How It Works (November 8, 2026): Mike's copy for how a partnership runs, with a visual beside each part. The hero's Slack
+# channel hangs off the navy into the first band; the Birds row is the About page's; the rest is drawn here.
+TEAM_BY_KEY = {k: (name, role) for k, name, role, _ in TEAM}
+LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>'
+FOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>'
+CLIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M3 10h18M3 14h18M8 6v12M16 6v12"></path></svg>'
+LINK_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"></path></svg>'
+
+def hw_av(who, cls='hw-av'):
+    """a face: a Bird by key, or ('initials', name, role) for someone on the brand's side"""
+    if isinstance(who, str):
+        site_imgs.add('bird-%s.webp' % who)
+        return '<span class="%s"><img src="{{ROOT}}img/bird-%s.webp" width="400" height="400" alt="" loading="lazy"></span>' % (cls, who)
+    return '<span class="%s %s--i">%s</span>' % (cls, cls.split()[0], esc(who[0]))
+
+def hw_name(who):
+    return TEAM_BY_KEY[who][0] if isinstance(who, str) else who[1]
+
+def hw_chat():
+    """the hero's channel: a week of project threads between the brand and the Birds"""
+    members = ''.join(hw_av(k, 'hw-mem') for k in ('mike', 'ryan', 'james', 'megan'))
+    rows = []
+    for day, who, when, title, n, repliers in HW.THREADS:
+        if day:
+            rows.append('<li class="hw-day"><span>%s</span></li>' % esc(day))
+        rows.append('<li class="hw-thread">%s<div><b>%s <small>%s</small></b><span class="hw-title">%s</span>'
+                    '<span class="hw-replies">%s<em>%d replies</em></span></div></li>'
+                    % (hw_av(who), esc(hw_name(who)), esc(when), esc(title), ''.join(hw_av(k, 'hw-rep') for k in repliers), n))
+    return ('<div class="hw-chat" role="img" aria-label="A week in a brand’s shared Slack channel with Birdline: project threads for new briefs, a hero spot’s cutdowns, product renders, a shoot day and email headers, each with its replies">'
+            '<div class="hw-chat-top"><span class="hw-chan">%s%s</span><span class="hw-members">%s<b>12</b></span></div>'
+            '<ol class="hw-threads">%s</ol></div>' % (LOCK, esc(HW.CHANNEL), members, ''.join(rows)))
+
+def hw_thread_card():
+    t = HW.THREAD
+    replies = ''.join('<div class="hw-tc-reply">%s<div><b>%s</b><p>%s</p></div></div>' % (hw_av(who), esc(hw_name(who)), esc(text)) for who, text in t['replies'])
+    return ('<div class="hw-vis hw-vis--thread" aria-hidden="true"><div class="hw-tc">'
+            '<div class="hw-tc-head">%s<div><b>%s <small>11:05 AM</small></b><span class="hw-title">%s</span><span class="hw-brief">%s%s</span></div><span class="hw-status">%s</span></div>%s</div></div>'
+            % (hw_av('ryan'), esc(hw_name('ryan')), esc(t['title']), LINK_IC, esc(t['brief']), esc(t['status']), replies))
+
+def hw_agenda_card():
+    a = HW.AGENDA
+    rows = ''.join('<li><b>%d</b><span>%s</span><small>%s</small></li>' % (n, esc(k), esc(d)) for k, d, n in a['rows'])
+    perf = ''.join('<li><span>%s</span><i style="--p:%d%%"></i></li>' % (esc(k), pct) for k, pct in a['perf'])
+    return ('<div class="hw-vis hw-vis--agenda" aria-hidden="true"><div class="hw-ag"><div class="hw-ag-head"><b>Strategy call</b><span>%s</span></div>'
+            '<ul class="hw-ag-rows">%s</ul><div class="hw-ag-perf"><span class="hw-k">What’s performing</span><ul>%s</ul></div><p class="hw-ag-next">%s</p></div></div>'
+            % (esc(a['when']), rows, perf, esc(a['next'])))
+
+def hw_step_visuals():
+    b = HW.BRIEF
+    brief = ('<div class="hw-vis" aria-hidden="true"><div class="hw-mini"><span class="hw-k">Brief</span><b>%s</b><div class="hw-rows">%s</div></div></div>'
+             % (esc(b['title']), ''.join('<div><span>%s</span><em>%s</em></div>' % (esc(k), esc(v)) for k, v in b['rows'])))
+    r = HW.REVIEW
+    review = ('<div class="hw-vis" aria-hidden="true"><div class="hw-mini"><span class="hw-k">Review</span><b>%s</b>'
+              '<div class="hw-scrub"><i class="hw-mark"></i></div>'
+              '<div class="hw-note">%s<div><small>%s · %s</small><p>%s</p></div></div></div></div>'
+              % (esc(r['file']), hw_av(r['who']), esc(hw_name(r['who'])), esc(r['at']), esc(r['note'])))
+    finals = ('<div class="hw-vis" aria-hidden="true"><div class="hw-mini"><span class="hw-k">Finals</span><ul class="hw-finals">%s</ul><span class="hw-chip hw-chip--ok">%sReady to launch</span></div></div>'
+              % (''.join('<li><span class="ck">%s</span>%s</li>' % (CHECK, esc(f)) for f in HW.FINALS), CHECK))
+    return [brief, review, finals]
+
+def hw_tree():
+    f = HW.FILES
+    path = ' <i>/</i> '.join('<b>%s</b>' % esc(x) if i == len(f['path']) - 1 else esc(x) for i, x in enumerate(f['path']))
+    folders = ''.join('<li%s>%s<span>%s</span><small>%s</small></li>' % (' class="is-open"' if i == 0 else '', FOLDER, esc(n), esc(c)) for i, (n, c) in enumerate(f['folders']))
+    chain = '<i>→</i>'.join('<span>%s</span>' % esc(x) for x in f['chain'])
+    return ('<div class="hw-tree" aria-hidden="true"><div class="hw-tree-top"><span class="hw-chip">%s</span><span class="hw-path">%s</span></div>'
+            '<ul class="hw-folders">%s</ul><div class="hw-file">%s<div><b>%s</b><small>%s</small></div></div>'
+            '<div class="hw-chain"><span class="hw-chip">Birdline App</span>%s</div></div>'
+            % (esc(f['drive']), path, folders, CLIP, esc(f['file'][0]), esc(f['file'][1]), chain))
+
+def how_page():
+    for key, *_ in TEAM:
+        site_imgs.add('bird-%s.webp' % key)
+    h = HW.HERO
+    hero = ('<!-- ===== How it works: the copy on navy, and the brand’s channel with Birdline hanging off it into the first band ===== -->\n'
+            '<section class="hero hero--page hero--how on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">%s</span><h1>%s</h1><p class="lede">%s</p>'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div>\n  %s</div>\n</section>'
+            % (esc(h['eyebrow']), tt(h['h1']), esc(h['lede']), hw_chat()))
+    st = HW.SETUP
+    setup = ('<!-- ===== Getting started: the kickoff, in three parts ===== -->\n'
+             '<section class="band band--wash hw-setup" id="setup">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>'
+             '<ul class="pillars">%s</ul></div>\n</section>'
+             % (esc(st['eyebrow']), tt(st['h2']), esc(st['sub']),
+                ''.join('<li class="pillar"><span class="svc-ic" aria-hidden="true">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for k, t, d in st['steps'])))
+    tc = HW.TOUCH
+    visuals = [hw_thread_card(), hw_agenda_card()]
+    touch = ('<!-- ===== Stay close to the work: a project thread, and the strategy call ===== -->\n'
+             '<section class="band hw-touch" id="slack">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
+             '<ul class="hw-cards">%s</ul></div>\n</section>'
+             % (esc(tc['eyebrow']), tt(tc['h2']),
+                ''.join('<li class="hw-card">%s<span class="svc-ic" aria-hidden="true">%s</span><h3>%s</h3><p>%s</p></li>' % (visuals[i], ICONS[k], esc(t), esc(d)) for i, (k, t, d) in enumerate(tc['cards']))))
+    bd = HW.BIRDS
+    birds_band = ('<!-- ===== The Birds: the About page’s row ===== -->\n'
+                  '<section class="band band--wash the-birds hw-birds" id="birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div></div>\n'
+                  '  %s\n  <div class="wrap"><p class="sub hw-tail">%s</p></div>\n</section>' % (esc(bd['eyebrow']), tt(bd['h2']), esc(bd['sub']), team_loop(), esc(bd['tail'])))
+    fl = HW.FLOW
+    vis = hw_step_visuals()
+    steps = ''.join('<li>%s<span class="step-n">%02d</span><h3>%s</h3><p>%s</p></li>' % (vis[i], i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(fl['steps']))
+    flow = ('<!-- ===== Brief to final: three steps, and the question about unlimited deliverables ===== -->\n'
+            '<section class="band band--navy on-dark hw-flow" id="brief-to-final">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
+            '<ol class="hw-steps">%s</ol><div class="hw-q"><span class="hw-q-ic" aria-hidden="true">?</span><div><b>%s</b><p>%s</p></div></div></div>\n</section>'
+            % (esc(fl['eyebrow']), tt(fl['h2']), steps, esc(fl['q']), esc(fl['a'])))
+    sh = HW.SHOOT
+    pf, pw, ph = site_img(sh['photo'])
+    strip = ''.join('<li><figure><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure></li>'
+                    % (site_img(src) + (esc(alt), esc(label))) for src, label, alt in sh['strip'])
+    shoot = ('<!-- ===== Productions: scoped on their own, shot for the library ===== -->\n'
+             '<section class="band hw-shoot" id="productions">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
+             '<div class="hw-split"><figure class="hw-photo"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></figure><div class="cs-text">%s</div></div>'
+             '<span class="hw-strip-k">%s</span><ul class="hw-strip">%s</ul></div>\n</section>'
+             % (esc(sh['eyebrow']), tt(sh['h2']), pf, pw, ph, esc(sh['photo_alt']), ''.join('<p>%s</p>' % esc(x) for x in sh['paras']), esc(sh['strip_k']), strip))
+    fi = HW.FILES
+    files = ('<!-- ===== The library: how the footage is kept ===== -->\n'
+             '<section class="band band--wash hw-files" id="library">\n  <div class="wrap"><div class="hw-split hw-split--files"><div class="hw-copy"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><div class="cs-text">%s</div></div>%s</div></div>\n</section>'
+             % (esc(fi['eyebrow']), tt(fi['h2']), ''.join('<p>%s</p>' % esc(x) for x in fi['paras']), hw_tree()))
+    rt = HW.RETURNS
+    metrics = ''.join('<li><b>%s<sup class="mark-tm">™</sup></b><span>%s</span><p>%s</p></li>' % (esc(k), esc(t), esc(d)) for k, t, d in rt['metrics'])
+    returns = ('<!-- ===== ROPS and ROCS: what the work returned ===== -->\n'
+               '<section class="band band--navy on-dark hw-returns" id="returns">\n  <div class="wrap"><div class="head"><span class="eyebrow">ROPS<sup class="mark-tm">™</sup> &amp; ROCS<sup class="mark-tm">™</sup></span><h2 class="h2">%s</h2><p class="sub">%s</p></div>'
+               '<ul class="hw-metrics">%s</ul><p class="hw-tail">%s</p>'
+               '<div class="more"><a class="btn btn--ghost" href="{{ROOT}}rops.html">How we measure ROPS<sup class="mark-tm">™</sup> &amp; ROCS<sup class="mark-tm">™</sup></a><a class="btn btn--ghost" href="{{ROOT}}workspace.html">Explore the Birdline App</a></div></div>\n</section>'
+               % (tt(rt['h2']), esc(rt['sub']), metrics, esc(rt['tail'])))
+    close = close_section('See the packages', '{{ROOT}}packages.html', heading=HW.CLOSE['heading'], sub=HW.CLOSE['sub'])
+    inner = '\n\n'.join([hero, setup, touch, birds_band, flow, shoot, files, returns, close])
+    return document('How It Works: Birdline', 'How a Birdline partnership runs: a kickoff, a shared Slack channel and the Birdline App, strategy calls every other week, the Birds who make the work, briefs to finals, productions shot for the library, and ROPS™ and ROCS™ on what the work returned.', inner, '')
+
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
 # A video is named by its Vimeo id (its curated still, playing from the library); a photograph or design by its still.
@@ -1576,6 +1705,7 @@ pages['services.html'] = services_page()
 pages['why-us.html'] = why_page()
 pages['rops.html'] = rops_page()
 pages['services/production-process.html'] = production_page()
+pages['how-it-works.html'] = how_page()
 for svc in SERVICES:
     pages['services/%s.html' % svc['slug']] = service_page(svc)
 for _slug, _eyebrow, _title, _updated, _desc in DOC_PAGES:
