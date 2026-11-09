@@ -1881,6 +1881,11 @@ body:has(.lb[open]){overflow:hidden}
 
 /* ---- a case study's radio spots: one reel, a list of spots that each play their own stretch of it */
 .cs-radio .radio{margin-top:var(--gap)}
+/* the Audio page: radio and video as two parts of one examples section (November 9, 2026) */
+.svc-work--audio .radio{margin-top:var(--gap)}
+.svc-work--audio .head--next{margin-top:64px;padding-top:56px;border-top:1px solid var(--line);max-width:none}
+.svc-work--audio .head--next .h2,.svc-work--audio .head--next .sub{max-width:1040px;margin-inline:auto}
+@media(max-width:720px){.svc-work--audio .head--next{margin-top:44px;padding-top:40px}}
 .radio-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
 @media(max-width:899px){.radio-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:559px){.radio-list{grid-template-columns:minmax(0,1fr)}}

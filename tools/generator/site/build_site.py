@@ -855,15 +855,18 @@ def index_page():
 NAME_TO_SLUG = {'Public Rec': 'public-rec', 'Route App': 'route', 'Route': 'route', 'Gardyn': 'gardyn', 'FreePower': 'freepower', '686': '686',
                 'Patrol': 'patrol', 'Literati': 'literati', 'Solidroad': 'solidroad', 'WHOOP': 'whoop', 'Willie’s Remedy': 'willies-remedy', 'EDJY': 'edjy', 'UFL': 'ufl'}
 
-def radio_section(r, eyebrow='On air', heading=None, sub=None):
+def radio_block(r):
     """the radio spots as a player: one reel (r['file']) and a button per spot that plays its own stretch (site.js, [data-radio])"""
     site_videos.add(r['file'])
     spots = ''.join('<li class="radio-spot"><button type="button" data-radio-play data-start="%.2f" data-end="%.2f" aria-pressed="false" aria-label="%s">'
                     '<span class="radio-btn" aria-hidden="true">%s%s</span><span class="radio-cap"><b>%s</b><span>%s</span></span><span class="radio-time">%s</span><i class="radio-bar" aria-hidden="true"></i></button></li>'
                     % (sp['start'], sp['end'], esc('Play: %s, %s' % (sp['name'], sp['note'])), PLAY.replace('<svg ', '<svg class="ic-play" ', 1), PAUSE, esc(sp['name']), esc(sp['note']), ':%02d' % round(sp['end'] - sp['start'])) for sp in r['spots'])
+    return '<div class="radio" data-radio><audio preload="metadata" src="{{ROOT}}video/%s"></audio><ol class="radio-list" aria-label="Radio spots">%s</ol></div>' % (r['file'], spots)
+
+def radio_section(r, eyebrow='On air', heading=None, sub=None):
+    """the radio player as a band of its own (the UFL case study)"""
     return ('<section class="band cs-radio" id="radio">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n'
-            '  <div class="radio" data-radio><audio preload="metadata" src="{{ROOT}}video/%s"></audio><ol class="radio-list" aria-label="Radio spots">%s</ol></div></div>\n</section>'
-            % (esc(eyebrow), tt(heading or r['heading']), esc(sub or r['sub']), r['file'], spots))
+            '  %s</div>\n</section>' % (esc(eyebrow), tt(heading or r['heading']), esc(sub or r['sub']), radio_block(r)))
 
 def quote_card(q, slug):
     brand = CARDS[slug]['brand']
@@ -1483,12 +1486,17 @@ def service_page(svc):
         hero = hero.replace('<a class="btn btn--ghost" href="#examples">See examples</a>', '')
     if not svc['cases']:
         cases = ''
-    radio = ''
-    if svc.get('radio') == 'ufl':   # the Audio page: the UFL's game-day radio spots, as on the UFL case study
-        radio = radio_section(content['cases']['ufl']['copy']['radio'], eyebrow='On air', heading='Game-Day Radio |for the UFL.',
-                              sub='Six of the spots we wrote, voiced and mixed for the league’s teams, most of them turned around in a day. Read how the season ran on the UFL case study.')
-    # on the Audio page the radio player sits above the video examples (Mike, November 9, 2026)
-    inner = '\n\n'.join(x for x in [hero, intro, why, radio, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
+    if svc.get('radio') == 'ufl':
+        # the Audio page's examples are one section in two parts (Mike, November 9, 2026): the UFL's game-day radio spots first, as on the UFL
+        # case study, then the videos under their own heading
+        work = ('<section class="band svc-work svc-work--audio" id="examples">\n  <div class="wrap">'
+                '<div class="head" id="radio"><span class="eyebrow">On radio</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n  %s\n'
+                '  <div class="head head--next"><span class="eyebrow">In video</span><h2 class="h2">%s</h2><p class="sub">Tap a frame to play it or see it at full size.</p></div>\n'
+                '  <div class="masonry masonry--3" data-masonry role="list" aria-label="Examples of %s">\n%s\n  </div>'
+                '<div class="more"><a class="btn btn--outline" href="{{ROOT}}portfolio.html">See all the work</a></div></div>\n</section>'
+                % (tt('Game-Day Radio |for the UFL.'), esc('Six of the spots we wrote, voiced and mixed for the league’s teams, most of them turned around in a day. Read how the season ran on the UFL case study.'),
+                   radio_block(content['cases']['ufl']['copy']['radio']), tt(svc['examples_h2']), esc(name), tiles))
+    inner = '\n\n'.join(x for x in [hero, intro, why, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
     return document('%s: Birdline' % name, svc['lede'], inner, '../')
 
 # ---- the ROPS & ROCS page: what the two numbers are, why they are measured, what they are worth, and how the app measures them
