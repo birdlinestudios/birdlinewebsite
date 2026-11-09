@@ -146,7 +146,7 @@ SERVICES = [
              ('How is this different from Paid Social?', 'UGC is one of the formats we make for paid social. Most feeds mix UGC-style pieces with polished product ads and statics, and we produce all three from the same brief.')],
     ),
     dict(
-        slug='3d-cgi-vfx', why_h2='What 3D and VFX Do |for a Brand.', examples_h2='Renders and VFX |We’ve Made.',
+        slug='3d-vfx', why_h2='What 3D and VFX Do |for a Brand.', examples_h2='Renders and VFX |We’ve Made.',
         name='3D / VFX', cat='design', img='svc-3d', blurb='Product renders, built worlds, and seamless compositing.',
         h1='Renders, Built Worlds, and |Seamless Compositing.',
         lede='Product renders when the product isn’t ready, worlds you can’t shoot, and effects that disappear into the footage.',

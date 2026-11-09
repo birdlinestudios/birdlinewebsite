@@ -442,14 +442,14 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
         var v = document.createElement('video');
         v.src = link.getAttribute('data-src'); v.controls = true; v.autoplay = true; v.playsInline = true; v.preload = 'auto';
         v.setAttribute('title', link.getAttribute('data-title') || 'Video');
-        // the preview build may not carry this file: show its still instead of a black player
+        // a file that is not in the store yet (or a network hiccup): show its still instead of a black player
         var poster = link.getAttribute('data-poster') || (link.querySelector('video') && link.querySelector('video').getAttribute('poster')) || (link.querySelector('img') && link.querySelector('img').getAttribute('src'));
         if (poster) v.poster = poster;
         v.addEventListener('error', function () {
           if (!v.parentNode) return;
           var holder = document.createElement('div'); holder.className = 'lb-missing';
           if (poster) { var im = document.createElement('img'); im.src = poster; im.alt = ''; holder.appendChild(im); }
-          var note = document.createElement('p'); note.textContent = 'Video plays on the full site; this preview build doesn’t carry the video files.'; holder.appendChild(note);
+          var note = document.createElement('p'); note.textContent = 'This video isn’t available yet. Check back soon.'; holder.appendChild(note);
           stage.replaceChild(holder, v);
         });
         stage.appendChild(v);
@@ -501,8 +501,9 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
     at = items.indexOf(link);
     rail.innerHTML = '';
     if (items.length > 1) items.forEach(function (l, i) { rail.appendChild(thumb(l, i)); });
-    render();
+    // the dialog opens first, so the media renders into a laid-out stage (and a hiccup in rendering never leaves it closed)
     if (!dlg.open) dlg.showModal();
+    try { render(); } catch (err) { if (window.console) console.error(err); }
   }
   function step(d) { if (items.length < 2) return; at = (at + d + items.length) % items.length; render(); }
   document.addEventListener('click', function (e) {

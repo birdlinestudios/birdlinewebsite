@@ -166,8 +166,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .logo-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%)}
 .l-track{display:flex;width:max-content;animation:m-scroll 55s linear infinite}
 .logo-set{display:flex;flex:none;align-items:center;gap:56px;padding-right:56px}
-/* the marks are black files already; each one gets its own height (--lh) so the row reads as one visual size: wide wordmarks sit lower, compact emblems taller */
-.logo-set li{display:flex;align-items:center;justify-content:center;height:40px}
+/* the marks are black files already; each one gets its own height (--lh) so the row reads as one visual size: wide wordmarks sit lower, compact emblems taller;
+   the row grows to the tallest mark (the UFL ball is 43px on desktop) instead of clipping it at the marquee's edge */
+.logo-set li{display:flex;align-items:center;justify-content:center;min-height:40px}
 .logo-set img{width:auto;height:var(--lh,22px);max-width:none;display:block;opacity:.8}
 @media(max-width:600px){.logo-set{gap:44px;padding-right:44px}.logo-set img{height:calc(var(--lh,22px) * .85)}}
 @media(hover:hover){.logo-marquee:hover .l-track{animation-play-state:paused}}

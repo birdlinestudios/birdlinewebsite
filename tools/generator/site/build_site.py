@@ -251,7 +251,7 @@ FLOW_COLUMNS = [
 LIB_TILES = [
     (1, 4, 15, '-4deg', '0s', '2024/05/HD-Expo-FreePower-Recap.jpg', 'OOH'),
     (18.5, 2, 7.5, '3deg', '0.08s', '2024/05/Gardyn-Unboxing-1.jpg', 'UGC'),
-    (41, 2, 16, '-2deg', '0.16s', '2024/05/thumb-15-2.jpg', 'CTV'),
+    (41, 2, 16, '-2deg', '0.16s', '2024/05/thumb-32.jpg', 'CTV'),
     (73, 4, 17, '3deg', '0.24s', '2024/05/thumb-18-2.jpg', 'Commercial'),
     (3, 29, 10, '2deg', '0.32s', '2025/08/GrantPuckett-Product-36.jpeg', 'Photography'),
     (16, 42, 10, '-5deg', '0.4s', '2026/08/thumb-57.jpg', 'Motion Graphics'),
@@ -259,7 +259,7 @@ LIB_TILES = [
     (88.5, 25, 7.5, '-4deg', '0.56s', 'wr/wr-3d-bottle.jpg', '3D / VFX'),
     (3, 64, 8.5, '-3deg', '0.64s', '2024/05/thumb-19.jpg', 'Paid Social'),
     (14.5, 79, 15.5, '4deg', '0.72s', '2025/09/thumb-27.jpg', 'Illustrations'),
-    (71.5, 58, 15.5, '-3deg', '0.8s', '2024/06/Route-22In-The-Studio22-with-Elwood.jpg', 'Profiles'),
+    (71.5, 58, 15.5, '-3deg', '0.8s', '2026/08/thumb-56.jpg', 'Profiles'),
     (89, 52, 8.5, '2deg', '0.88s', '2026/08/thumb-62.jpg', 'Video Podcasts'),
     (76, 79, 8, '3deg', '0.96s', '2024/06/IMG1803-R01-012-scaled-1.jpg', 'Film'),
     (43, 81, 16, '3deg', '1.04s', 'ai/gardyn-living-room-2.jpg', 'AI Content'),
@@ -552,7 +552,7 @@ def folder_videos(folder, videos):
     return [by_vid[vid] for vid in ids if vid in by_vid]
 
 # the service a Work-page tile is filed under: the first service page that shows the piece, in this order
-SVC_PRIORITY = ['commercial', 'profiles', 'ugc', 'video-podcasts', 'motion-graphics', '3d-cgi-vfx', 'illustration', 'design', 'ctv', 'film', 'paid-social']
+SVC_PRIORITY = ['commercial', 'profiles', 'ugc', 'video-podcasts', 'motion-graphics', '3d-vfx', 'illustration', 'design', 'ctv', 'film', 'paid-social']
 SVC_NAME = {s['slug']: s['name'] for s in SERVICES}
 SVC_BY_SRC = {}
 for _slug in SVC_PRIORITY:
@@ -984,7 +984,7 @@ def packages_page():
                 '<p class="sub">Each package is a rolling monthly retainer with a dedicated creative, unlimited deliverables, and the Birdline Workflow behind it: no fixed term, cancel anytime with 60 days’ notice. Productions are scoped separately, per project.</p></div>'
                 '<ul class="plans">%s</ul>%s</div>\n</section>' % (''.join(plans), prod))
     team = ('<!-- ===== The talent: the Birds as the same row of cards as on the About page, running edge to edge and looping (the set sits in the track twice); pointing at it pauses it ===== -->\n'
-            '<section class="band talent the-birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Birds</span><h2 class="h2">World-Class Creatives, <span class="ai">One Seamless Workflow.</span></h2>'
+            '<section class="band talent the-birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">The Birds</span><h2 class="h2">World-Class Creatives, <span class="ai">All On One Line.</span></h2>'
             '<p class="sub">Skip the bloated agencies, unreliable freelancers, and wasted spend. Get full creative support across video, design, photo, AI, and animation—just a Slack message away.</p></div></div>\n'
             '  %s\n  <div class="wrap"><div class="more"><a class="btn btn--outline" href="{{ROOT}}about.html">Meet the Birds</a></div></div>\n</section>' % team_loop())
     faq = faq_section(FAQ_PACKAGES, 'Questions About |the Packages.')

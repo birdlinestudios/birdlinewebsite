@@ -156,8 +156,8 @@
   "description": "Scripted, shot and cut to look like it came from a customer, because the best-performing ad often doesn’t look like an ad."
  },
  {
-  "route": "/services/3d-cgi-vfx",
-  "file": "services__3d-cgi-vfx.html",
+  "route": "/services/3d-vfx",
+  "file": "services__3d-vfx.html",
   "title": "3D / VFX: Birdline",
   "description": "Product renders when the product isn’t ready, worlds you can’t shoot, and effects that disappear into the footage."
  },

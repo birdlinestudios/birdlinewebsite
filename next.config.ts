@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
       { source: "/video/:path*", headers: [{ key: "Cache-Control", value: VIDEOS }] },
     ];
   },
+  // Pages that moved keep their old addresses working.
+  async redirects() {
+    return [{ source: "/services/3d-cgi-vfx", destination: "/services/3d-vfx", permanent: true }];
+  },
 };
 
 export default nextConfig;
