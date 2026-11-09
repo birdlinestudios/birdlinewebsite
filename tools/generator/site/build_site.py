@@ -42,6 +42,7 @@ if os.path.exists(_vi):
 FOLDER_SLUG = {'686': '686', 'FreePower': 'freepower', 'Gardyn': 'gardyn', 'Literati': 'literati', 'Patrol': 'patrol', 'Public Rec': 'public-rec',
                'Route': 'route', 'Solidroad': 'solidroad', 'WHOOP': 'whoop'}
 FOLDER_FIX = {'927324603': 'gardyn'}  # the Gardyn 4.0 starter-pack ad sat in the FreePower folder; it stays with Gardyn
+DROPPED_VIDEOS = {'1109212937'}  # the rough sneak-peek intro animation: off the Gardyn case study and the Work page (November 9, 2026)
 HOSTED_LABELS = {'1112070841': 'FX, CEO at Gardyn', '1215871520': '360 Product Story · Solidroad'}  # labels for library videos the content has no name for
 EXTRA_FOLDERS = {'commercial': 'Additional Commercial Work', 'animation': 'Additional Animation Work', 'profiles': 'Additional Profile Work'}
 
@@ -82,9 +83,10 @@ if VIDEO_INDEX:
         for _it in _cs.get('gal', []):
             _v = vimeo_id(_it)
             if not _v: _new.append(_it)                      # photographs stay
+            elif _v in DROPPED_VIDEOS: continue
             elif _v in _keep and _v not in _seen: _new.append(dict(_it, alt=HOSTED_LABELS.get(_v) or _it.get('alt') or CARDS[_slug]['brand'])); _seen.add(_v)
         for _v in _by_slug.get(_slug, []):                   # videos Mike added to the client's folder
-            if _v in _seen or _v not in VIDEO_ITEMS: continue
+            if _v in _seen or _v not in VIDEO_ITEMS or _v in DROPPED_VIDEOS: continue
             _new.append(dict(VIDEO_ITEMS[_v], alt=HOSTED_LABELS.get(_v) or VIDEO_ITEMS[_v].get('alt') or CARDS[_slug]['brand'])); _seen.add(_v)
         _cs['gal'] = _new
 
@@ -440,6 +442,9 @@ POSTERS = {
     '892462752': 'new/poster-686-hydra-thermagraph.jpg',               # 686 Hydra Thermagraph jacket, 9:16
     '750741312': 'new/poster-686-atp-trail-running.jpg',               # 686 ATP Collection, trail running, 16:9
     '1095192934': 'new/poster-patrol-like-nothing-ever-happened.jpg',  # Patrol, Like Nothing Ever Happened, 2.39:1
+    '881956457': 'new/poster-686-goggles.jpg',                         # 686 Goggles, 9:16: a new cover (November 9, 2026)
+    '753024501': 'new/poster-standard-self-care.jpg',                  # Standard Self Care, How to Use: a frame at the video's own 4:3
+    '727138751': 'new/cover-publicrec-zero-short.jpg',                 # Public Rec, Zero Short: the cover Mike sent
 }
 
 def tile(item, kind):
@@ -503,11 +508,12 @@ TV_FEATURED = [
     # (slide key, slug or None for the reel, eyebrow, title, tags, description, watch: vimeo id or None for the brand's first wide video)
     ('reel', None, 'Birdline · Showreel', 'Our |Bird’s Work', ['Video', 'Photo', 'Design & Animation'],
      'Our creators don’t just make content at scale, but work that makes an impact.', '1049385390'),
-    ('public-rec', 'public-rec', 'Case study · Public Rec', None, None, None, None),
-    ('686', '686', 'Case study · 686', None, None, None, None),
-    ('route', 'route', 'Case study · Route', None, None, None, None),
+    # the case slides, in the order Mike changed them to on November 9, 2026
     ('gardyn', 'gardyn', 'Case study · Gardyn', None, None, None, None),
+    ('public-rec', 'public-rec', 'Case study · Public Rec', None, None, None, None),
     ('patrol', 'patrol', 'Case study · Patrol', None, None, None, None),
+    ('route', 'route', 'Case study · Route', None, None, None, None),
+    ('686', '686', 'Case study · 686', None, None, None, None),
 ]
 TV_BRAND_WORDS = [('public rec', 'public-rec'), ('route', 'route'), ('gardyn', 'gardyn'), ('freepower', 'freepower'), ('686', '686'),
                   ('patrol', 'patrol'), ('literati', 'literati'), ('solidroad', 'solidroad'), ('whoop', 'whoop')]
@@ -526,11 +532,14 @@ def tv_videos():
         if 'href' not in it:
             return
         m = re.match(r'https://vimeo\.com/(\d+)', it['href'])
-        if not m or m.group(1) in seen:
+        if not m or m.group(1) in seen or m.group(1) in DROPPED_VIDEOS:
             return
         if m.group(1) in VIDEO_ITEMS and VIDEO_ITEMS[m.group(1)]['src'] != it['src']:
             return  # the live site linked this still to the wrong video; the right still comes with its own entry
         seen.add(m.group(1))
+        if m.group(1) in POSTERS:   # a frame of the video itself, at its own proportions
+            _f, _w, _h = site_img(POSTERS[m.group(1)])
+            out.append(dict(src=POSTERS[m.group(1)], asp=_w / _h, vid=m.group(1), label=label, slug=slug)); return
         out.append(dict(src=it['src'], asp=float(it['asp']), vid=m.group(1), label=label, slug=slug))
     for it in content['portfolio']['panes'][0]['items']:
         label = it['alt'] or brand_of(it['src'])
@@ -575,9 +584,11 @@ TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV', 'Paid social': 'Paid Social'
            'Video': 'Film', 'YouTube': 'Film', '3D': '3D / VFX', 'Illustration': 'Illustrations', 'Design': 'Design', 'Photo': 'Photography', 'Production': 'Film'}
 UGC_WORDS = re.compile(r'ugc|interview|reactions|mashup|testimonial|review|pov|unboxing|comment', re.I)
 
+SVC_OVERRIDE = {'876232748': 'Profiles'}   # 686 UNWORK (Tyler Ravelle): a profile, listed on no video service page since November 9, 2026
 def service_for(v):
     """the service line under a Work-page video tile"""
     if v.get('svc'): return v['svc']  # a gallery item that names its service
+    if v.get('vid') in SVC_OVERRIDE: return SVC_OVERRIDE[v['vid']]
     if v['src'] in SVC_BY_SRC and SVC_BY_SRC[v['src']] != 'Photography': return SVC_BY_SRC[v['src']]
     info = hosted(v['vid']) if v.get('vid') else None
     title = (info['title'] if info else '') + ' ' + (v.get('label') or '')
@@ -639,6 +650,58 @@ def tv_shelf(key, heading, tiles, link=None, note=''):
             '  <ul class="shelf-track" data-carousel-track>\n%s\n  </ul>\n</section>'
             % (key, esc(heading), esc(heading), ('<p>%s</p>' % esc(note)) if note else '', head_link, CHEV_L, CHEV_R, '\n'.join(tiles)))
 
+# Mike's edits to the Work page's shelves (November 9, 2026): what leaves a shelf, what leads it, what ends it, how it is
+# ordered (a round-robin over brands or services, so no run of one brand opens a shelf) and how long it runs.
+def vkey(v):
+    return v.get('vid') or v.get('file')
+
+def interleave(items, key_of):
+    """one from each group in turn, the groups in order of first appearance"""
+    groups, order = {}, []
+    for it in items:
+        k = key_of(it)
+        if k not in groups:
+            groups[k] = []; order.append(k)
+        groups[k].append(it)
+    out = []
+    while any(groups[k] for k in order):
+        for k in order:
+            if groups[k]:
+                out.append(groups[k].pop(0))
+    return out
+
+SHELF_EDITS = {
+    'commercial': dict(remove={'876232748', '923557755', '916190740', '916190755'},   # 686 UNWORK, Gardyn 4.0 personas, the two 4:5 Bezel cuts
+                       first=['640557935', 'ufl-nobull-what-no-can-do.mp4', 'commercial-chivas-nike-paisa-boys.mp4', 'commercial-nike-paisa-boys-mexico.mp4', '1119136322'],
+                       last=['727974264']),                                            # Nestlé closes the shelf
+    'profiles': dict(remove={'916190755'}, by='brand'),                                # Bezel
+    'social': dict(remove={'1112070841', '686-wntr-goggles-color-jump.mp4'}, by='brand', limit=50),   # FX's testimonial
+    'literati': dict(by='svc'),
+    'public-rec': dict(keep_first=True, by='svc'),
+    'willies-remedy': dict(by='svc'),
+}
+
+def edit_shelf(key, items):
+    e = SHELF_EDITS.get(key)
+    if not e:
+        return items
+    items = [v for v in items if vkey(v) not in e.get('remove', set())]
+    head = []
+    if e.get('keep_first') and items:
+        head, items = items[:1], items[1:]
+    by = e.get('by')
+    if by == 'brand':
+        items = interleave(items, lambda v: v.get('slug') or tv_brand(v.get('label') or '') or 'other')
+    elif by == 'svc':
+        items = interleave(items, service_for)
+    first = [v for k in e.get('first', []) for v in items if vkey(v) == k]
+    last = [v for k in e.get('last', []) for v in items if vkey(v) == k]
+    rest = [v for v in items if v not in first and v not in last]
+    items = head + first + rest + last
+    if e.get('limit'):
+        items = items[:e['limit']]
+    return items
+
 def portfolio_page():
     pf = content['portfolio']
     videos = tv_videos()
@@ -680,11 +743,13 @@ def portfolio_page():
     panes = {p['id']: p['items'] for p in pf['panes']}
     kinds = {'wide': 'Video', 'tall': 'Vertical video', 'square': 'Square cut'}
     # Featured: the newest videos, photographs and designs, interleaved, each at its own proportions in a row of one height
-    recent = [v for v in videos if tv_shape(v['asp']) == 'wide' and v['slug'] not in ('edjy', 'willies-remedy')][:8]
-    lead = [v for v in videos if v.get('file') in ('whoop-behind-the-drivers-seat-lewis.mp4', 'whoop-al-standalone-4x5.mp4')]   # the two WHOOP pieces Mike asked to feature (November 8, 2026)
-    recent = lead[:1] + recent[:2] + lead[1:] + recent[2:]
-    photos = panes['photo'][:6]
-    designs = panes['graphic'][:6]
+    by_key = {vkey(v): v for v in videos}
+    # the Featured videos, in Mike's order (November 9, 2026): What No Can Do leads, the two WHOOP pieces stay, 686 UNWORK leaves
+    FEATURED_VIDEOS = ['ufl-nobull-what-no-can-do.mp4', 'whoop-behind-the-drivers-seat-lewis.mp4', '1119136322', '833777565', 'whoop-al-standalone-4x5.mp4', '1087155996',
+                       '640557935', '844754785', '1087156021', '1035100357']
+    recent = [by_key[k] for k in FEATURED_VIDEOS if k in by_key]
+    photos = panes['photo'][3:9]
+    designs = [it for it in panes['graphic'] if it['src'] != '2024/05/thumb-20-1.jpg'][1:7]   # not the 16:9 Gardyn static
     featured = []
     for i in range(len(recent)):
         if i < len(recent): featured.append(tv_tile(recent[i], None, 'film'))
@@ -713,6 +778,7 @@ def portfolio_page():
     for v in videos:  # the commercials Mike added by file
         if v.get('file') and v.get('svc') == 'Commercial' and v['file'] not in seen:
             seen.add(v['file']); commercial.append(v)
+    commercial = edit_shelf('commercial', commercial)
     shelves.append(tv_shelf('commercial', 'Commercial', [tv_tile(v, 'Commercial', 'film') for v in commercial], link=('The service', '{{ROOT}}services/commercial.html'), note='Hero spots and brand films, from script to final mix.'))
     svc_profiles = next(s for s in SERVICES if s['slug'] == 'profiles')
     profiles, pseen = [], set()
@@ -729,16 +795,27 @@ def portfolio_page():
     for v in videos:
         info = hosted(v['vid'])
         if (info and PROFILE_WORDS.search(info['title']) and not NOT_PROFILE.search(info['title'])) or (v.get('file') and v.get('svc') == 'Profiles'): take(v)
+    profiles = edit_shelf('profiles', profiles)
     profiles_shelf = tv_shelf('profiles', 'Profiles', [tv_tile(v, 'Profiles', 'film') for v in profiles], link=('The service', '{{ROOT}}services/profiles.html'), note='Founders, makers and the people behind the brand, on camera.') if profiles else ''
     # Paid & Social: every vertical, square and 4:5 piece, and the wide ones made for paid social or UGC, each at its own proportions
-    social = [v for v in videos if tv_shape(v['asp']) != 'wide' or service_for(v) in ('Paid Social', 'UGC')]
+    social = edit_shelf('social', [v for v in videos if tv_shape(v['asp']) != 'wide' or service_for(v) in ('Paid Social', 'UGC')])
     shelves.append(tv_shelf('social', 'Paid & Social', [tv_tile(v, None, 'film') for v in social], note='Paid ads, UGC and social cuts, each in the ratio it was made for.'))
     shelves.append(tv_shelf('photo', 'Photography', [tv_still_tile(it, 'photo') for it in panes['photo']], note='Stills from our shoots, at full size when tapped.'))
     by_vid = {v['vid']: v for v in videos}
-    design = [tv_tile(v, 'Motion Graphics', 'film') for v in folder_videos(EXTRA_FOLDERS['animation'], videos)]
+    design_v = [('video', v) for v in folder_videos(EXTRA_FOLDERS['animation'], videos) if v['vid'] != '1109213045']   # Humiint leaves (November 9, 2026)
+    design_s = []
+    seen_design = {v['vid'] for _, v in design_v}
     for it in panes['graphic']:
         v = by_vid.get(vimeo_id(it))
-        design.append(tv_tile(v, SVC_BY_SRC.get(v['src'], 'Motion Graphics'), 'film') if (v and hosted(v['vid']) and v['src'] == it['src']) else tv_still_tile(it, 'design'))
+        if v and hosted(v['vid']) and v['src'] == it['src']:
+            if v['vid'] in seen_design or v['vid'] == '1109213045': continue
+            seen_design.add(v['vid']); design_v.append(('video', v))
+        else:
+            design_s.append(('still', it))
+    design = []
+    for i in range(max(len(design_v), len(design_s))):   # a video, then a still, so the shelf alternates
+        if i < len(design_s): design.append(tv_still_tile(design_s[i][1], 'design'))
+        if i < len(design_v): design.append(tv_tile(design_v[i][1], SVC_BY_SRC.get(design_v[i][1]['src'], 'Motion Graphics'), 'film'))
     shelves.append(tv_shelf('design', 'Design & animation', design, note='Motion, static ads, social posts and key art.'))
     if profiles_shelf: shelves.append(profiles_shelf)
     for slug in ORDER:
@@ -746,6 +823,7 @@ def portfolio_page():
         if len(vs) < 3:
             continue
         c = CARDS[slug]
+        vs = edit_shelf(slug, vs)
         shelves.append(tv_shelf(slug, c['brand'], [tv_tile(v, None, 'film') for v in vs], link=('Case study', '{{ROOT}}case-studies/%s.html' % slug), note=c['tags']))
     chips = '\n'.join('<li>%s</li>' % esc(x) for x in WE_CREATE)
     create = ('<section class="tv-create" id="we-create" aria-label="What we make"><div class="wrap"><div class="head"><span class="eyebrow">What we make</span><h2 class="h2">We Create</h2>'
@@ -1065,7 +1143,7 @@ def about_page():
              '<section class="band band--navy on-dark ab-smart">\n  <div class="wrap"><div class="smart">'
              '<div class="smart-copy"><h2 class="h2">A <span class="ai">Smarter</span> Way to Scale Your Content.</h2>'
              '<p>Birdline replaces the one-and-done project with an always-on production model: unlimited deliverables every month from a dedicated team, premium productions scoped per project, and a workspace that turns every shoot into an ever-growing content library.</p>'
-             '<blockquote class="smart-q"><p>“We started Birdline because too much content was going to waste, and brands didn’t know the value of their creative. So we built a different model: unlimited deliverables, premium productions, and a workspace that proves the value of everything you make.”</p>'
+             '<blockquote class="smart-q"><p>“We started Birdline because too much content was going to waste, and brands didn’t know the value of their creative. So we built a different model: unlimited deliverables, premium productions, and a workspace that proves the value of everything made.”</p>'
              '<cite>Mike Pagan, Founder and CEO</cite></blockquote></div>'
              '<a class="smart-video" %s aria-label="Play: the Birdline reel">'
              '<img src="{{ROOT}}img/%s" width="2200" height="1468" alt="" loading="lazy"><span class="smart-play" aria-hidden="true">%s</span>'
@@ -1107,8 +1185,8 @@ def about_page():
     rows = ''.join('<li><span class="svc-ic" aria-hidden="true">%s</span><b>%s</b><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for (k, t), d in zip(DELIVER_ROWS, DELIVER))
     deliver = ('<section class="band ab-deliver">\n  <div class="wrap"><div class="dpanel"><div class="dpanel-copy"><span class="eyebrow">How we deliver</span><h2>Full-Service, <span class="ai">Start to Finish.</span></h2>'
                '<p>Partner with world-class creatives across video, photo, design, AI, and animation—operating as an extension of your in-house team.</p><ul class="dgrid">%s</ul></div>'
-               '<div class="dpanel-media"><img src="{{ROOT}}img/%s" width="900" height="1022" alt="Two people at laptops with headphones on, in a recording session." loading="lazy"></div></div></div>\n</section>'
-               % (rows, asset('still-bts')))
+               '<div class="dpanel-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="A Birdline crew around a kitchen table on the Gardyn shoot: the director checks the breakfast setup while the camera operator lines up the shot." loading="lazy"></div></div></div>\n</section>'
+               % ((rows,) + site_img('new/gardyn-7-29-2025-27361.jpg')))
     cf, cw, ch = site_img('2024/06/GrantPuckett-Lifestyle-67.jpg')
     close = close_section('View the packages', '{{ROOT}}packages.html', photo=(cf, cw, ch))
     inner = '\n\n'.join([hero, statement, logos, smart, clicks, team, library_section(), stories, values, deliver, close])

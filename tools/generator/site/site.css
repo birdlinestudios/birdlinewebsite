@@ -420,7 +420,9 @@ body:has(.lb[open]){overflow:hidden}
 /* ===== Work, laid out like a TV app: a featured hero with slides and a pill nav over it, then shelves that scroll sideways, all on navy ===== */
 .tv{background:var(--navy);color:#ffffff}
 .tv-hero{position:relative;display:grid;min-height:clamp(560px,86vh,880px);overflow:hidden;background:var(--navy-2,#0b1340)}
-.tv-slide{position:absolute;inset:0;display:grid;align-items:end;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s}
+/* the slides stack in one grid cell (not absolute), so the hero grows to the tallest slide's copy on a phone instead of the copy
+   running up under the pills (November 9, 2026); the padding keeps the copy under the bar and the pills */
+.tv-slide{position:relative;grid-area:1/1;display:grid;align-items:end;padding-top:calc(var(--top-h) + 92px);opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s .9s}
 .tv-slide.is-on{opacity:1;visibility:visible;transition:opacity .9s ease,visibility 0s}
 .tv-slide>img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:var(--focal,50% 40%)}
 .tv-slide::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(15,26,74,.94) 0%,rgba(15,26,74,.66) 36%,rgba(15,26,74,.1) 68%,rgba(15,26,74,0) 100%),linear-gradient(180deg,rgba(15,26,74,.6) 0%,rgba(15,26,74,0) 28%,rgba(15,26,74,0) 55%,var(--navy) 100%)}

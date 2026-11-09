@@ -6,7 +6,7 @@
 # Every example is a piece from the Work page or a case-study gallery, named by its source path in content.json; ('asset', key, alt)
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
-from extras import AI_WORK, AI_HERO, NOV8, WR_3D
+from extras import AI_WORK, AI_HERO, NOV8, WR_3D, GARDYN_NOV9, UFL_WNCD
 
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
@@ -38,10 +38,14 @@ SERVICES = [
                ('Post-production', 'Edit, VFX and graphics, color grading, sound design, mix and music licensing, cut for every placement.'),
                ('Delivery & review', 'Files land in Deliverables, the team reviews on Frame.io, and performance comes back to brief the next one.')],
         formats=['TV commercials', 'Brand films', 'Product launch videos', ':30 / :15 / :06 cutdowns', 'Vertical & square cuts', 'Web & landing page video', 'Stills from set', 'Paid social variations'],
-        hero=['2024/05/maxresdefault_11zon.webp', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2024/05/thumb-15-2.jpg'],
-        gallery=['2024/05/maxresdefault_11zon.webp', '2024/06/686-UNWORK-Tyler-Ravelle.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2024/05/thumb-15-2.jpg',
-                 '2024/05/thumb-32.jpg', '2024/05/Nestle-uai-2133x1200-1.png', '2024/05/thumb-18-2.jpg', '2024/05/thumb-15_11zon.webp', '2024/05/Public-Rec-ADED.jpg',
-                 '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg', '2024/05/thumb-2.jpg'],
+        hero=['2024/05/maxresdefault_11zon.webp', '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', '2024/05/thumb-32.jpg'],
+        # reordered and widened on November 9, 2026: more 16:9 spots (Patrol, Public Rec, the UFL × NOBULL spot, DYNA, 686, the new Gardyn finals),
+        # the Paisa Boys spots, and Nestlé last; the 686 UNWORK profile left
+        gallery=['2024/05/maxresdefault_11zon.webp', UFL_WNCD, '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-song-30'],
+                 NOV8['commercial-chivas-nike-paisa-boys'], '2024/05/thumb-18-2.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', GARDYN_NOV9['gardyn-fresh-got-easier'],
+                 '2024/05/thumb-15_11zon.webp', '2024/05/Public-Rec-ADED.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg', '2024/05/thumb-4.jpg',
+                 NOV8['commercial-nike-paisa-boys-mexico'], '2024/05/thumb-9-2-e1720507088117.jpg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
+                 GARDYN_NOV9['gardyn-grow-it-at-home'], '2024/05/thumb-2.jpg', '2024/05/Nestle-uai-2133x1200-1.png'],
         cases=['public-rec', 'ufl', 'patrol', 'gardyn'],
         faq=[('Do we need a Monthly Partnership to book a commercial?', 'No. Productions are scoped on their own, per project. Most partners add one to a Video Editing or Design & Animation package so the footage keeps turning into new deliverables every month, but a single production stands on its own.'),
              ('Who’s on the crew?', 'Our Birds: a director, DP, producer and the crew the concept calls for, from a team whose credits include Red Bull, Nike, Nestlé and Marvel. Every production is cast and crewed to its idea, medium and budget.'),
@@ -74,7 +78,7 @@ SERVICES = [
         gallery=[NOV8['whoop-al-standalone-4x5'], '2026/08/thumb-54.jpg', NOV8['whoop-peloton-partnership-launch-4x5'], '2024/05/thumb-10-3.jpg', NOV8['whoop-perfmedia-customizable-4x5'],
                  NOV8['whoop-refreshed-creator-july-16x9'], '2024/05/686-EP.jpg', '2024/06/686-WINTER-Goggles-Color-Grid.jpg', '2024/07/thumb-3-1.jpg', '2024/05/thumb-7-3.jpg',
                  '2024/05/Bezel-Work-Persona-e1715122673128.jpg', '2024/05/Standard-Self-Care-Hyaluronic-Daily-Moisturizer-e1720508673792.jpg', '2024/05/Gardyn-Fresh-247-e1715122740848.jpg',
-                 '2024/05/thumb-11.jpg', '2024/05/thumb-23.jpg', '2024/06/686-Outerwear-Drop-2023.jpg', '2024/05/thumb-34.jpg', '2024/05/Gardyn-New-Year-New-You-1.jpg', '2024/05/thumb-17.jpg'],
+                 '2024/05/thumb-11.jpg', '2024/06/686-Outerwear-Drop-2023.jpg', '2024/05/thumb-34.jpg', '2024/05/Gardyn-New-Year-New-You-1.jpg'],   # the Gardyn education cut and Route's Christmas cut left on November 9, 2026
         cases=['gardyn', 'public-rec', 'freepower', '686'],
         faq=[('How many ads can we request?', 'As many as you need. Deliverables are unlimited on the Monthly Partnership; your dedicated editor and designer work the queue in priority order and deliver weekly, and revisions are unlimited too.'),
              ('Do you need new footage?', 'No. Most paid social starts from the library you already have, past shoots, product photography and UGC, and we add productions when a campaign needs new material.'),
@@ -264,10 +268,12 @@ SERVICES = [
                ('Master', 'Color, mix, captions, slates and platform specs, checked before delivery.'),
                ('Traffic & measure', 'Files delivered to your buying platform or agency, and results tracked back to the campaign.')],
         formats=[':30 & :15 CTV spots', 'OTT pre-roll', 'Broadcast masters', 'Closed captions', 'Audio mastering', 'Cutdowns from existing footage', 'Vertical companions', 'End cards & slates'],
-        hero=['2024/05/Public-Rec-ADED.jpg', '2024/05/thumb-6-2.jpg', '2024/05/Gardyn-Growing-Symphony-3.jpg'],
-        gallery=['2024/05/Public-Rec-ADED.jpg', '2024/05/thumb-6-2.jpg', '2024/05/Gardyn-Growing-Symphony-3.jpg', '2024/05/maxresdefault_11zon.webp', '2024/05/thumb-2.jpg', '2024/05/thumb.jpg',
-                 '2024/05/thumb-3.jpg', '2024/05/thumb-4.jpg', '2024/06/686-UNWORK-Tyler-Ravelle.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
-                 '2024/05/thumb-15-2.jpg', '2024/05/Gardyn-Summer.jpg', '2024/05/thumb-32.jpg'],
+        hero=['2024/05/Public-Rec-ADED.jpg', '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', '2024/05/thumb-6-2.jpg'],
+        # November 9, 2026: Patrol's When Seconds Matter, the Route App film and the UFL × NOBULL spot in; Your Family and Home, the 686 UNWORK
+        # profile, Comfort and Style and Growing Symphony out. The new Gardyn :15 CTV spot joins too.
+        gallery=['2024/05/Public-Rec-ADED.jpg', '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', UFL_WNCD, '2024/05/thumb-6-2.jpg', '2024/05/maxresdefault_11zon.webp',
+                 GARDYN_NOV9['gardyn-ctv-2026-grow-something'], '2024/05/thumb-2.jpg', '2024/07/Route-App.webp', '2024/05/thumb.jpg', '2024/05/thumb-4.jpg',
+                 '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2024/05/thumb-15-2.jpg', '2024/05/Gardyn-Summer.jpg', '2024/05/thumb-32.jpg'],
         cases=['public-rec', '686', 'gardyn', 'patrol'],
         faq=[('What’s the difference between CTV and a commercial?', 'The commercial is the creative; CTV is where it runs. CTV and OTT platforms have their own specs for length, resolution, captions and audio, and we master and deliver to them.'),
              ('Can you cut a TV spot from footage we already have?', 'Yes. That’s how Public Rec’s 51.7× spot was made. We review the library, cut, master and deliver.'),

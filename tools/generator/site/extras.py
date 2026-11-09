@@ -61,7 +61,7 @@ PAGES = {
     'route': dict(
         headline='An Always-On Content Team |for Route.',
         lede='Video, photography and animation for Route’s social channels, website, app and live events, from profile features and how-to tutorials to B2B commercials.',
-        since='', focal='50% 40%', stats=[]),
+        since='', focal='55% 55%', stats=[]),
     'gardyn': dict(
         headline='45M+ Organic Views and |a Faster-Growing Brand.',
         lede='A dedicated Bird team producing Gardyn’s video, photography and graphics every month: commercials, UGC-style assets, stills and custom design for social, web and paid.',
@@ -112,7 +112,7 @@ PAGES = {
     'edjy': dict(
         headline='One Product Launch, |a Full Video Engine.',
         lede='How a creative partnership turned one product launch into a full video engine.',
-        since='', focal='50% 40%', stats=[]),
+        since='', focal='55% 55%', stats=[]),
     'ufl': dict(
         headline='A Full Season of Content, |Delivered at Game Speed.',
         lede='Birdline became the United Football League’s content partner for a new season: a broadcast TV spot, Media Day, a weekly social slate, stadium screens and game-day radio for all 8 teams.',
@@ -303,10 +303,10 @@ WR_CASE = dict(
     ],
 )
 
-# ---- EDJY (November 2, 2026): the case Mike wrote, with the challenge, the four-step approach, the results still to come, and why it
-# worked. The cover and the gallery are frames pulled from the ads in Mike's EDJY Content folder (November 2, 2026).
+# ---- EDJY (November 2, 2026): the case Mike wrote, with the challenge, the four-step approach and why it worked (the Results section
+# waits for the numbers). The gallery is frames pulled from the ads in Mike's EDJY Content folder; the cover is the new-colours launch still.
 EDJY_CASE = dict(
-    url='/portfolio/edjy/', title='EDJY', heroBg='edjy/cover.jpg', logo='', logoSet=[],
+    url='/portfolio/edjy/', title='EDJY', heroBg='edjy/cover-colors.jpg', logo='', logoSet=[],   # the new-colours launch still, as on the case card (November 9, 2026)
     copy=dict(
         overview=[
             'EDJY makes precision-engineered personal care tools, including a single-blade nail cutter and tweezers. They were taking on a category still defined by an 1881 design. They had great footage and bold ideas, but they needed a partner to turn them into a steady stream of ads that win attention and drive sales.',
@@ -318,8 +318,7 @@ EDJY_CASE = dict(
             ('Let the data steer', 'We joined EDJY’s weekly performance reviews and began a regular cycle of data-informed re-edits. Each round, we studied what was working, rebuilt the strongest ideas with sharper hooks and tested again. This showed us which videos earned attention and which turned that attention into purchases.'),
             ('Go from edit bay to set', 'EDJY wanted lasting footage, so we planned and produced a full lifestyle photo and video shoot. It covered casting, location, crew, scheduling and post-production. The goal was a deep library of product-in-use footage that EDJY can keep drawing on in future edits.'),
         ],
-        results=[],
-        pending=['ROAS lift on re-edited ads', 'Videos and concepts delivered', 'Growth in ad spend on winning creative'],
+        results=[],   # no Results section until the numbers are in (Mike, November 9, 2026)
         why=[('workspace', 'One shared workflow', 'Briefs, feedback and priorities all live in the Birdline app, so nothing gets lost.'),
              ('repeat', 'A creative loop that never stops', 'We make the work, measure it, learn from it and make it better.'),
              ('camera', 'Creative and production under one roof', 'The same team that edits the ads also plans the shoots that feed them.')],
@@ -409,10 +408,23 @@ NOV8 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('whoop-perfmedia-product-render-16x9', 'Refreshed product render · Performance media', 1280, 720, '3D / VFX'),
     ('whoop-peloton-partnership-launch-4x5', 'Peloton partnership launch · Paid social', 1024, 1280, 'Paid Social'),
 ]}
+# the five Gardyn pieces Mike sent on November 9, 2026 (web encodes of the finals; the originals' names are in FALLBACK)
+GARDYN_NOV9 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
+    ('gardyn-song-30', 'The Gardyn Song · :30 commercial', 1280, 720, 'Commercial'),
+    ('gardyn-fresh-got-easier', 'Fresh Got Easier · Commercial', 1280, 720, 'Commercial'),
+    ('gardyn-ctv-2026-grow-something', 'Grow Something · :15 CTV spot, 2026', 1280, 720, 'Commercial'),
+    ('gardyn-grow-it-at-home', 'Grow It at Home · Commercial', 1280, 720, 'Commercial'),
+    ('gardyn-if-youve-been-waiting-9x16', 'If You’ve Been Waiting, summer sign · Paid social', 720, 1280, 'Paid Social'),
+]}
 # the pieces with no case study of their own (the Paisa Boys spots, the ImpactCE intro): on the service pages and the Work page's shelves
 # The files Mike uploaded to the store on November 8, 2026 are the originals under their own names, not the web encodes; until the
 # encodes are there, a tile or the player falls back to the original (data-fallback, site.js) when the encode is not found.
 FALLBACK = {
+    'gardyn-song-30.mp4': 'GardynSong_30_16x9_V7Rev.mp4',
+    'gardyn-fresh-got-easier.mp4': 'Gardyn_FreshGotEasier_16x9_V5.mp4',
+    'gardyn-ctv-2026-grow-something.mp4': 'Gardyn_CTV2026_GrowSomething_15_16x9_V4_VO_Broadcast.mp4',
+    'gardyn-grow-it-at-home.mp4': 'Gardyn_GrowItAtHome_16x9_V1_1.mp4',
+    'gardyn-if-youve-been-waiting-9x16.mp4': 'Gardyn_IfYouveBeenWaiting_SummerSign_9x16_V1Rev.mp4',
     'commercial-chivas-nike-paisa-boys.mp4': 'Chivas x Nike x Paisa Boys.mp4',
     'commercial-nike-paisa-boys-mexico.mp4': 'Nike x Paisa Boys - Mexico.mp4',
     'publicrec-ugc-dealmaker-pant-interview.mp4': 'DealmakerPant Interview 9x16 V1.mov',
@@ -439,8 +451,7 @@ ADDED_WORK = {
                                 'whoop-peloton-partnership-launch-4x5', 'whoop-perfmedia-customizable-4x5', 'whoop-refreshed-creator-july-16x9', 'whoop-dr-eric-verdin-trailer')],
     'literati': [NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
                  _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
-    '686': [_new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles'),
-            _new('686-wntr-goggles-color-jump', 'WNTR Goggles, color jump · 686', 1280, 720, 'Paid Social')],
+    '686': [_new('686-unwork-keegan-hosefros', 'UNWORK: Keegan Hosefros · Profile', 1280, 720, 'Profiles')],   # the WNTR goggles colour jump left on November 9, 2026
     'public-rec': [NOV8['publicrec-ugc-dealmaker-pant-interview'],
                    _new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
                    _new('publicrec-ugc-anton-gamechanger', 'Gamechanger Rec pants · UGC with Anton', 720, 1280, 'UGC'),
@@ -448,7 +459,8 @@ ADDED_WORK = {
     'freepower': [_new('freepower-partnership-overview', 'The Cosentino partnership · Interview at KBIS', 1280, 720, 'Profiles'),
                   _new('freepower-your-charger-looks-different', 'Your charger looks different now · Paid social', 720, 1280, 'Paid Social'),
                   _new('freepower-ugc-hana-script-2', 'Hana tries FreePower · UGC', 720, 1280, 'UGC')],
-    'gardyn': [_new('gardyn-taste-of-the-holidays', 'Taste of the Holidays · Commercial', 1280, 720, 'Commercial'),
+    'gardyn': [GARDYN_NOV9[k] for k in ('gardyn-song-30', 'gardyn-fresh-got-easier', 'gardyn-ctv-2026-grow-something', 'gardyn-grow-it-at-home', 'gardyn-if-youve-been-waiting-9x16')] + [
+               _new('gardyn-taste-of-the-holidays', 'Taste of the Holidays · Commercial', 1280, 720, 'Commercial'),
                _new('gardyn-pays-for-itself', 'Gardyn pays for itself · Black Friday ad', 720, 1280, 'Paid Social'),
                _new('gardyn-kelby-script', 'Kelby, the AI gardening assistant · UGC', 720, 1280, 'UGC'),
                _new('gardyn-ugc-hana-new-year', 'New Year with Hana · UGC', 720, 1280, 'UGC'),
@@ -458,6 +470,7 @@ ADDED_WORK = {
 
 # ---- UFL (November 2, 2026): the case Mike wrote. The challenge, the six parts of the solution, the results in numbers, and a quote still
 # to come from Vince Pannozzo or Michael Leibowitz. The cover is the game-day still Mike sent.
+UFL_WNCD = dict(video='ufl-nobull-what-no-can-do.mp4', poster='ufl/nobull-what-no-can-do.jpg', alt='What No Can Do · NOBULL × UFL broadcast spot', w=1280, h=544, svc='Commercial')
 UFL_CASE = dict(
     url='/portfolio/ufl/', title='UFL', heroBg='ufl/cover.jpg', logo='', logoSet=[],
     copy=dict(
@@ -494,7 +507,7 @@ UFL_CASE = dict(
     # the work (November 3, 2026): the videos from Mike's UFL folder, transcoded for the web (video/ufl-*.mp4) with a frame of each as its
     # still. svc names the service line the Work page shows under the tile; the vertical episodes fall to Paid Social on their own.
     gal=[
-        dict(video='ufl-nobull-what-no-can-do.mp4', poster='ufl/nobull-what-no-can-do.jpg', alt='What No Can Do · NOBULL × UFL broadcast spot', w=1280, h=544, svc='Commercial'),
+        UFL_WNCD,
         dict(video='ufl-blandino-response.mp4', poster='new/ufl-blandino-response.jpg', alt='Blandino responds · Social video', w=1280, h=720, svc='Paid Social'),
         dict(video='ufl-sizzle-reel.mp4', poster='ufl/sizzle-reel.jpg', alt='UFL Sizzle Reel', w=720, h=1280),
         dict(video='ufl-battlehawks-battle-cry-ep1.mp4', poster='ufl/battlehawks-battle-cry-ep1.jpg', alt='Battle Cry, Ep. 1 · Battlehawks', w=720, h=1280),
