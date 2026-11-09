@@ -233,3 +233,7 @@ same form laid into the page. Without JavaScript the buttons link straight to Ca
 To turn the emails on: sign up at resend.com with the address that should receive them, create an API key, add it as
 `RESEND_API_KEY` under the project's Settings → Environment Variables (Production and Preview), and redeploy. Submit the form
 once on the live site to confirm the email arrives (the reply-to is the visitor's address, so replying reaches them directly).
+
+## Putting new web encodes into the video store
+
+`POST /api/blob/sync` copies a file from a Vercel Sandbox or from the store itself into the store under a given name (`{"src": "https://…", "name": "x.mp4"}` with the header `x-sync-key: $BLOB_SYNC_SECRET`). The store's write token stays in the deployment; the caller also has to be signed in to the team, since the deployment is protected. Encode on a sandbox with ffmpeg (libx264 veryfast, crf 25, long edge 1280, aac 96k, faststart), serve the files on an exposed port, and call the route once per file.
