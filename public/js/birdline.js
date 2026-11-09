@@ -531,6 +531,46 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
   dlg.addEventListener('close', function () { clear(); rail.innerHTML = ''; items = []; });
 })();
 
+/* How It Works: the pinned panel follows the five parts of a partnership. On a wide screen the section is tall and its content
+   sticks; how far the reader has scrolled through it picks the part, which lights its title, opens its copy and shows its visual.
+   A click on a title scrolls to that part's spot. Below 900px the list is plain and every part carries its own visual. */
+(function () {
+  "use strict";
+  var root = document.querySelector('[data-hw-feat]');
+  if (!root) return;
+  var items = Array.prototype.slice.call(root.querySelectorAll('.hw-list > li'));
+  var vis = Array.prototype.slice.call(root.querySelectorAll('.hw-panel .hw-vis'));
+  var n = items.length, current = -1;
+  var wide = window.matchMedia('(min-width: 900px)');
+  function set(i) {
+    if (i === current) return;
+    current = i;
+    items.forEach(function (li, k) { li.classList.toggle('is-active', k === i); });
+    vis.forEach(function (v, k) { v.classList.toggle('is-active', k === i); });
+  }
+  function travel() { return root.offsetHeight - window.innerHeight; }
+  function onScroll() {
+    if (!wide.matches) return;
+    var t = travel();
+    if (t <= 0) return;
+    var p = Math.min(1, Math.max(0, -root.getBoundingClientRect().top / t));
+    set(Math.min(n - 1, Math.floor(p * n)));
+  }
+  items.forEach(function (li, k) {
+    var b = li.querySelector('h3 button');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      if (!wide.matches) { set(k); return; }
+      var top = root.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + travel() * ((k + 0.5) / n), behavior: 'smooth' });
+    });
+  });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  set(0);
+  onScroll();
+})();
+
 /* A tile's video that is not in the store yet (data-fallback names the original upload) loads the fallback instead. Media errors
    do not bubble, so this listens in the capture phase. */
 (function () {

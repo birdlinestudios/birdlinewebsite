@@ -1503,11 +1503,13 @@ def production_page():
     inner = '\n\n'.join([hero, library, anywhere, process, rops_why_section('How we measure productions', wash=True, heading=RP_HERO['h1'], sub=RP_HERO['lede']), rops_diy_section(), close_section('See the packages', '{{ROOT}}packages.html', photo=(pf, pw, ph))])
     return document('Production Process: Birdline', 'How Birdline plans and runs full-service productions for commercial, photo and UGC-style shoots: scoped per project, planned in the Birdline App, crewed wherever the shoot is, and built so one day on set feeds campaigns for years.', inner, '../')
 
-# ---- How It Works (November 8, 2026): Mike's copy for how a partnership runs, in six short bands. The hero's channel hangs off
-# the navy; each step carries one small, flat chip; the Birds row is the About page's; the shoot strip is five frames of one day.
+# ---- How It Works (November 8, 2026): Mike's copy for how a partnership runs, laid out after Klarna's "What is Klarna?" page: a
+# white page, a rounded hero card with the set photo, a pinned panel whose visual follows the five parts of a partnership as the
+# list scrolls (site.js), three photo tiles for productions, the Birds beside their copy, ROPS and ROCS as two big cards, the
+# client tiles, the FAQ, and the close. The top bar goes light on this page (site.css, .page:has(.hw-light)).
 TEAM_BY_KEY = {k: (name, role) for k, name, role, _ in TEAM}
 LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>'
-LINK_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"></path></svg>'
+ARROW_GO = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"></path></svg>'
 
 def hw_av(who, cls='hw-av'):
     """a face: a Bird by key, or ('initials', name) for someone on the brand's side"""
@@ -1519,72 +1521,101 @@ def hw_av(who, cls='hw-av'):
 def hw_name(who):
     return TEAM_BY_KEY[who][0] if isinstance(who, str) else who[1]
 
-def hw_chat():
-    """the hero's channel: a few project threads between the brand and the Birds"""
-    members = ''.join(hw_av(k, 'hw-mem') for k in ('mike', 'ryan', 'james', 'megan'))
-    rows = []
-    for day, who, when, title, n, repliers in HW.THREADS:
-        if day:
-            rows.append('<li class="hw-day"><span>%s</span></li>' % esc(day))
-        rows.append('<li class="hw-thread">%s<div><b>%s <small>%s</small></b><span class="hw-title">%s</span>'
-                    '<span class="hw-replies">%s<em>%d replies</em></span></div></li>'
-                    % (hw_av(who), esc(hw_name(who)), esc(when), esc(title), ''.join(hw_av(k, 'hw-rep') for k in repliers), n))
-    return ('<div class="hw-chat" role="img" aria-label="A brand’s shared Slack channel with Birdline: a thread for new briefs, one for a hero spot’s cutdowns and one for a shoot day, each with its replies">'
-            '<div class="hw-chat-top"><span class="hw-chan">%s%s</span><span class="hw-members">%s<b>12</b></span></div>'
-            '<ol class="hw-threads">%s</ol></div>' % (LOCK, esc(HW.CHANNEL), members, ''.join(rows)))
+def hw_link(label, href):
+    return '<a class="hw-link" href="%s">%s%s</a>' % (href, esc(label), ARROW_GO)
 
-def hw_chip(kind):
-    """the small UI above a step: the kickoff faces, a project thread, brief → draft → final, the strategy-call counts"""
-    if kind == 'faces':
-        faces = ''.join(hw_av(k, 'hw-face') for k in ('ryan', 'james', 'megan', 'trevor'))
-        return '<div class="hw-chip hw-chip--faces"><span class="hw-faces">%s</span><span>Your project manager and Birds</span></div>' % faces
-    if kind == 'thread':
-        t = HW.THREAD
-        return ('<div class="hw-chip hw-chip--thread">%s<div><b>%s</b><span>%s<em>%s</em> · %d replies</span></div></div>'
-                % (hw_av(t['who'], 'hw-face'), esc(t['title']), LINK_IC, esc(t['brief']), t['replies']))
-    if kind == 'stages':
-        return '<div class="hw-chip hw-chip--stages">%s</div>' % ''.join(
-            '<span class="hw-stage is-%s"><i>%s</i>%s</span>' % (state, CHECK if state == 'done' else '', esc(name)) for name, state in HW.STAGES)
-    if kind == 'agenda':
-        return '<div class="hw-chip hw-chip--agenda">%s</div>' % ''.join('<span><b>%d</b>%s</span>' % (n, esc(k)) for n, k in HW.AGENDA)
+def hw_vis(kind):
+    """the panel's visual for one part of a partnership"""
+    if kind == 'kickoff':
+        k = HW.KICKOFF
+        people = ''.join(hw_av(w, 'hw-face') for w in k['people'])
+        rows = ''.join('<li><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in k['agenda'])
+        return ('<div class="hw-card hw-card--kickoff"><div class="hw-card-top"><div><b>%s</b><span>%s</span></div><span class="hw-faces">%s</span></div>'
+                '<ol class="hw-agenda">%s</ol></div>' % (esc(k['title']), esc(k['when']), people, rows))
+    if kind == 'slack':
+        members = ''.join(hw_av(k, 'hw-mem') for k in ('mike', 'ryan', 'james', 'megan'))
+        rows = []
+        for day, who, when, title, n, repliers in HW.THREADS:
+            if day:
+                rows.append('<li class="hw-day"><span>%s</span></li>' % esc(day))
+            rows.append('<li class="hw-thread">%s<div><b>%s <small>%s</small></b><span class="hw-title">%s</span><span class="hw-replies">%s<em>%d replies</em></span></div></li>'
+                        % (hw_av(who), esc(hw_name(who)), esc(when), esc(title), ''.join(hw_av(k, 'hw-rep') for k in repliers), n))
+        return ('<div class="hw-card hw-card--chat"><div class="hw-chat-top"><span class="hw-chan">%s%s</span><span class="hw-members">%s<b>12</b></span></div><ol class="hw-threads">%s</ol></div>'
+                % (LOCK, esc(HW.CHANNEL), members, ''.join(rows)))
+    if kind == 'flow':
+        b, r = HW.BRIEF, HW.REVIEW
+        brief = '<div class="hw-card hw-card--brief"><span class="hw-k">Brief</span><b>%s</b><div class="hw-rows">%s</div></div>' % (esc(b['title']), ''.join('<div><span>%s</span><em>%s</em></div>' % (esc(k), esc(v)) for k, v in b['rows']))
+        review = ('<div class="hw-card hw-card--review"><span class="hw-k">Review · Frame.io</span><b>%s</b><div class="hw-scrub"><i class="hw-mark"></i></div>'
+                  '<div class="hw-note">%s<div><small>%s · %s</small><p>%s</p></div></div></div>' % (esc(r['file']), hw_av(r['who'], 'hw-face'), esc(hw_name(r['who'])), esc(r['at']), esc(r['note'])))
+        finals = '<div class="hw-card hw-card--finals"><span class="hw-k">Finals · in Birdline</span><ul class="hw-finals">%s</ul><span class="hw-chip hw-chip--ok">%sReady to launch</span></div>' % (''.join('<li><span class="ck">%s</span>%s</li>' % (CHECK, esc(f)) for f in HW.FINALS), CHECK)
+        return '<div class="hw-stack">%s%s%s</div>' % (brief, review, finals)
+    if kind == 'calls':
+        a = HW.AGENDA
+        rows = ''.join('<li><b>%d</b><span>%s</span></li>' % (n, esc(k)) for k, n in a['rows'])
+        perf = ''.join('<li><span>%s</span><i style="--p:%d%%"></i></li>' % (esc(k), pct) for k, pct in a['perf'])
+        return ('<div class="hw-card hw-card--agenda"><div class="hw-card-top"><div><b>Strategy call</b><span>%s</span></div></div><ul class="hw-counts">%s</ul>'
+                '<div class="hw-perf"><span class="hw-k">What’s performing</span><ul>%s</ul></div><p class="hw-next">%s</p></div>' % (esc(a['when']), rows, perf, esc(a['next'])))
+    if kind == 'queue':
+        q = HW.QUEUE
+        rows = ''.join('<li><i>%d</i><span>%s</span><em class="is-%s">%s</em></li>' % (i + 1, esc(t), st.lower().replace(' ', '-'), esc(st)) for i, (t, st) in enumerate(q['rows']))
+        return ('<div class="hw-card hw-card--queue"><div class="hw-card-top"><div><b>Your queue</b><span>Priority order</span></div></div><ol class="hw-queue">%s</ol><p class="hw-next">%s</p></div>'
+                % (rows, esc(q['note'])))
     return ''
 
 def how_page():
     for key, *_ in TEAM:
         site_imgs.add('bird-%s.webp' % key)
     h = HW.HERO
-    hero = ('<!-- ===== How it works: the copy on navy, and the brand’s channel with Birdline hanging off it ===== -->\n'
-            '<section class="hero hero--page hero--how on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">%s</span><h1>%s</h1><p class="lede">%s</p>'
-            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div>\n  %s</div>\n</section>'
-            % (esc(h['eyebrow']), tt(h['h1']), esc(h['lede']), hw_chat()))
-    st = HW.STEPS
-    steps = ''.join('<li>%s<span class="step-n">%02d</span><h3>%s</h3><p>%s</p></li>' % (hw_chip(kind), i + 1, esc(t), esc(d)) for i, (kind, t, d) in enumerate(st['steps']))
-    steps_band = ('<!-- ===== Four steps, each with one small chip, and the note on unlimited deliverables ===== -->\n'
-                  '<section class="band band--wash hw-steps-band" id="steps">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
-                  '<ol class="hw-steps">%s</ol><p class="hw-note"><b>%s</b> %s</p></div>\n</section>'
-                  % (esc(st['eyebrow']), tt(st['h2']), steps, esc(st['note_k']), esc(st['note'])))
-    bd = HW.BIRDS
-    birds_band = ('<!-- ===== The Birds: the About page’s row ===== -->\n'
-                  '<section class="band the-birds hw-birds" id="birds">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div></div>\n'
-                  '  %s\n  <div class="wrap"><p class="hw-tail">%s</p></div>\n</section>' % (esc(bd['eyebrow']), tt(bd['h2']), esc(bd['sub']), team_loop(), esc(bd['tail'])))
+    pf, pw, ph = site_img(h['photo'])
+    hero = ('<!-- ===== How it works: a rounded card on the white page, the copy beside the set photo ===== -->\n'
+            '<section class="hw-hero hw-light" id="top">\n  <div class="wrap"><div class="hw-hero-card"><div class="hw-hero-copy"><span class="eyebrow">%s</span><h1>%s</h1>%s'
+            '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div>'
+            '<div class="hw-hero-photo"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" fetchpriority="high"></div></div></div>\n</section>'
+            % (esc(h['eyebrow']), esc(h['h1']), ''.join('<p>%s</p>' % esc(x) for x in h['paras']), pf, pw, ph, esc(h['photo_alt'])))
+    panel = ''.join('<div class="hw-vis%s" data-i="%d">%s</div>' % (' is-active' if i == 0 else '', i, hw_vis(kind)) for i, (kind, *_rest) in enumerate(HW.FEATURES))
+    items = ''.join('<li%s><div class="hw-vis hw-vis--inline">%s</div><h3><button type="button">%s</button></h3><div class="hw-body"><div><p>%s</p>%s</div></div></li>'
+                    % (' class="is-active"' if i == 0 else '', hw_vis(kind), esc(t), esc(d), hw_link(l, href)) for i, (kind, t, d, l, href) in enumerate(HW.FEATURES))
+    feat = ('<!-- ===== The five parts of a partnership: the panel on the left follows the list as it scrolls ===== -->\n'
+            '<section class="band hw-feat" id="how">\n  <div class="wrap"><h2 class="h2 hw-h2">%s</h2>'
+            '<div class="hw-sticky" data-hw-feat><div class="hw-sticky-in"><div class="hw-panel" aria-hidden="true">%s</div><ol class="hw-list">%s</ol></div></div></div>\n</section>'
+            % (esc(HW.FEAT_H2), panel, items))
     sh = HW.SHOOT
-    strip = ''.join('<li><figure><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure></li>'
-                    % (site_img(src) + (esc(alt), esc(label))) for src, label, alt in sh['strip'])
-    cols = ''.join('<div><h3>%s</h3><p>%s</p></div>' % (esc(k), esc(t)) for k, t in sh['cols'])
-    shoot = ('<!-- ===== Productions and the library: one shoot day as five frames, then the two sides of it ===== -->\n'
-             '<section class="band band--wash hw-shoot" id="productions">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2></div>'
-             '<ul class="hw-strip">%s</ul><div class="hw-cols">%s</div></div>\n</section>'
-             % (esc(sh['eyebrow']), tt(sh['h2']), strip, cols))
+    tiles = ''.join('<li><figure><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></figure><h3>%s</h3><p>%s</p>%s</li>'
+                    % (site_img(src) + (esc(sh['alts'][i]), esc(t), esc(d), hw_link(l, href))) for i, (src, t, d, l, href) in enumerate(sh['tiles']))
+    shoot = ('<!-- ===== Productions: three tiles ===== -->\n'
+             '<section class="band hw-three" id="productions">\n  <div class="wrap"><div class="hw-head"><h2 class="h2 hw-h2">%s</h2><p class="hw-sub">%s</p></div><ul class="hw-tiles">%s</ul></div>\n</section>'
+             % (esc(sh['h2']), esc(sh['sub']), tiles))
+    bd = HW.BIRDS
+    faces = ''.join('<img src="{{ROOT}}img/bird-%s.webp" width="400" height="400" alt="%s, %s" loading="lazy">' % (k, esc(TEAM_BY_KEY[k][0]), esc(TEAM_BY_KEY[k][1])) for k in bd['faces'])
+    birds = ('<!-- ===== The Birds, beside four of them ===== -->\n'
+             '<section class="band hw-birds" id="birds">\n  <div class="wrap"><div class="hw-split"><div class="hw-grid4">%s</div><div class="hw-copy"><h2 class="h2 hw-h2">%s</h2><p>%s</p><ul class="hw-bullets">%s</ul>'
+             '<a class="btn" href="%s">%s</a></div></div></div>\n</section>'
+             % (faces, esc(bd['h2']), esc(bd['para']), ''.join('<li>%s</li>' % esc(x) for x in bd['bullets']), bd['href'], esc(bd['link'])))
     rt = HW.RETURNS
-    metrics = ''.join('<li><b>%s<sup class="mark-tm">™</sup></b><span>%s</span><p>%s</p></li>' % (esc(k), esc(t), esc(d)) for k, t, d in rt['metrics'])
-    returns = ('<!-- ===== ROPS and ROCS: what the work returned ===== -->\n'
-               '<section class="band hw-returns" id="returns">\n  <div class="wrap"><div class="head"><span class="eyebrow">ROPS<sup class="mark-tm">™</sup> &amp; ROCS<sup class="mark-tm">™</sup></span><h2 class="h2">%s</h2><p class="sub">%s</p></div>'
-               '<ul class="hw-metrics">%s</ul><p class="hw-tail">%s</p>'
-               '<div class="more"><a class="btn btn--ghost" href="{{ROOT}}rops.html">How we measure it</a><a class="btn btn--ghost" href="{{ROOT}}workspace.html">Explore the Birdline App</a></div></div>\n</section>'
-               % (tt(rt['h2']), esc(rt['sub']), metrics, esc(rt['tail'])))
+    cards = ''.join('<li><div class="hw-rate-top"><b>%s<sup class="mark-tm">™</sup></b><span>%s</span></div><div class="hw-rate-body"><p>%s</p>%s</div></li>'
+                    % (esc(k), esc(t), esc(d), hw_link(rt['link'], rt['href'])) for k, t, d in rt['cards'])
+    returns = ('<!-- ===== ROPS and ROCS as two big cards ===== -->\n'
+               '<section class="band hw-returns" id="returns">\n  <div class="wrap"><div class="hw-head"><h2 class="h2 hw-h2">%s</h2><p class="hw-sub">%s</p></div><ul class="hw-rates">%s</ul><p class="hw-tail">%s</p></div>\n</section>'
+               % (esc(rt['h2']), esc(rt['sub']), cards, esc(rt['tail'])))
+    btiles = []
+    for slug in HW.BRANDS:
+        key, lw, lh, _, qh = LOGOS[slug]
+        c = CARDS[slug]
+        btiles.append('<li><a href="{{ROOT}}case-studies/%s.html"><span class="hw-logo" style="--lh:%dpx"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="" loading="lazy"></span><span><b>%s</b><small>%s</small></span></a></li>'
+                      % (slug, qh, asset(key), lw, lh, esc(c['brand']), esc(c['stat'])))
+    brands = ('<!-- ===== The clients, as tiles that open their case studies ===== -->\n'
+              '<section class="band hw-brands" id="clients">\n  <div class="wrap"><h2 class="h2 hw-h2">%s</h2><ul class="hw-brand-grid">%s</ul></div>\n</section>' % (esc(HW.BRANDS_H2), ''.join(btiles)))
+    qa = []
+    for i, q in enumerate(HW.FAQ):
+        block = faq_items.get(q) or next((v for k, v in faq_items.items() if q in k), None)
+        if not block:
+            raise SystemExit('no FAQ item: ' + q)
+        qa.append(re.sub(r' open="open"', '', block))
+    faq = ('<!-- ===== FAQ: the heading beside the questions ===== -->\n'
+           '<section class="band hw-faq" id="faq">\n  <div class="wrap"><div class="hw-split hw-split--faq"><h2 class="h2 hw-h2">%s</h2><div class="faq-list">%s</div></div></div>\n</section>' % (esc(HW.FAQ_H2), '\n'.join(qa)))
     close = close_section('See the packages', '{{ROOT}}packages.html', heading=HW.CLOSE['heading'], sub=HW.CLOSE['sub'])
-    inner = '\n\n'.join([hero, steps_band, birds_band, shoot, returns, close])
-    return document('How It Works: Birdline', 'How a Birdline partnership runs: a kickoff, one Slack channel and the Birdline App, briefs to finals, strategy calls every other week, the Birds who make the work, productions shot for the library, and ROPS™ and ROCS™ on what the work returned.', inner, '')
+    inner = '\n\n'.join([hero, feat, shoot, birds, returns, brands, faq, close])
+    return document('How It Works: Birdline', 'How a Birdline partnership runs: a kickoff, one Slack channel and the Birdline App, briefs to finals, strategy calls every other week, unlimited deliverables, productions shot for the library, the Birds who make the work, and ROPS™ and ROCS™ on what the work returned.', inner, '')
 
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
