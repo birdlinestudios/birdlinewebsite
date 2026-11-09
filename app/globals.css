@@ -96,11 +96,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .menu-btn .ic-x,.top.is-open .menu-btn .ic-bars{display:none}
 .top.is-open .menu-btn .ic-x{display:block}
 @media(max-width:999px){
-  /* the phone sheet (November 9, 2026): fixed under the bar, filling the screen and scrolling on its own. Each page is one row; Work and
-     Services are accordion buttons (the desktop links are hidden here) whose sheets open under the row: All Work / All Services first,
-     then the groups the desktop menus use, stacked. */
-  .top.is-open{-webkit-backdrop-filter:none;backdrop-filter:none}
-  .top.is-open .nav{display:block;position:fixed;left:0;right:0;top:calc(var(--top-h) + env(safe-area-inset-top,0px));bottom:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  /* the phone sheet (November 9, 2026): while the menu is open the whole header becomes one fixed, full-screen white panel: the bar
+     row at its top and the sheet, an ordinary block that scrolls on its own, below it. No sticky-plus-fixed nesting and no
+     overflow lock on the page, which iOS Safari mishandled (the bar slid away and taps missed). Each page is one row; Work and
+     Services are accordion buttons (the desktop links are hidden here) whose sheets open under the row: All Work / All Services
+     first, then the groups the desktop menus use, stacked. */
+  .top.is-open{position:fixed;inset:0;margin-bottom:0;padding-top:env(safe-area-inset-top,0px);border-bottom:0;background:#ffffff;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .top.is-open .top-in{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:72px minmax(0,1fr);align-items:stretch;gap:0 16px;height:100%}
+  .top.is-open .logo-link{grid-area:1/1;align-self:center}
+  .top.is-open .top-cta{grid-area:1/2;align-self:center}
+  .top.is-open .nav{grid-area:2/1/3/3;display:block;position:static;align-self:stretch;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    margin:0 calc(-1 * max(var(--gutter),env(safe-area-inset-right,0px))) 0 calc(-1 * max(var(--gutter),env(safe-area-inset-left,0px)));
     padding:4px max(var(--gutter),env(safe-area-inset-right,0px)) max(28px,env(safe-area-inset-bottom,0px)) max(var(--gutter),env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:#ffffff;color:var(--ink);font-size:16px}
   .top.is-open .nav > a,.top.is-open .nav-acc{display:flex;align-items:center;width:100%;min-height:56px;margin:0;padding:0 4px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;font:600 17px/1.2 var(--display);letter-spacing:-.01em;color:var(--navy);text-align:left;cursor:pointer}
   .top.is-open .nav > a:hover,.top.is-open .nav-acc:hover{color:var(--blue)}
@@ -128,7 +134,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .top.is-open .nav-new{margin-left:8px}
   .top.is-open .nav-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:18px}
   .top.is-open .nav-foot .btn{width:100%;min-height:50px}
-  .bar-open,.bar-open body{overflow:hidden}
 }
 @media(min-width:560px){.top-link{display:inline-flex}}
 /* the sheet's foot (Book a call, Log in), the accordion buttons and the sheets' top rows are for phones and tablets; the desktop bar and menus carry these */

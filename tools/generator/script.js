@@ -82,7 +82,7 @@ function enhance(doc) {
       setAccordion(item, open);
       if (open) win.setTimeout(function () {
         var sheet = bar.querySelector('.nav');
-        if (sheet) sheet.scrollTo({ top: head.offsetTop - 4, behavior: 'smooth' });
+        if (sheet) sheet.scrollTo({ top: sheet.scrollTop + head.getBoundingClientRect().top - sheet.getBoundingClientRect().top - 4, behavior: 'smooth' });
       }, 60);
       return;
     }
