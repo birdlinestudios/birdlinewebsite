@@ -509,8 +509,14 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .foot-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 28px}
 .foot a{display:inline-flex;align-items:center;min-height:44px;color:#e6e9f7!important;text-decoration:none}
 .foot a:hover{color:#ffffff!important;text-decoration:underline}
-.foot-legal{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 24px}
+/* the legal line sits left, the social icons right; on a narrow phone they stack, each to its own side */
+.foot-legal{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px}
+.foot-legal-l{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:0 24px;text-align:left}
 .foot-legal span{flex-basis:100%;padding-block:10px 2px}
+.foot-social{display:flex;align-items:center;gap:6px;margin-left:auto}
+.foot .foot-social a{width:44px;height:44px;justify-content:center;border-radius:12px;color:#e6e9f7!important;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.foot .foot-social a:hover{background:rgba(255,255,255,.1);color:#ffffff!important;text-decoration:none}
+.foot-social svg{width:22px;height:22px}
 @media(min-width:560px){.foot-legal span{flex-basis:auto;padding-block:0}}
 
 
