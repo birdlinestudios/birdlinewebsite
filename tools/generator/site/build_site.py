@@ -1487,7 +1487,8 @@ def service_page(svc):
     if svc.get('radio') == 'ufl':   # the Audio page: the UFL's game-day radio spots, as on the UFL case study
         radio = radio_section(content['cases']['ufl']['copy']['radio'], eyebrow='On air', heading='Game-Day Radio |for the UFL.',
                               sub='Six of the spots we wrote, voiced and mixed for the league’s teams, most of them turned around in a day. Read how the season ran on the UFL case study.')
-    inner = '\n\n'.join(x for x in [hero, intro, why, work, radio, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
+    # on the Audio page the radio player sits above the video examples (Mike, November 9, 2026)
+    inner = '\n\n'.join(x for x in [hero, intro, why, radio, work, cases, faq, more, close_section('See the packages', '{{ROOT}}packages.html')] if x)
     return document('%s: Birdline' % name, svc['lede'], inner, '../')
 
 # ---- the ROPS & ROCS page: what the two numbers are, why they are measured, what they are worth, and how the app measures them
