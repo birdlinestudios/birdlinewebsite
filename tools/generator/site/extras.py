@@ -410,6 +410,26 @@ NOV8 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('whoop-peloton-partnership-launch-4x5', 'Peloton partnership launch · Paid social', 1024, 1280, 'Paid Social'),
 ]}
 # the pieces with no case study of their own (the Paisa Boys spots, the ImpactCE intro): on the service pages and the Work page's shelves
+# The files Mike uploaded to the store on November 8, 2026 are the originals under their own names, not the web encodes; until the
+# encodes are there, a tile or the player falls back to the original (data-fallback, site.js) when the encode is not found.
+FALLBACK = {
+    'commercial-chivas-nike-paisa-boys.mp4': 'Chivas x Nike x Paisa Boys.mp4',
+    'commercial-nike-paisa-boys-mexico.mp4': 'Nike x Paisa Boys - Mexico.mp4',
+    'publicrec-ugc-dealmaker-pant-interview.mp4': 'DealmakerPant Interview 9x16 V1.mov',
+    'whoop-dr-eric-verdin-trailer.mp4': 'WHOOP_Dr. Eric Verdin - Trailer - RND 3 - 9x16.mp4',
+    'whoop-refreshed-creator-comp-9x16.mp4': 'WHOOP_RefreshedCreatorComp_9x16_V4.mp4',
+    'impactce-intro.mp4': 'impactce-intro-v3_v1 (1080p).mp4',
+    'literati-treasured-tales-intro.mp4': 'Literati Treasured Tales Intro.mp4',
+    'literati-treasured-tales-store-promo.mp4': 'Literati Treasured Tales Store Promo.mp4',
+    'whoop-al-standalone-4x5.mp4': 'WHOOP_ALStandalone_PaidMedia_4-5_FINAL (1).mp4',
+    'whoop-refreshed-creator-july-16x9.mp4': 'WHOOP_Refreshed Creator July 16x9 V2Rev TempText.mp4',
+    'whoop-psg-giant-screen-ad.mp4': 'WHOOP_PSG Giant Screen Ad 25fps - v10Rev - NoMusic (1).mp4',
+    'whoop-behind-the-drivers-seat-lewis.mp4': 'WHOOP_FromBehindTheDriversSeat_LewisCutdown_9x16_V10 (2).mp4',
+    'whoop-perfmedia-customizable-4x5.mp4': 'WHOOP_PerfMedia_Customizable_4x5_V4.mp4',
+    'whoop-perfmedia-product-render-16x9.mp4': 'WHOOP_PerfMedia_RefreshedProductRender_16x9_V5.mp4',
+    'whoop-peloton-partnership-launch-4x5.mp4': 'WHOOP_PelotonPartnershipLaunch_4x5_Final.mp4',
+}
+
 NO_CASE_WORK = [NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro']]
 # Willie's Remedy's 3D product animations, for the 3D / VFX page
 WR_3D = [it for it in WR_CASE['gal'] if it['video'].startswith('wr-3d')]

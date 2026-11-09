@@ -442,11 +442,13 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
         var v = document.createElement('video');
         v.src = link.getAttribute('data-src'); v.controls = true; v.autoplay = true; v.playsInline = true; v.preload = 'auto';
         v.setAttribute('title', link.getAttribute('data-title') || 'Video');
-        // a file that is not in the store yet (or a network hiccup): show its still instead of a black player
+        // a file that is not in the store yet (or a network hiccup): try the file's fallback (the original upload), then show its still instead of a black player
         var poster = link.getAttribute('data-poster') || (link.querySelector('video') && link.querySelector('video').getAttribute('poster')) || (link.querySelector('img') && link.querySelector('img').getAttribute('src'));
         if (poster) v.poster = poster;
+        var fallback = link.getAttribute('data-fallback');
         v.addEventListener('error', function () {
           if (!v.parentNode) return;
+          if (fallback) { var f = fallback; fallback = null; v.src = f; v.load(); var pp = v.play(); if (pp && pp.catch) pp.catch(function () {}); return; }
           var holder = document.createElement('div'); holder.className = 'lb-missing';
           if (poster) { var im = document.createElement('img'); im.src = poster; im.alt = ''; holder.appendChild(im); }
           var note = document.createElement('p'); note.textContent = 'This video isn’t available yet. Check back soon.'; holder.appendChild(note);
@@ -527,6 +529,29 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
   dlg.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
   dlg.addEventListener('touchend', function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 48) step(dx < 0 ? 1 : -1); }, { passive: true });
   dlg.addEventListener('close', function () { clear(); rail.innerHTML = ''; items = []; });
+})();
+
+/* A tile's video that is not in the store yet (data-fallback names the original upload) loads the fallback instead. Media errors
+   do not bubble, so this listens in the capture phase. */
+(function () {
+  "use strict";
+  function swap(v) {
+    var f = v.getAttribute('data-fallback');
+    if (!f) return;
+    v.removeAttribute('data-fallback');
+    v.setAttribute('src', f); v.load();
+  }
+  document.addEventListener('error', function (e) {
+    var v = e.target;
+    if (v && v.tagName === 'VIDEO') swap(v);
+  }, true);
+  // the videos that failed before this ran (they start loading with the page; this script comes after it)
+  function sweep() {
+    Array.prototype.forEach.call(document.querySelectorAll('video[data-fallback]'), function (v) { if (v.error) swap(v); });
+  }
+  sweep();
+  window.addEventListener('load', sweep);
+  window.__siteFallbacks = sweep;
 })();
 
 /* Video tiles: the frame they show is the video's own; pointing at one plays it quietly, leaving it puts it back. */

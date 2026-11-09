@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import FALLBACK, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -95,6 +95,14 @@ def hosted(vid):
     """the self-hosted file for a Vimeo id, or None"""
     return VIDEO_INDEX.get(str(vid)) if vid else None
 
+def vid_fallback(file):
+    """the attribute naming the file to try when the web encode is not in the store yet: the original, under the name it was uploaded with"""
+    orig = FALLBACK.get(file)
+    if not orig:
+        return ''
+    from urllib.parse import quote
+    return ' data-fallback="{{ROOT}}video/%s"' % quote(orig, safe="-_.!~*'()")
+
 def play_attrs(vid, title, poster_file=None, file=None, w=None, h=None):
     """the attributes of a link that plays a video in the lightbox: a self-hosted file (file, w, h), a Vimeo id with a hosted
     transcode (from video/), or, failing both, Vimeo's player"""
@@ -103,8 +111,8 @@ def play_attrs(vid, title, poster_file=None, file=None, w=None, h=None):
         v = dict(file=file, w=w, h=h)
     if v:
         site_videos.add(v['file'])
-        return ('href="{{ROOT}}video/%s" data-lb="video" data-src="{{ROOT}}video/%s" data-asp="%.4f" data-title="%s" data-kind="Video"%s target="_blank"'
-                % (v['file'], v['file'], v['w'] / v['h'], esc(title), (' data-poster="{{ROOT}}img/%s"' % poster_file) if poster_file else ''))
+        return ('href="{{ROOT}}video/%s" data-lb="video" data-src="{{ROOT}}video/%s"%s data-asp="%.4f" data-title="%s" data-kind="Video"%s target="_blank"'
+                % (v['file'], v['file'], vid_fallback(v['file']), v['w'] / v['h'], esc(title), (' data-poster="{{ROOT}}img/%s"' % poster_file) if poster_file else ''))
     return 'href="https://vimeo.com/%s" data-lb="video" data-vimeo="%s" data-title="%s" data-kind="Video" target="_blank" rel="noopener"' % (vid, vid, esc(title))
 
 style = open(os.path.join(ROOT, 'style.css'), encoding='utf-8').read() + '\n' + open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
@@ -444,10 +452,10 @@ def tile(item, kind):
         if item.get('poster'):
             pf, _pw, _ph = site_img(item['poster'])
             poster = ' poster="{{ROOT}}img/%s"' % pf
-        a = ('<a href="{{ROOT}}video/%s" data-lb="video" data-src="{{ROOT}}video/%s" data-shape="%s" data-asp="%.4f" data-title="%s" data-kind="Video" target="_blank" aria-label="%s">'
-             % (item['video'], item['video'], shape_of(w, h), w / h, esc(label), esc('Play: ' + label)))
-        media = ('<video src="{{ROOT}}video/%s%s" width="%d" height="%d" style="aspect-ratio:%d / %d"%s muted playsinline preload="metadata" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
-                 % (item['video'], '' if poster else '#t=0.8', w, h, w, h, poster))
+        a = ('<a href="{{ROOT}}video/%s" data-lb="video" data-src="{{ROOT}}video/%s"%s data-shape="%s" data-asp="%.4f" data-title="%s" data-kind="Video" target="_blank" aria-label="%s">'
+             % (item['video'], item['video'], vid_fallback(item['video']), shape_of(w, h), w / h, esc(label), esc('Play: ' + label)))
+        media = ('<video src="{{ROOT}}video/%s%s"%s width="%d" height="%d" style="aspect-ratio:%d / %d"%s muted playsinline preload="metadata" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
+                 % (item['video'], '' if poster else '#t=0.8', vid_fallback(item['video']), w, h, w, h, poster))
         icon = '<span class="gi-play gi-play--play" aria-hidden="true">%s</span>' % PLAY
         return '<div class="gi gi--video" role="listitem" data-gkind="video">%s%s%s<span class="gi-label">%s</span></a></div>' % (a, media, icon, esc(label))
     f, w, h = site_img(item['src'])
