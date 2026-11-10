@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import FALLBACK, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import FALLBACK, REPLACE_VIDEOS, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -86,9 +86,12 @@ if VIDEO_INDEX:
             _v = vimeo_id(_it)
             if not _v: _new.append(_it)                      # photographs stay
             elif _v in DROPPED_VIDEOS: continue
+            elif _v in REPLACE_VIDEOS:                        # a new piece takes this one's place
+                if _v not in _seen: _new.append(REPLACE_VIDEOS[_v]); _seen.add(_v)
             elif _v in _keep and _v not in _seen: _new.append(dict(_it, alt=HOSTED_LABELS.get(_v) or _it.get('alt') or CARDS[_slug]['brand'])); _seen.add(_v)
         for _v in _by_slug.get(_slug, []):                   # videos Mike added to the client's folder
             if _v in _seen or _v not in VIDEO_ITEMS or _v in DROPPED_VIDEOS: continue
+            if _v in REPLACE_VIDEOS: _new.append(REPLACE_VIDEOS[_v]); _seen.add(_v); continue
             _new.append(dict(VIDEO_ITEMS[_v], alt=HOSTED_LABELS.get(_v) or VIDEO_ITEMS[_v].get('alt') or CARDS[_slug]['brand'])); _seen.add(_v)
         _cs['gal'] = _new
 
@@ -547,7 +550,7 @@ def tv_videos():
         if 'href' not in it:
             return
         m = re.match(r'https://vimeo\.com/(\d+)', it['href'])
-        if not m or m.group(1) in seen or m.group(1) in DROPPED_VIDEOS:
+        if not m or m.group(1) in seen or m.group(1) in DROPPED_VIDEOS or m.group(1) in REPLACE_VIDEOS:
             return
         if m.group(1) in VIDEO_ITEMS and VIDEO_ITEMS[m.group(1)]['src'] != it['src']:
             return  # the live site linked this still to the wrong video; the right still comes with its own entry
@@ -684,21 +687,26 @@ def interleave(items, key_of):
     return out
 
 SHELF_EDITS = {
-    'commercial': dict(remove={'876232748', '923557755', '916190740', '916190755'},   # 686 UNWORK, Gardyn 4.0 personas, the two 4:5 Bezel cuts
-                       first=['640557935', 'ufl-nobull-what-no-can-do.mp4', 'commercial-chivas-nike-paisa-boys.mp4', 'commercial-nike-paisa-boys-mexico.mp4', '1119136322'],
+    'commercial': dict(remove={'876232748', '923557755', '916190740', '916190755', 'gardyn-taste-of-the-holidays.mp4', 'tag-scrubs-quality.mp4', 'tag-scrubs-perks.mp4'},   # 686 UNWORK, Gardyn 4.0 personas, the two 4:5 Bezel cuts, Taste of the Holidays and the TAG spots (service page only)
+                       add=['1116471803'],                                             # Literati's Every Age, Every Stage joins (November 9, 2026)
+                       first=['640557935', 'ufl-nobull-what-no-can-do.mp4', 'nike-la-dunk.mp4', 'commercial-chivas-nike-paisa-boys.mp4', 'commercial-nike-paisa-boys-mexico.mp4', '1119136322'],
                        last=['727974264']),                                            # Nestlé closes the shelf
     'profiles': dict(remove={'916190755'}, by='brand'),                                # Bezel
-    'social': dict(remove={'1112070841', '686-wntr-goggles-color-jump.mp4'}, by='brand', limit=50),   # FX's testimonial
+    'social': dict(remove={'1112070841', '686-wntr-goggles-color-jump.mp4', 'commercial-chivas-nike-paisa-boys.mp4', '1116471803'}, by='brand', limit=50,   # FX's testimonial, the Chivas spot and the Literati spot (both on Commercial)
+                   first=['wolf-and-shepherd-gift-giving.mp4']),                       # the Wolf & Shepherd gift-giving square leads (November 9, 2026)
     'literati': dict(by='svc'),
     'public-rec': dict(keep_first=True, by='svc'),
     'willies-remedy': dict(by='svc'),
 }
 
-def edit_shelf(key, items):
+def edit_shelf(key, items, pool=None):
+    """pool: every Work-page video by key, for the pieces an 'add' brings onto the shelf"""
     e = SHELF_EDITS.get(key)
     if not e:
         return items
     items = [v for v in items if vkey(v) not in e.get('remove', set())]
+    have = {vkey(v) for v in items}
+    items += [pool[k] for k in e.get('add', []) if pool and k in pool and k not in have]
     head = []
     if e.get('keep_first') and items:
         head, items = items[:1], items[1:]
@@ -791,7 +799,7 @@ def portfolio_page():
     for v in videos:  # the commercials Mike added by file
         if v.get('file') and v.get('svc') == 'Commercial' and v['file'] not in seen:
             seen.add(v['file']); commercial.append(v)
-    commercial = edit_shelf('commercial', commercial)
+    commercial = edit_shelf('commercial', commercial, by_key)
     shelves.append(tv_shelf('commercial', 'Commercial', [tv_tile(v, 'Commercial', 'film') for v in commercial], link=('The service', '{{ROOT}}services/commercial.html'), note='Hero spots and brand films, from script to final mix.'))
     svc_profiles = next(s for s in SERVICES if s['slug'] == 'profiles')
     profiles, pseen = [], set()
@@ -954,7 +962,7 @@ def case_page(slug):
         why = ('<section class="band band--wash cs-why">\n  <div class="wrap"><div class="head"><span class="eyebrow">Why it worked</span><h2 class="h2">Why It <span class="ai">Worked.</span></h2></div>'
                '<ul class="pillars">%s</ul></div>\n</section>' % ''.join('<li class="pillar"><span class="svc-ic" aria-hidden="true">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(t), esc(d)) for k, t, d in copy['why']))
     n = len(copy['quotes'])
-    said = ('<section class="band band--tint cs-said">\n  <div class="wrap"><div class="head"><span class="eyebrow">Client Stories</span><h2 class="h2">In <span class="ai">Their Words</span></h2></div>'
+    said = '' if not n else ('<section class="band band--tint cs-said">\n  <div class="wrap"><div class="head"><span class="eyebrow">Client Stories</span><h2 class="h2">In <span class="ai">Their Words</span></h2></div>'
             '<ul class="cs-quotes cs-quotes--%d" style="--n:%d">%s</ul></div>\n</section>' % (n, n, ''.join(quote_card(q, slug) for q in copy['quotes'])))
     tiles = '\n'.join(tile(it, 'work') for it in cs['gal'])
     work = ('<section class="band band--wash cs-work" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">The work</span><h2 class="h2">Selected Work <span class="ai">for %s</span></h2>'

@@ -417,10 +417,56 @@ GARDYN_NOV9 = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('gardyn-grow-it-at-home', 'Grow It at Home · Commercial', 1280, 720, 'Commercial'),
     ('gardyn-if-youve-been-waiting-9x16', 'If You’ve Been Waiting, summer sign · Paid social', 720, 1280, 'Paid Social'),
 ]}
+# the pieces Mike sent on the evening of November 9, 2026 (web encodes of the finals; the originals' names are in FALLBACK)
+NOV9_PM = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
+    ('686-the-hundreds-logo-collab', '686 × The Hundreds logo collab · Social', 720, 1280, 'Paid Social'),
+    ('publicrec-nobull-built-for-this', 'Built for This · Public Rec × NOBULL', 1280, 720, 'Commercial'),
+    ('publicrec-gamechanger-tv-2024', 'Gamechanger · :30 TV commercial, 2024', 1280, 720, 'Commercial'),
+    ('publicrec-dad-reel-daymakers', 'Dad Reel: Daymakers · Lifestyle', 1280, 720, 'Paid Social'),
+    ('publicrec-dad-reel-gamechangers', 'Dad Reel: Gamechangers · Lifestyle', 1280, 720, 'Paid Social'),
+    ('publicrec-dad-reel-dealmaker', 'Dad Reel: Dealmaker · Lifestyle', 1280, 720, 'Paid Social'),
+    ('publicrec-dad-reel-mashup', 'Dad Reel: Mashup · Lifestyle', 1280, 720, 'Paid Social'),
+    ('publicrec-dealmakers-anniversary-sale-4x5', 'Dealmakers, Anniversary Sale · 4:5 ad', 1024, 1280, 'Paid Social'),
+    ('publicrec-aded-pant-drawstring-4x5', 'ADED pant, drawstring · 4:5 ad', 1024, 1280, 'Paid Social'),
+    ('nike-la-dunk', 'Nike LA Dunk · Brand film', 1280, 720, 'Commercial'),
+    ('wolf-and-shepherd-gift-giving', 'Wolf & Shepherd, gift giving · Paid social', 1080, 1080, 'Paid Social'),
+    ('gardyn-health-enthusiasts', 'Health enthusiasts · Paid social', 1280, 720, 'Paid Social'),
+    ('tag-scrubs-quality', 'TAG Scrubs: Quality · Commercial', 1280, 720, 'Commercial'),
+    ('tag-scrubs-perks', 'TAG Scrubs: Perks · Commercial', 1280, 720, 'Commercial'),
+]}
+# the six Public Rec stills Mike sent the same evening, for the case study's gallery
+def _still(name, alt, w, h):
+    return dict(src='new/%s.jpg' % name, asp=w / h, href='new/%s.jpg' % name, alt=alt, w=w, h=h)
+PUBLICREC_STILLS = [
+    _still('publicrec-still-dealmaker-street', 'Public Rec · Downtown', 1334, 2000),
+    _still('publicrec-still-bar-wave', 'Public Rec · At the bar', 2000, 1334),
+    _still('publicrec-still-stretch', 'Public Rec · The stretch', 1334, 2000),
+    _still('publicrec-still-bar-stool', 'Public Rec · Bar stool', 2000, 1334),
+    _still('publicrec-still-office-coffee', 'Public Rec · Office', 1334, 2000),
+    _still('publicrec-still-ledge', 'Public Rec · On the ledge', 1000, 1200),
+]
+# library videos a new piece replaces, in place, on the case study and the Work page (November 9, 2026): the 686 Gore-Tex Pro
+# review gives way to the 686 × The Hundreds collab; the Gardyn 4.0 twin that sat in the FreePower folder (the same spot as
+# 923557755) gives way to the Health enthusiasts ad
+REPLACE_VIDEOS = {'787075185': NOV9_PM['686-the-hundreds-logo-collab'], '927324603': NOV9_PM['gardyn-health-enthusiasts']}
 # the pieces with no case study of their own (the Paisa Boys spots, the ImpactCE intro): on the service pages and the Work page's shelves
 # The files Mike uploaded to the store on November 8, 2026 are the originals under their own names, not the web encodes; until the
 # encodes are there, a tile or the player falls back to the original (data-fallback, site.js) when the encode is not found.
 FALLBACK = {
+    '686-the-hundreds-logo-collab.mp4': '686_logo_collab_-_final_v1 (1080p).mp4',
+    'publicrec-nobull-built-for-this.mp4': 'Public-Rec_BuiltForThis_Ad1_16x9_V6Rev.mp4',
+    'publicrec-gamechanger-tv-2024.mp4': 'PublicRec_Gamechanger_TV_Commercial_2024_16x9_30_Broadcast_NoSaleEndCard (1).mp4',
+    'publicrec-dad-reel-daymakers.mp4': 'Public-Rec__DadReel_Daymakers_Lifestyle_16x9_Draft1_V1.mp4',
+    'publicrec-dad-reel-gamechangers.mp4': 'Public-Rec__DadReel_Gamechangers_Lifestyle_16x9_Draft1_V1.mp4',
+    'publicrec-dad-reel-dealmaker.mp4': 'Public-Rec__DadReel_Dealmaker_Lifestyle_16x9_Draft1_V1.mp4',
+    'publicrec-dad-reel-mashup.mp4': 'Public-Rec__DadReel_Mashup_16x9_Draft1_V1.mp4',
+    'publicrec-dealmakers-anniversary-sale-4x5.mp4': 'Public-Rec_Dealmakers_AnniversarySale2024_4x5_V1.mp4',
+    'publicrec-aded-pant-drawstring-4x5.mp4': 'PublicRec_aded_pant_ad_-_4x5_drawstring_v4_v1 (1080p).mp4',
+    'nike-la-dunk.mp4': 'nike,_la_dunk_v1 (1080p).mp4',
+    'wolf-and-shepherd-gift-giving.mp4': 'wolf_&_shepherd_-_gift_giving_v1 (1080p).mp4',
+    'gardyn-health-enthusiasts.mp4': 'gardyn_-_health_enthusiasts_v1 (1080p).mp4',
+    'tag-scrubs-quality.mp4': 'tag_quality_16x9_v2_1_v1 (1080p).mp4',
+    'tag-scrubs-perks.mp4': 'tag_perks_16x9_v2_v1 (1080p).mp4',
     'gardyn-song-30.mp4': 'GardynSong_30_16x9_V7Rev.mp4',
     'gardyn-fresh-got-easier.mp4': 'Gardyn_FreshGotEasier_16x9_V5.mp4',
     'gardyn-ctv-2026-grow-something.mp4': 'Gardyn_CTV2026_GrowSomething_15_16x9_V4_VO_Broadcast.mp4',
@@ -443,7 +489,8 @@ FALLBACK = {
     'whoop-peloton-partnership-launch-4x5.mp4': 'WHOOP_PelotonPartnershipLaunch_4x5_Final.mp4',
 }
 
-NO_CASE_WORK = [NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro']]
+NO_CASE_WORK = [NOV9_PM['nike-la-dunk'], NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro'],
+                NOV9_PM['wolf-and-shepherd-gift-giving'], NOV9_PM['tag-scrubs-quality'], NOV9_PM['tag-scrubs-perks']]
 # Willie's Remedy's 3D product animations, for the 3D / VFX page
 WR_3D = [it for it in WR_CASE['gal'] if it['video'].startswith('wr-3d')]
 
@@ -453,7 +500,9 @@ ADDED_WORK = {
     'literati': [NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
                  _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
     '686': [UNWORK_KEEGAN],   # the WNTR goggles colour jump left on November 9, 2026
-    'public-rec': [NOV8['publicrec-ugc-dealmaker-pant-interview'],
+    'public-rec': [NOV9_PM[k] for k in ('publicrec-nobull-built-for-this', 'publicrec-gamechanger-tv-2024', 'publicrec-dad-reel-daymakers', 'publicrec-dad-reel-gamechangers',
+                                        'publicrec-dad-reel-dealmaker', 'publicrec-dad-reel-mashup', 'publicrec-dealmakers-anniversary-sale-4x5', 'publicrec-aded-pant-drawstring-4x5')] + PUBLICREC_STILLS + [
+                   NOV8['publicrec-ugc-dealmaker-pant-interview'],
                    _new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
                    _new('publicrec-ugc-anton-gamechanger', 'Gamechanger Rec pants · UGC with Anton', 720, 1280, 'UGC'),
                    _new('publicrec-ugc-anton-dealmaker', 'Deal Maker 5 pants · UGC with Anton', 720, 1280, 'UGC')],
@@ -493,7 +542,7 @@ UFL_CASE = dict(
         ],
         results=['A season of content across four channels, delivered on schedule for all 8 teams, and a relationship that carried on after the final game.'],
         services=['Production', 'Broadcast TV Spot', 'Social Video', 'In-Stadium Video', 'Radio'],
-        quotes=[dict(name='Vince Pannozzo', title='UFL', paras=['Testimonial coming soon from Vince Pannozzo or Michael Leibowitz.'], placeholder=True)],
+        quotes=[],   # the placeholder testimonial left on November 9, 2026; the Client Stories section stays off until a quote comes
         next=['WHOOP', 'Public Rec', 'Patrol', 'Gardyn'],
         # the radio spots (November 3, 2026): six :30s from Mike's UFL folder, joined into one reel with a second between them; each
         # entry plays its own stretch. The names come from the scripts: four Week 10 home finales, a playoff promo and the "$10 bill" ticket spot.
