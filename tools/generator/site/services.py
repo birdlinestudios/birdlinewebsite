@@ -42,7 +42,7 @@ SERVICES = [
         # reordered and widened on November 9, 2026: more 16:9 spots (Patrol, Public Rec, the UFL × NOBULL spot, DYNA, 686, the new Gardyn finals),
         # the Paisa Boys spots, and Nestlé last; the 686 UNWORK profile left
         # the evening of November 9: Nike's LA Dunk film near the top and the two TAG Scrubs spots further down
-        gallery=['2024/05/maxresdefault_11zon.webp', UFL_WNCD, NOV9_PM['nike-la-dunk'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-song-30'],
+        gallery=['2024/05/maxresdefault_11zon.webp', NOV9_PM['warmer-real-advice'], UFL_WNCD, NOV9_PM['nike-la-dunk'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-song-30'],
                  NOV8['commercial-chivas-nike-paisa-boys'], '2024/05/thumb-18-2.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', GARDYN_NOV9['gardyn-fresh-got-easier'],
                  '2024/05/thumb-15_11zon.webp', NOV9_PM['tag-scrubs-quality'], '2024/05/Public-Rec-ADED.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg', '2024/05/thumb-4.jpg',
                  NOV8['commercial-nike-paisa-boys-mexico'], NOV9_PM['tag-scrubs-perks'], '2024/05/thumb-9-2-e1720507088117.jpg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
@@ -77,7 +77,7 @@ SERVICES = [
         formats=['Meta & Instagram ads', 'TikTok ads', 'YouTube pre-roll & Shorts', 'Hook variations', 'Static ads', 'Carousel & story sets', 'Retargeting cutdowns', 'Landing page video'],
         hero=[NOV8['whoop-al-standalone-4x5'], '2026/08/thumb-54.jpg', NOV8['whoop-peloton-partnership-launch-4x5'], '2024/05/thumb-10-3.jpg'],
         gallery=[NOV8['whoop-al-standalone-4x5'], '2026/08/thumb-54.jpg', NOV8['whoop-peloton-partnership-launch-4x5'], '2024/05/thumb-10-3.jpg', NOV8['whoop-perfmedia-customizable-4x5'],
-                 NOV9_PM['wolf-and-shepherd-gift-giving'], NOV8['whoop-refreshed-creator-july-16x9'], '2024/05/686-EP.jpg', '2024/06/686-WINTER-Goggles-Color-Grid.jpg', '2024/07/thumb-3-1.jpg', '2024/05/thumb-7-3.jpg',
+                 NOV9_PM['wolf-and-shepherd-gift-giving'], NOV8['whoop-refreshed-creator-july-16x9'], NOV9_PM['wolf-and-shepherd-styling'], '2024/05/686-EP.jpg', '2024/06/686-WINTER-Goggles-Color-Grid.jpg', '2024/07/thumb-3-1.jpg', '2024/05/thumb-7-3.jpg',
                  '2024/05/Bezel-Work-Persona-e1715122673128.jpg', '2024/05/Standard-Self-Care-Hyaluronic-Daily-Moisturizer-e1720508673792.jpg', '2024/05/Gardyn-Fresh-247-e1715122740848.jpg',
                  '2024/05/thumb-11.jpg', '2024/06/686-Outerwear-Drop-2023.jpg', '2024/05/thumb-34.jpg', '2024/05/Gardyn-New-Year-New-You-1.jpg'],   # the Gardyn education cut and Route's Christmas cut left on November 9, 2026
         cases=['gardyn', 'public-rec', 'freepower', '686'],
@@ -272,10 +272,10 @@ SERVICES = [
                ('Master', 'Color, mix, captions, slates and platform specs, checked before delivery.'),
                ('Traffic & measure', 'Files delivered to your buying platform or agency, and results tracked back to the campaign.')],
         formats=[':30 & :15 CTV spots', 'OTT pre-roll', 'Broadcast masters', 'Closed captions', 'Audio mastering', 'Cutdowns from existing footage', 'Vertical companions', 'End cards & slates'],
-        hero=['2024/05/Public-Rec-ADED.jpg', '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', '2024/05/thumb-6-2.jpg'],
+        hero=['2024/05/Public-Rec-ADED.jpg', NOV9_PM['warmer-real-advice'], '2024/05/thumb-6-2.jpg'],
         # November 9, 2026: Patrol's When Seconds Matter, the Route App film and the UFL × NOBULL spot in; Your Family and Home, the 686 UNWORK
         # profile, Comfort and Style and Growing Symphony out. The new Gardyn :15 CTV spot joins too.
-        gallery=['2024/05/Public-Rec-ADED.jpg', '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', UFL_WNCD, '2024/05/thumb-6-2.jpg', '2024/05/maxresdefault_11zon.webp',
+        gallery=['2024/05/Public-Rec-ADED.jpg', NOV9_PM['warmer-real-advice'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', UFL_WNCD, '2024/05/thumb-6-2.jpg', '2024/05/maxresdefault_11zon.webp',
                  GARDYN_NOV9['gardyn-ctv-2026-grow-something'], '2024/05/thumb-2.jpg', '2024/07/Route-App.webp', '2024/05/thumb.jpg', '2024/05/thumb-4.jpg',
                  '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2024/05/thumb-15-2.jpg', '2024/05/Gardyn-Summer.jpg', '2024/05/thumb-32.jpg'],
         cases=['public-rec', '686', 'gardyn', 'patrol'],

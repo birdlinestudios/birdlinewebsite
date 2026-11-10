@@ -433,6 +433,10 @@ NOV9_PM = {k: _new(k, alt, w, h, svc) for k, alt, w, h, svc in [
     ('gardyn-health-enthusiasts', 'Health enthusiasts · Paid social', 1280, 720, 'Paid Social'),
     ('tag-scrubs-quality', 'TAG Scrubs: Quality · Commercial', 1280, 720, 'Commercial'),
     ('tag-scrubs-perks', 'TAG Scrubs: Perks · Commercial', 1280, 720, 'Commercial'),
+    # the three that followed later that night: the Warmer spot (its still is the frame Mike sent), the Wolf & Shepherd styling square and 686's colour-change square
+    ('warmer-real-advice', 'Warmer: Real Advice From People Who Lived It · Commercial', 1280, 720, 'Commercial'),
+    ('wolf-and-shepherd-styling', 'Wolf & Shepherd, styling · Paid social', 1080, 1080, 'Paid Social'),
+    ('686-features-color-change-2023', 'Features, colour change · Social', 1080, 1080, 'Paid Social'),
 ]}
 # the six Public Rec stills Mike sent the same evening, for the case study's gallery
 def _still(name, alt, w, h):
@@ -467,6 +471,9 @@ FALLBACK = {
     'gardyn-health-enthusiasts.mp4': 'gardyn_-_health_enthusiasts_v1 (1080p).mp4',
     'tag-scrubs-quality.mp4': 'tag_quality_16x9_v2_1_v1 (1080p).mp4',
     'tag-scrubs-perks.mp4': 'tag_perks_16x9_v2_v1 (1080p).mp4',
+    'warmer-real-advice.mp4': 'warmer_-_real_advice_from_people_who_lived_it_v1 (1080p).mp4',
+    'wolf-and-shepherd-styling.mp4': 'WS_styling_1x1_v2_v1 (1080p).mp4',
+    '686-features-color-change-2023.mp4': '686_featurescolorchange_2023rev_finalcopy3_v3_1x1 (1)_v1 (1080p).mp4',
     'gardyn-song-30.mp4': 'GardynSong_30_16x9_V7Rev.mp4',
     'gardyn-fresh-got-easier.mp4': 'Gardyn_FreshGotEasier_16x9_V5.mp4',
     'gardyn-ctv-2026-grow-something.mp4': 'Gardyn_CTV2026_GrowSomething_15_16x9_V4_VO_Broadcast.mp4',
@@ -489,8 +496,8 @@ FALLBACK = {
     'whoop-peloton-partnership-launch-4x5.mp4': 'WHOOP_PelotonPartnershipLaunch_4x5_Final.mp4',
 }
 
-NO_CASE_WORK = [NOV9_PM['nike-la-dunk'], NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro'],
-                NOV9_PM['wolf-and-shepherd-gift-giving'], NOV9_PM['tag-scrubs-quality'], NOV9_PM['tag-scrubs-perks']]
+NO_CASE_WORK = [NOV9_PM['warmer-real-advice'], NOV9_PM['nike-la-dunk'], NOV8['commercial-chivas-nike-paisa-boys'], NOV8['commercial-nike-paisa-boys-mexico'], NOV8['impactce-intro'],
+                NOV9_PM['wolf-and-shepherd-gift-giving'], NOV9_PM['wolf-and-shepherd-styling'], NOV9_PM['tag-scrubs-quality'], NOV9_PM['tag-scrubs-perks']]
 # Willie's Remedy's 3D product animations, for the 3D / VFX page
 WR_3D = [it for it in WR_CASE['gal'] if it['video'].startswith('wr-3d')]
 
@@ -499,7 +506,7 @@ ADDED_WORK = {
                                 'whoop-peloton-partnership-launch-4x5', 'whoop-perfmedia-customizable-4x5', 'whoop-refreshed-creator-july-16x9', 'whoop-dr-eric-verdin-trailer')],
     'literati': [NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
                  _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
-    '686': [UNWORK_KEEGAN],   # the WNTR goggles colour jump left on November 9, 2026
+    '686': [NOV9_PM['686-features-color-change-2023'], UNWORK_KEEGAN],   # the WNTR goggles colour jump left on November 9, 2026
     'public-rec': [NOV9_PM[k] for k in ('publicrec-nobull-built-for-this', 'publicrec-gamechanger-tv-2024', 'publicrec-dad-reel-daymakers', 'publicrec-dad-reel-gamechangers',
                                         'publicrec-dad-reel-dealmaker', 'publicrec-dad-reel-mashup', 'publicrec-dealmakers-anniversary-sale-4x5', 'publicrec-aded-pant-drawstring-4x5')] + PUBLICREC_STILLS + [
                    NOV8['publicrec-ugc-dealmaker-pant-interview'],

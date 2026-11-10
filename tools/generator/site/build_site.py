@@ -689,7 +689,7 @@ def interleave(items, key_of):
 SHELF_EDITS = {
     'commercial': dict(remove={'876232748', '923557755', '916190740', '916190755', 'gardyn-taste-of-the-holidays.mp4', 'tag-scrubs-quality.mp4', 'tag-scrubs-perks.mp4'},   # 686 UNWORK, Gardyn 4.0 personas, the two 4:5 Bezel cuts, Taste of the Holidays and the TAG spots (service page only)
                        add=['1116471803'],                                             # Literati's Every Age, Every Stage joins (November 9, 2026)
-                       first=['640557935', 'ufl-nobull-what-no-can-do.mp4', 'nike-la-dunk.mp4', 'commercial-chivas-nike-paisa-boys.mp4', 'commercial-nike-paisa-boys-mexico.mp4', '1119136322'],
+                       first=['640557935', 'warmer-real-advice.mp4', 'ufl-nobull-what-no-can-do.mp4', 'nike-la-dunk.mp4', 'commercial-chivas-nike-paisa-boys.mp4', 'commercial-nike-paisa-boys-mexico.mp4', '1119136322'],
                        last=['727974264']),                                            # Nestlé closes the shelf
     'profiles': dict(remove={'916190755'}, by='brand'),                                # Bezel
     'social': dict(remove={'1112070841', '686-wntr-goggles-color-jump.mp4', 'commercial-chivas-nike-paisa-boys.mp4', '1116471803'}, by='brand', limit=50,   # FX's testimonial, the Chivas spot and the Literati spot (both on Commercial)
@@ -766,8 +766,8 @@ def portfolio_page():
     # Featured: the newest videos, photographs and designs, interleaved, each at its own proportions in a row of one height
     by_key = {vkey(v): v for v in videos}
     # the Featured videos, reshuffled again on November 9, 2026: Lewis leads, then the new Gardyn :30, What No Can Do, and the rest
-    FEATURED_VIDEOS = ['whoop-behind-the-drivers-seat-lewis.mp4', 'gardyn-song-30.mp4', '1087155996', 'ufl-nobull-what-no-can-do.mp4', '844754785', 'whoop-al-standalone-4x5.mp4',
-                       '640557935', '1119136322', '1087156021', '833777565']
+    FEATURED_VIDEOS = ['warmer-real-advice.mp4', 'whoop-behind-the-drivers-seat-lewis.mp4', 'gardyn-song-30.mp4', '1087155996', 'ufl-nobull-what-no-can-do.mp4', '844754785', 'whoop-al-standalone-4x5.mp4',
+                       '640557935', '1119136322', '1087156021', '833777565']   # the Warmer spot leads (November 9, 2026, late)
     recent = [by_key[k] for k in FEATURED_VIDEOS if k in by_key]
     photos = panes['photo'][9:12] + panes['photo'][0:3]
     designs = [it for it in panes['graphic'] if it['src'] != '2024/05/thumb-20-1.jpg'][7:13]   # not the 16:9 Gardyn static
