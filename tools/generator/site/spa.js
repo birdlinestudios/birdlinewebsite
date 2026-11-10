@@ -21,8 +21,12 @@
     if (key === 'all-services') return 'services.html';
     if (key === 'why-us') return 'why-us.html';
     if (key === 'rops') return 'rops.html';
+    if (key === 'how-it-works') return 'how-it-works.html';
+    if (key === 'testimonials') return 'testimonials.html';
+    if (key === 'blog') return 'blog.html';
     if (/^cs-[a-z0-9-]+$/.test(key)) return 'case-studies/' + key.slice(3) + '.html';
     if (/^svc-[a-z0-9-]+$/.test(key)) return 'services/' + key.slice(4) + '.html';
+    if (/^blog-[a-z0-9-]+$/.test(key)) return 'blog/' + key.slice(5) + '.html';
     return null;
   }
   // a link to one of the site's pages becomes a hash; anything else keeps its address
@@ -37,8 +41,12 @@
     if (rel === 'services.html') return '#all-services';
     if (rel === 'why-us.html') return '#why-us';
     if (rel === 'rops.html') return '#rops';
+    if (rel === 'how-it-works.html') return '#how-it-works';
+    if (rel === 'testimonials.html') return '#testimonials';
+    if (rel === 'blog.html') return '#blog';
     if ((m = rel.match(/^case-studies\/([a-z0-9-]+)\.html$/))) return '#cs-' + m[1];
     if ((m = rel.match(/^services\/([a-z0-9-]+)\.html$/))) return '#svc-' + m[1];
+    if ((m = rel.match(/^blog\/([a-z0-9-]+)\.html$/))) return '#blog-' + m[1];
     if (rel === 'index.html' || rel === '') return u.hash || '#top';
     return null;
   }

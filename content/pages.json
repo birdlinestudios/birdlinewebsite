@@ -144,6 +144,54 @@
   "description": "What fifteen brands say about working with Birdline as their creative team: WHOOP, Gardyn, Public Rec, Route, Literati, Patrol, FreePower, 686, Solidroad, EDJY, Willie’s Remedy and more, in their own words."
  },
  {
+  "route": "/blog",
+  "file": "blog.html",
+  "title": "Blog: Birdline",
+  "description": "Notes from the production line: how Birdline thinks about creative that keeps paying off. Return on Production Spend, shooting for the library, briefs that land, the Content Snowball and how a partnership runs."
+ },
+ {
+  "route": "/blog/what-is-return-on-production-spend",
+  "file": "blog__what-is-return-on-production-spend.html",
+  "title": "What Is Return on Production Spend?: Birdline",
+  "description": "ROAS tells you what your media did. ROPS tells you what your creative did. Here is how we calculate it, and why it changes what you shoot next."
+ },
+ {
+  "route": "/blog/shoot-for-the-library-not-just-the-launch",
+  "file": "blog__shoot-for-the-library-not-just-the-launch.html",
+  "title": "Shoot for the Library, Not Just the Launch: Birdline",
+  "description": "One shoot day should feed campaigns for years. The difference is what you capture when the hero shot is already in the can."
+ },
+ {
+  "route": "/blog/how-to-brief-a-creative-team",
+  "file": "blog__how-to-brief-a-creative-team.html",
+  "title": "How to Brief a Creative Team So the First Cut Lands: Birdline",
+  "description": "A good brief is not long. It answers four questions and leaves the rest to the people making the work."
+ },
+ {
+  "route": "/blog/the-content-snowball",
+  "file": "blog__the-content-snowball.html",
+  "title": "The Content Snowball: Why Your Best Ads Come From Footage You Already Have: Birdline",
+  "description": "Shoot once, cut many, learn from every cut. The framework behind partnerships that get cheaper and better every month."
+ },
+ {
+  "route": "/blog/unlimited-deliverables-explained",
+  "file": "blog__unlimited-deliverables-explained.html",
+  "title": "Unlimited Deliverables, Explained: Birdline",
+  "description": "What “unlimited” means in a Birdline partnership, how the queue works, and what it does not cover."
+ },
+ {
+  "route": "/blog/roas-tells-half-the-story",
+  "file": "blog__roas-tells-half-the-story.html",
+  "title": "ROAS Tells You Half the Story. ROCS Tells the Rest.: Birdline",
+  "description": "Return on Campaign Spend adds production to the equation, so a campaign’s real return finally includes the cost of making it."
+ },
+ {
+  "route": "/blog/inside-a-birdline-kickoff",
+  "file": "blog__inside-a-birdline-kickoff.html",
+  "title": "Inside a Birdline Kickoff: Birdline",
+  "description": "The first week of a partnership, and why we spend it learning how you work before we make anything."
+ },
+ {
   "route": "/services/commercial",
   "file": "services__commercial.html",
   "title": "Commercial: Birdline",

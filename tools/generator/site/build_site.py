@@ -13,6 +13,7 @@ from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TEL
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
 import how as HW
 import testimonials as TM
+import blog as BG
 from why import HERO_LEDE, REASONS, REASONS_LINE, LIBRARY_INTRO, PRODUCTIONS, CAMPAIGNS, MONTHS, LIBRARY_STATS, LIBRARY_STATEMENT, ROPS_INTRO, METRICS, PROOF, PROOF_NOTE, APP_SUB, APP_CHAIN, APP_TAIL
 
 ASSETS, OUT = sys.argv[1], sys.argv[2]
@@ -131,6 +132,7 @@ body = open(os.path.join(ROOT, 'body.html'), encoding='utf-8').read().replace('{
 os.makedirs(os.path.join(OUT, 'img'), exist_ok=True)
 os.makedirs(os.path.join(OUT, 'case-studies'), exist_ok=True)
 os.makedirs(os.path.join(OUT, 'services'), exist_ok=True)
+os.makedirs(os.path.join(OUT, 'blog'), exist_ok=True)
 
 # ---- images: the homepage assets go in by key name; the images pulled from birdlinestudios.com by their file name
 asset_ext = {}
@@ -207,6 +209,10 @@ def relink(html, root, on_home, hashes=False, local_ids=(), clean=False):
             new = '#how-it-works' if hashes else root + 'how-it-works.html'
         elif p == '/testimonials':
             new = '#testimonials' if hashes else root + 'testimonials.html'
+        elif p == '/blog':
+            new = '#blog' if hashes else root + 'blog.html'
+        elif p.startswith('/blog/'):
+            new = ('#blog-' + p.split('/')[-1]) if hashes else root + 'blog/' + p.split('/')[-1] + '.html'
         elif p.startswith('/services/'):
             new = ('#svc-' + p.split('/')[-1]) if hashes else root + 'services/' + p.split('/')[-1] + '.html'
         elif h.startswith('#') and not on_home and not (h[1:] in local_ids and h != '#top'):
@@ -218,7 +224,7 @@ def relink(html, root, on_home, hashes=False, local_ids=(), clean=False):
         return tag.replace(href.group(0), ' href="%s"' % new, 1)
     html = re.sub(r'<a\b[^>]*>', fix, html)
     if clean:  # links written straight to a file ({{ROOT}}packages.html, {{ROOT}}case-studies/ufl.html) become routes too
-        html = re.sub(r'\{\{ROOT\}\}((?:case-studies|services)/[a-z0-9-]+|[a-z0-9-]+)\.html', lambda m: route_for(m.group(1) + '.html'), html)
+        html = re.sub(r'\{\{ROOT\}\}((?:case-studies|services|blog)/[a-z0-9-]+|[a-z0-9-]+)\.html', lambda m: route_for(m.group(1) + '.html'), html)
     # the booking buttons: the Calendly link, and data-book so script.js opens the modal instead
     html = re.sub(r'<a\b([^>]*?)href="\{\{CALENDLY\}\}"(?![^>]*\bdata-book\b)', r'<a\1href="{{CALENDLY}}" data-book', html)
     return html.replace('{{ROOT}}', root).replace('{{CALENDLY}}', CALENDLY)
@@ -1716,6 +1722,97 @@ def testimonials_page():
     return document('Testimonials: Birdline', 'What fifteen brands say about working with Birdline as their creative team: WHOOP, Gardyn, Public Rec, Route, Literati, Patrol, FreePower, 686, Solidroad, EDJY, Willie’s Remedy and more, in their own words.',
                     '\n\n'.join([hero, wall, work, close]), '')
 
+# ---- the blog (November 9, 2026): an index at blog.html and a page per post under blog/. The posts are in blog.py, newest first;
+# the newest leads the index as the featured card, which sits across the hero's bottom edge, and the rest fill a filterable grid.
+# A post page carries its cover the same way, then the takeaways card, the article, the author, three more posts and the close.
+import datetime as _dt
+BLOG_BY_SLUG = {p['slug']: p for p in BG.POSTS}
+
+def blog_date(d, long=False):
+    t = _dt.date.fromisoformat(d)
+    return '<time datetime="%s">%s</time>' % (d, t.strftime('%B %-d, %Y' if long else '%b %-d, %Y'))
+
+def blog_card(p, feat=False):
+    """a post as a card: its cover, the category chip and read time, the title, the dek and the date; as the featured card (feat) the
+    cover sits beside the copy and the title is the page's h2"""
+    f, w, h = site_img(p['cover'])
+    chip = '<span class="blg-chip">%s</span>' % esc(p['category'])
+    if feat:
+        return ('<article class="blg-feat" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-feat-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" fetchpriority="high"></span>'
+                '<span class="blg-feat-body"><span class="blg-meta">%s<span>%d min read</span></span><h2>%s</h2><p>%s</p>'
+                '<span class="blg-foot"><span class="blg-date">%s</span><span class="hw-link">Read the article%s</span></span></span></a></article>'
+                % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date']), ARROW_GO))
+    return ('<li class="blg-card" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></span>'
+            '<span class="blg-body"><span class="blg-meta">%s<span>%d min read</span></span><h3>%s</h3><p>%s</p><span class="blg-date">%s</span></span></a></li>'
+            % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date'])))
+
+def blog_page():
+    posts = BG.POSTS
+    lead, rest = posts[0], posts[1:]
+    h = BG.HERO
+    hero = ('<!-- ===== The blog: the copy on navy, the newest post across the hero’s bottom edge ===== -->\n'
+            '<section class="hero hero--page hero--blog on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow">%s</span><h1>%s</h1><p class="lede">%s</p></div>%s</div>\n</section>'
+            % (esc(h['eyebrow']), tt(h['h1']), esc(h['lede']), blog_card(lead, feat=True)))
+    cats = [c for c in BG.CATEGORIES if any(p['category'] == c for p in posts)]
+    pills = '<button class="blg-pill" type="button" data-cat="all" aria-pressed="true">All</button>' + ''.join(
+        '<button class="blg-pill" type="button" data-cat="%s" aria-pressed="false">%s</button>' % (c.lower(), esc(c)) for c in cats)
+    grid = ('<!-- ===== Every other post, by category ===== -->\n'
+            '<section class="band blg-list" id="articles">\n  <div class="wrap"><div class="blg-bar"><div class="blg-filters" role="group" aria-label="Filter by topic" data-blog-filters>%s</div>'
+            '<span class="blg-count">%d articles</span></div><ul class="blg-grid" data-blog-grid aria-label="Articles">%s</ul>'
+            '<p class="blg-empty" data-blog-empty hidden>Nothing in this topic yet beyond the featured article above.</p></div>\n</section>'
+            % (pills, len(posts), ''.join(blog_card(p) for p in rest)))
+    w = BG.WORK
+    work = ('<!-- ===== The ideas, in the work ===== -->\n'
+            '<section class="band band--wash svc-cases" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">%s</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>'
+            '<ul class="cs-grid cs-grid--4 cs-grid--light">%s</ul><div class="more"><a class="btn" href="{{ROOT}}case-studies.html">All case studies</a></div></div>\n</section>'
+            % (esc(w['eyebrow']), tt(w['h2']), esc(w['sub']), ''.join(cs_card(slug, light=True) for slug in w['slugs'])))
+    close = close_section('See the work', '{{ROOT}}portfolio.html', heading=BG.CLOSE['heading'], sub=BG.CLOSE['sub'], photo=site_img(BG.CLOSE['photo']))
+    return document('Blog: Birdline', 'Notes from the production line: how Birdline thinks about creative that keeps paying off. Return on Production Spend, shooting for the library, briefs that land, the Content Snowball and how a partnership runs.',
+                    '\n\n'.join([hero, grid, work, close]), '')
+
+def blog_body(blocks):
+    out = []
+    for kind, val in blocks:
+        if kind == 'p':
+            out.append('<p>%s</p>' % esc(val))
+        elif kind == 'h2':
+            out.append('<h2 id="%s">%s</h2>' % (re.sub(r'[^a-z0-9]+', '-', val.lower()).strip('-'), esc(val)))
+        elif kind == 'ul':   # an item that opens with a short lead sentence ("Alternate hooks. The first three seconds...") gets it in bold
+            out.append('<ul>%s</ul>' % ''.join('<li>%s</li>' % re.sub(r'^([^.]{3,40}\.)\s+(?=.{20,})', lambda m: '<b>%s</b> ' % m.group(1), esc(x)) for x in val))
+        elif kind == 'quote':
+            out.append('<blockquote class="blg-quote"><p>%s</p></blockquote>' % esc(val))
+        else:
+            raise SystemExit('unknown blog block ' + kind)
+    return '\n'.join(out)
+
+def post_page(p):
+    a = BG.AUTHOR
+    site_imgs.add('bird-%s.webp' % a['face'])
+    f, w, h = site_img(p['cover'])
+    by = ('<div class="blg-by"><img src="{{ROOT}}img/bird-%s.webp" width="112" height="112" alt="" loading="lazy"><div><b>%s</b><span>%s</span></div>'
+          '<span class="blg-by-meta">%s<i aria-hidden="true">·</i>%d min read</span></div>' % (a['face'], esc(a['name']), esc(a['role']), blog_date(p['date'], long=True), p['read']))
+    hero = ('<!-- ===== The article: its title on navy, its cover across the hero’s bottom edge ===== -->\n'
+            '<section class="hero hero--page hero--post on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow blg-crumb"><a href="{{ROOT}}blog.html">The Birdline blog</a><i aria-hidden="true">·</i>%s</span>'
+            '<h1>%s</h1><p class="lede">%s</p>%s</div><figure class="blg-cover"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" fetchpriority="high"></figure></div>\n</section>'
+            % (esc(p['category']), esc(p['title']), esc(p['dek']), by, f, w, h, esc(p['cover_alt'])))
+    take = ('<aside class="blg-take" aria-label="Key takeaways"><b>Key takeaways</b><ul>%s</ul></aside>' % ''.join('<li>%s</li>' % esc(x) for x in p['takeaways'])) if p.get('takeaways') else ''
+    author = ('<div class="blg-author"><img src="{{ROOT}}img/bird-%s.webp" width="160" height="160" alt="" loading="lazy"><div><span class="blg-author-k">Written by</span><b>%s</b><span>%s</span><p>%s</p>'
+              '<a class="hw-link" href="{{ROOT}}about.html">More about Birdline%s</a></div></div>' % (a['face'], esc(a['name']), esc(a['role']), esc(a['bio']), ARROW_GO))
+    ld = json.dumps(dict(**{'@context': 'https://schema.org', '@type': 'BlogPosting'}, headline=p['title'], description=p['dek'], datePublished=p['date'],
+                         author={'@type': 'Person', 'name': a['name']}, publisher={'@type': 'Organization', 'name': 'Birdline'}), ensure_ascii=False).replace('</', '<\\/')
+    article = ('<!-- ===== The article ===== -->\n'
+               '<section class="band blg-article">\n  <div class="wrap"><div class="blg-col">%s<div class="blg-prose">%s</div>%s</div></div>\n'
+               '<script type="application/ld+json">%s</script>\n</section>' % (take, blog_body(p['body']), author, ld))
+    same = [q for q in BG.POSTS if q['slug'] != p['slug'] and q['category'] == p['category']]
+    others = [q for q in BG.POSTS if q['slug'] != p['slug'] and q['category'] != p['category']]
+    related = (same + others)[:3]
+    more = ('<!-- ===== Three more posts ===== -->\n'
+            '<section class="band band--wash blg-more" id="more">\n  <div class="wrap"><div class="head"><span class="eyebrow">Keep reading</span><h2 class="h2">%s</h2></div>'
+            '<ul class="blg-grid" aria-label="More articles">%s</ul><div class="more"><a class="btn" href="{{ROOT}}blog.html">All articles</a></div></div>\n</section>'
+            % (tt('More From |the Blog.'), ''.join(blog_card(q) for q in related)))
+    close = close_section('All articles', '{{ROOT}}blog.html', heading=BG.CLOSE['heading'], sub=BG.CLOSE['sub'], photo=site_img(BG.CLOSE['photo']))
+    return document('%s: Birdline' % p['title'], p['dek'], '\n\n'.join([hero, article, more, close]), '../')
+
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
 # A video is named by its Vimeo id (its curated still, playing from the library); a photograph or design by its still.
@@ -1802,6 +1899,9 @@ pages['rops.html'] = rops_page()
 pages['services/production-process.html'] = production_page()
 pages['how-it-works.html'] = how_page()
 pages['testimonials.html'] = testimonials_page()
+pages['blog.html'] = blog_page()
+for _p in BG.POSTS:
+    pages['blog/%s.html' % _p['slug']] = post_page(_p)
 for svc in SERVICES:
     pages['services/%s.html' % svc['slug']] = service_page(svc)
 for _slug, _eyebrow, _title, _updated, _desc in DOC_PAGES:
@@ -1841,7 +1941,7 @@ def inline_small(text):
                 _inline[f] = 'data:%s;base64,%s' % (_MIME[f.rsplit('.', 1)[1]], base64.b64encode(fh.read()).decode('ascii'))
         return 'src="%s"' % _inline[f]
     return INLINE_SMALL.sub(rep, text)
-os.makedirs(os.path.join(OUT, '_artifact', 'case-studies'), exist_ok=True); os.makedirs(os.path.join(OUT, '_artifact', 'services'), exist_ok=True)
+os.makedirs(os.path.join(OUT, '_artifact', 'case-studies'), exist_ok=True); os.makedirs(os.path.join(OUT, '_artifact', 'services'), exist_ok=True); os.makedirs(os.path.join(OUT, '_artifact', 'blog'), exist_ok=True)
 for name, text in pages.items():
     if name == 'index-artifact.html':
         text = inline_small(text)

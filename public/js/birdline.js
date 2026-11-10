@@ -991,3 +991,21 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
     });
   }, true);
 })();
+
+/* The blog's topic filter ([data-blog-filters] on blog.html): a pill shows the cards of its topic in the grid ([data-blog-grid])
+   and hides the others; "All" shows every card. The featured post above the grid stays as it is. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var pill = e.target && e.target.closest ? e.target.closest('[data-blog-filters] [data-cat]') : null;
+    if (!pill) return;
+    var bar = pill.closest('[data-blog-filters]'), grid = document.querySelector('[data-blog-grid]'), empty = document.querySelector('[data-blog-empty]');
+    if (!grid) return;
+    var cat = pill.getAttribute('data-cat'), shown = 0;
+    Array.prototype.forEach.call(bar.querySelectorAll('[data-cat]'), function (b) { b.setAttribute('aria-pressed', b === pill ? 'true' : 'false'); });
+    Array.prototype.forEach.call(grid.querySelectorAll('[data-cat]'), function (card) {
+      var on = cat === 'all' || card.getAttribute('data-cat') === cat;
+      card.hidden = !on; if (on) shown++;
+    });
+    if (empty) empty.hidden = shown > 0;
+  });
+})();
