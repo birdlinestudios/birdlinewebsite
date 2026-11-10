@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import FALLBACK, REPLACE_VIDEOS, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import FALLBACK, REPLACE_VIDEOS, LITERATI_GIFS, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -965,10 +965,23 @@ def case_page(slug):
     said = '' if not n else ('<section class="band band--tint cs-said">\n  <div class="wrap"><div class="head"><span class="eyebrow">Client Stories</span><h2 class="h2">In <span class="ai">Their Words</span></h2></div>'
             '<ul class="cs-quotes cs-quotes--%d" style="--n:%d">%s</ul></div>\n</section>' % (n, n, ''.join(quote_card(q, slug) for q in copy['quotes'])))
     tiles = '\n'.join(tile(it, 'work') for it in cs['gal'])
-    work = ('<section class="band band--wash cs-work" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">The work</span><h2 class="h2">Selected Work <span class="ai">for %s</span></h2>'
-            '<p class="sub">Tap a frame to play it or see it at full size.</p>%s</div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Work for %s">\n%s\n  </div></div>\n</section>'
-            % (esc(brand), '', esc(brand), tiles))
-    radio = radio_section(copy['radio']) if copy.get('radio') else ''
+    # what follows the work inside the same band: Literati's GIF loops; the UFL's radio spots (one section, one background, so the
+    # videos and the audio read as one body of work)
+    after, extra_cls = '', ''
+    if slug == 'literati':
+        gifs = ''.join('<li class="gif-tile"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"><span>%s</span></li>'
+                       % (site_img(src) + (esc(label + ' — animated loop'), esc(label))) for src, label in LITERATI_GIFS)
+        after = ('<div class="head head--next" id="loops"><span class="eyebrow">Loops</span><h2 class="h2">Animated <span class="ai">GIFs</span></h2>'
+                 '<p class="sub">Short loops for email, web and social: the logo, the gift cards, the book stacks.</p></div>\n  <ul class="gif-grid" aria-label="Animated GIFs for %s">%s</ul>' % (esc(brand), gifs))
+        extra_cls = ' cs-work--loops'
+    if copy.get('radio'):
+        r = copy['radio']
+        after = ('<div class="head head--next" id="radio"><span class="eyebrow">On air</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n  %s' % (tt(r['heading']), esc(r['sub']), radio_block(r)))
+        extra_cls = ' cs-work--radio'
+    work = ('<section class="band band--wash cs-work%s" id="work">\n  <div class="wrap"><div class="head"><span class="eyebrow">The work</span><h2 class="h2">Selected Work <span class="ai">for %s</span></h2>'
+            '<p class="sub">Tap a frame to play it or see it at full size.</p>%s</div>\n  <div class="masonry masonry--3" data-masonry role="list" aria-label="Work for %s">\n%s\n  </div>%s</div>\n</section>'
+            % (extra_cls, esc(brand), '', esc(brand), tiles, ('\n  ' + after) if after else ''))
+    radio = ''
     nxt = [NAME_TO_SLUG[nm] for nm in copy['next'] if NAME_TO_SLUG.get(nm) and NAME_TO_SLUG[nm] != slug][:4]
     more = ('<section class="band cs-more">\n  <div class="wrap"><div class="head"><span class="eyebrow">More case studies</span><h2 class="h2">Keep <span class="ai">Reading</span></h2></div>'
             '<ul class="cs-grid cs-grid--4 cs-grid--light">%s</ul><div class="more"><a class="btn" href="{{ROOT}}case-studies.html">All case studies</a></div></div>\n</section>'

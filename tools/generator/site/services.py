@@ -6,7 +6,7 @@
 # Every example is a piece from the Work page or a case-study gallery, named by its source path in content.json; ('asset', key, alt)
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
-from extras import AI_WORK, AI_HERO, NOV8, NOV9_PM, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN
+from extras import AI_WORK, AI_HERO, NOV8, NOV9_PM, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN, LITERATI_STATICS
 
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
@@ -44,8 +44,8 @@ SERVICES = [
         # the evening of November 9: Nike's LA Dunk film near the top and the two TAG Scrubs spots further down
         gallery=['2024/05/maxresdefault_11zon.webp', NOV9_PM['warmer-real-advice'], UFL_WNCD, NOV9_PM['nike-la-dunk'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-song-30'],
                  NOV8['commercial-chivas-nike-paisa-boys'], '2024/05/thumb-18-2.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', GARDYN_NOV9['gardyn-fresh-got-easier'],
-                 '2024/05/thumb-15_11zon.webp', NOV9_PM['tag-scrubs-quality'], '2024/05/Public-Rec-ADED.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg', '2024/05/thumb-4.jpg',
-                 NOV8['commercial-nike-paisa-boys-mexico'], NOV9_PM['tag-scrubs-perks'], '2024/05/thumb-9-2-e1720507088117.jpg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
+                 '2024/05/thumb-15_11zon.webp', NOV9_PM['tag-scrubs-quality'], '2024/05/Public-Rec-ADED.jpg', '2025/09/thumb-44.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg', '2024/05/thumb-4.jpg',
+                 NOV8['commercial-nike-paisa-boys-mexico'], NOV9_PM['tag-scrubs-perks'], '2024/05/thumb-6-2.jpg', '2024/05/thumb-9-2-e1720507088117.jpg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
                  GARDYN_NOV9['gardyn-grow-it-at-home'], '2024/05/thumb-2.jpg', '2024/05/Nestle-uai-2133x1200-1.png'],
         cases=['public-rec', 'ufl', 'patrol', 'gardyn'],
         faq=[('Do we need a Monthly Partnership to book a commercial?', 'No. Productions are scoped on their own, per project. Most partners add one to a Video Editing or Design & Animation package so the footage keeps turning into new deliverables every month, but a single production stands on its own.'),
@@ -207,7 +207,7 @@ SERVICES = [
         formats=['Explainer animations', 'Feature callouts', 'Logo animation', 'Lower thirds & titles', 'Kinetic typography', 'Animated social posts', 'Video banners', 'Email GIFs'],
         hero=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2025/09/thumb-36.jpg'],
         # November 9, 2026: the rough Gardyn animation left; the animated statics from the Design page (Bezel, 686, Public Rec, Route, Brekky, Gardyn) joined
-        gallery=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2024/05/thumb-2-2.jpg', NOV8['literati-treasured-tales-store-promo'], '2025/09/thumb-36.jpg', '2024/05/thumb-18.jpg', '2026/08/thumb-59.jpg',
+        gallery=[NOV8['literati-treasured-tales-intro'], '2026/08/thumb-57.jpg', '2024/05/thumb-2-2.jpg', NOV9_PM['literati-storytime-reimagined-1x1'], NOV8['literati-treasured-tales-store-promo'], '2025/09/thumb-36.jpg', '2024/05/thumb-18.jpg', '2026/08/thumb-59.jpg',
                  '2024/05/thumb-13-2.jpg', '2024/05/thumb-8-2.jpg', '2024/05/thumb-12-2.jpg', '2024/05/thumb-11-2.jpg', '2024/05/thumb-10-2.jpg', '2024/05/thumb-7-2.jpg', '2024/05/thumb-26.jpg',
                  '2025/09/thumb-32.jpg', '2025/09/thumb-34.jpg', NOV8['impactce-intro'], '2025/09/thumb-27.jpg',
                  '2024/05/thumb-27.jpg', '2024/05/thumb-4-4.jpg', '2024/05/thumb-4-3-e1721004821170.jpg'],
@@ -243,7 +243,7 @@ SERVICES = [
         # stills only since November 9, 2026: the animated pieces moved to the Motion Graphics page
         gallery=['2024/05/Protect-Static-v2.jpg', '2024/05/0001_THE-EVERYWHERE-HYBRID-SHORT.jpg', '2024/05/LBF-F25043_SocialPost_BookFairAnnouncement_English_2X-2.png', '2024/05/Affirm-Pricing-1x1-v2-1.jpeg',
                  '2024/05/Gardyn-Static-BT4W-1x1-3.jpeg', '2024/05/DOUBLE-KNIT-ORION-GALLERY5.jpg', '2024/05/IMG_8421.jpg', '2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png',
-                 '2024/05/OPTION-1A.jpg', '2024/05/EVERYWHERE_1080x2160_Ad.jpg'],
+                 '2024/05/OPTION-1A.jpg', '2024/05/EVERYWHERE_1080x2160_Ad.jpg'] + [('site', it['src'], it['alt']) for it in LITERATI_STATICS],   # Literati's flyers, posters, signs and statics (November 9, 2026)
         cases=['route', 'literati', 'gardyn', '686'],
         faq=[('Which tools do you design in?', 'Figma and Adobe Creative Cloud, and whatever your team already uses. Briefs can sync from Google Docs, Sheets, Slides and Notion in the Birdline App.'),
              ('Can you work inside our existing brand system?', 'Yes, that’s the default. We work from your brand library and guidelines, and extend the system when a campaign needs something new.'),
@@ -272,11 +272,11 @@ SERVICES = [
                ('Master', 'Color, mix, captions, slates and platform specs, checked before delivery.'),
                ('Traffic & measure', 'Files delivered to your buying platform or agency, and results tracked back to the campaign.')],
         formats=[':30 & :15 CTV spots', 'OTT pre-roll', 'Broadcast masters', 'Closed captions', 'Audio mastering', 'Cutdowns from existing footage', 'Vertical companions', 'End cards & slates'],
-        hero=['2024/05/Public-Rec-ADED.jpg', NOV9_PM['warmer-real-advice'], '2024/05/thumb-6-2.jpg'],
+        hero=[NOV9_PM['publicrec-gamechanger-tv-2024'], NOV9_PM['warmer-real-advice'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg'],
         # November 9, 2026: Patrol's When Seconds Matter, the Route App film and the UFL × NOBULL spot in; Your Family and Home, the 686 UNWORK
         # profile, Comfort and Style and Growing Symphony out. The new Gardyn :15 CTV spot joins too.
-        gallery=['2024/05/Public-Rec-ADED.jpg', NOV9_PM['warmer-real-advice'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', UFL_WNCD, '2024/05/thumb-6-2.jpg', '2024/05/maxresdefault_11zon.webp',
-                 GARDYN_NOV9['gardyn-ctv-2026-grow-something'], '2024/05/thumb-2.jpg', '2024/07/Route-App.webp', '2024/05/thumb.jpg', '2024/05/thumb-4.jpg',
+        gallery=[NOV9_PM['publicrec-gamechanger-tv-2024'], NOV9_PM['warmer-real-advice'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', UFL_WNCD, '2024/05/maxresdefault_11zon.webp',
+                 GARDYN_NOV9['gardyn-ctv-2026-grow-something'], '2024/05/thumb-2.jpg', '2024/07/Route-App.webp', '2024/05/thumb.jpg',
                  '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', '2024/05/thumb-15-2.jpg', '2024/05/Gardyn-Summer.jpg', '2024/05/thumb-32.jpg'],
         cases=['public-rec', '686', 'gardyn', 'patrol'],
         faq=[('What’s the difference between CTV and a commercial?', 'The commercial is the creative; CTV is where it runs. CTV and OTT platforms have their own specs for length, resolution, captions and audio, and we master and deliver to them.'),
@@ -404,7 +404,7 @@ SERVICES = [
         formats=['Super 8', '16mm', '35mm', 'Film stills', 'Hybrid film + digital shoots', 'Scan & grade', 'Brand films'],
         hero=[NOV9_PM['nike-la-dunk'], '2024/06/IMG1803-R01-012-scaled-1.jpg', NOV8['commercial-chivas-nike-paisa-boys']],
         gallery=[NOV9_PM['nike-la-dunk'], '2024/06/IMG1803-R01-012-scaled-1.jpg', NOV8['commercial-chivas-nike-paisa-boys'], ('site', 'new/film-3f3a4578.jpg', 'On film'),
-                 NOV8['commercial-nike-paisa-boys-mexico'], '2024/06/000020670014-scaled-1.jpg', ('site', 'new/film-pr-pants-1.jpg', 'Public Rec pants · On film'),
+                 '2024/06/000020670014-scaled-1.jpg', ('site', 'new/film-pr-pants-1.jpg', 'Public Rec pants · On film'),
                  ('site', 'new/film-17160011.jpg', 'On film'), ('site', 'new/film-pr-pants-2.jpg', 'Public Rec pants · On film'), ('site', 'new/film-img-2541.jpg', 'On film')],
         cases=['patrol', '686', 'public-rec', 'gardyn'],
         faq=[('Is film more expensive?', 'Stock, processing and scanning add line items, and they show in the brief’s budget. For the right idea the look is worth it, and a hybrid shoot keeps digital coverage for everything else.'),

@@ -1086,6 +1086,16 @@ body:has(.lb[open]){overflow:hidden}
 
 /* ---- a case study's radio spots: one reel, a list of spots that each play their own stretch of it */
 .cs-radio .radio{margin-top:var(--gap)}
+/* a case study's work band with a second part under the masonry: the UFL's radio spots, Literati's GIF loops (November 9, 2026) */
+.cs-work .head--next{margin-top:64px;padding-top:56px;border-top:1px solid var(--line);max-width:none}
+.cs-work .head--next .h2,.cs-work .head--next .sub{max-width:1040px;margin-inline:auto}
+.cs-work .radio{margin-top:var(--gap)}
+.gif-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:var(--gap) 0 0;padding:0;list-style:none}
+.gif-tile{display:grid;gap:10px;margin:0}
+.gif-tile img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px;border:1px solid var(--line-2);background:#ffffff}
+.gif-tile span{font-size:14px;font-weight:500;color:var(--muted);text-align:center}
+@media(min-width:900px){.gif-grid{gap:24px}}
+@media(max-width:720px){.cs-work .head--next{margin-top:44px;padding-top:40px}.gif-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.gif-tile img{border-radius:12px}}
 /* the Audio page: radio and video as two parts of one examples section (November 9, 2026) */
 .svc-work--audio .radio{margin-top:var(--gap)}
 .svc-work--audio .head--next{margin-top:64px;padding-top:56px;border-top:1px solid var(--line);max-width:none}

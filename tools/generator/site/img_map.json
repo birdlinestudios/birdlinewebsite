@@ -2277,7 +2277,7 @@
 "file": "whoop-dr-eric-verdin-trailer.webp",
 "w": 720,
 "h": 1280,
-"bytes": 41940
+"bytes": 51338
 },
 "new/whoop-refreshed-creator-comp-9x16.jpg": {
 "file": "whoop-refreshed-creator-comp-9x16.webp",
@@ -2487,7 +2487,7 @@
 "file": "publicrec-gamechanger-tv-2024.webp",
 "w": 1280,
 "h": 720,
-"bytes": 45194
+"bytes": 86634
 },
 "new/publicrec-dad-reel-daymakers.jpg": {
 "file": "publicrec-dad-reel-daymakers.webp",
@@ -2572,5 +2572,293 @@
 "w": 1080,
 "h": 1080,
 "bytes": 38336
+},
+"new/literati-12-days-of-giveaways.jpg": {
+"file": "literati-12-days-of-giveaways.webp",
+"w": 1600,
+"h": 2000,
+"bytes": 179230
+},
+"new/literati-flyer-back-cover.jpg": {
+"file": "literati-flyer-back-cover.webp",
+"w": 1641,
+"h": 2000,
+"bytes": 129450
+},
+"new/literati-explore-new-worlds-9x16.jpg": {
+"file": "literati-explore-new-worlds-9x16.webp",
+"w": 1125,
+"h": 2000,
+"bytes": 423666
+},
+"new/literati-f26-featured-book-flyer.jpg": {
+"file": "literati-f26-featured-book-flyer.webp",
+"w": 1641,
+"h": 2000,
+"bytes": 353188
+},
+"new/literati-f26-store-poster.jpg": {
+"file": "literati-f26-store-poster.webp",
+"w": 1332,
+"h": 1764,
+"bytes": 344486
+},
+"new/literati-f26-online-fair-flyer-back.jpg": {
+"file": "literati-f26-online-fair-flyer-back.webp",
+"w": 1260,
+"h": 1512,
+"bytes": 251924
+},
+"new/literati-f26-online-fair-flyer-front.jpg": {
+"file": "literati-f26-online-fair-flyer-front.webp",
+"w": 1260,
+"h": 1512,
+"bytes": 245464
+},
+"new/literati-hey-mom-static.jpg": {
+"file": "literati-hey-mom-static.webp",
+"w": 2000,
+"h": 2000,
+"bytes": 183392
+},
+"new/literati-volunteer-social-post.jpg": {
+"file": "literati-volunteer-social-post.webp",
+"w": 1999,
+"h": 2000,
+"bytes": 164012
+},
+"new/literati-volunteers-social-post.jpg": {
+"file": "literati-volunteers-social-post.webp",
+"w": 1999,
+"h": 2000,
+"bytes": 155064
+},
+"new/literati-flyer-pages-2-3.jpg": {
+"file": "literati-flyer-pages-2-3.webp",
+"w": 2000,
+"h": 1219,
+"bytes": 308064
+},
+"new/literati-flyer-pages-4-5.jpg": {
+"file": "literati-flyer-pages-4-5.webp",
+"w": 2000,
+"h": 1219,
+"bytes": 345276
+},
+"new/literati-flyer-pages-5-6.jpg": {
+"file": "literati-flyer-pages-5-6.webp",
+"w": 2000,
+"h": 1219,
+"bytes": 251282
+},
+"new/literati-s27-acrylic-sign.jpg": {
+"file": "literati-s27-acrylic-sign.webp",
+"w": 850,
+"h": 1110,
+"bytes": 80820
+},
+"new/literati-s27-checkout-sign-1.jpg": {
+"file": "literati-s27-checkout-sign-1.webp",
+"w": 1296,
+"h": 1656,
+"bytes": 97114
+},
+"new/literati-s27-checkout-sign-2.jpg": {
+"file": "literati-s27-checkout-sign-2.webp",
+"w": 648,
+"h": 828,
+"bytes": 46108
+},
+"new/literati-s27-checkout-sign-3.jpg": {
+"file": "literati-s27-checkout-sign-3.webp",
+"w": 1296,
+"h": 1656,
+"bytes": 112432
+},
+"new/literati-social-proof-9x16.jpg": {
+"file": "literati-social-proof-9x16.webp",
+"w": 1080,
+"h": 1920,
+"bytes": 162016
+},
+"new/literati-social-proof-1x1.jpg": {
+"file": "literati-social-proof-1x1.webp",
+"w": 1080,
+"h": 1080,
+"bytes": 101346
+},
+"new/literati-smart-value-alt.jpg": {
+"file": "literati-smart-value-alt.webp",
+"w": 2000,
+"h": 2000,
+"bytes": 138920
+},
+"new/literati-smart-value.jpg": {
+"file": "literati-smart-value.webp",
+"w": 2000,
+"h": 2000,
+"bytes": 239656
+},
+"new/literati-f26-library-checkout-sign.jpg": {
+"file": "literati-f26-library-checkout-sign.webp",
+"w": 1238,
+"h": 1588,
+"bytes": 288752
+},
+"new/literati-s27-fair-announcement-poster.jpg": {
+"file": "literati-s27-fair-announcement-poster.webp",
+"w": 1296,
+"h": 1728,
+"bytes": 174604
+},
+"new/literati-gif-book-stack.gif": {
+"file": "literati-gif-book-stack.webp",
+"w": 500,
+"h": 500,
+"bytes": 457092
+},
+"new/literati-gif-card-stack.gif": {
+"file": "literati-gif-card-stack.webp",
+"w": 500,
+"h": 500,
+"bytes": 843850
+},
+"new/literati-gif-checklist.gif": {
+"file": "literati-gif-checklist.webp",
+"w": 500,
+"h": 500,
+"bytes": 832046
+},
+"new/literati-gif-gift-card-stack.gif": {
+"file": "literati-gif-gift-card-stack.webp",
+"w": 500,
+"h": 500,
+"bytes": 663684
+},
+"new/literati-gif-kid-book.gif": {
+"file": "literati-gif-kid-book.webp",
+"w": 500,
+"h": 500,
+"bytes": 75154
+},
+"new/literati-gif-book-fairs.gif": {
+"file": "literati-gif-book-fairs.webp",
+"w": 500,
+"h": 500,
+"bytes": 374882
+},
+"new/literati-gif-gift-card-scale.gif": {
+"file": "literati-gif-gift-card-scale.webp",
+"w": 500,
+"h": 500,
+"bytes": 1072938
+},
+"new/literati-gif-logo-color-change.gif": {
+"file": "literati-gif-logo-color-change.gif",
+"w": 500,
+"h": 500,
+"bytes": 234377
+},
+"new/literati-gif-logo-hover.gif": {
+"file": "literati-gif-logo-hover.gif",
+"w": 500,
+"h": 500,
+"bytes": 201965
+},
+"new/literati-about-book-fairs.jpg": {
+"file": "literati-about-book-fairs.webp",
+"w": 1280,
+"h": 720,
+"bytes": 139928
+},
+"new/literati-bfa-event-sizzle-9x16.jpg": {
+"file": "literati-bfa-event-sizzle-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 123296
+},
+"new/literati-book-fair-sizzle.jpg": {
+"file": "literati-book-fair-sizzle.webp",
+"w": 1280,
+"h": 720,
+"bytes": 67280
+},
+"new/literati-custom-book-box-9x16.jpg": {
+"file": "literati-custom-book-box-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 43468
+},
+"new/literati-ease-of-setup.jpg": {
+"file": "literati-ease-of-setup.webp",
+"w": 1280,
+"h": 720,
+"bytes": 40670
+},
+"new/literati-favorite-book-series-9x16.jpg": {
+"file": "literati-favorite-book-series-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 100566
+},
+"new/literati-green-screen-ad-9x16.jpg": {
+"file": "literati-green-screen-ad-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 76542
+},
+"new/literati-librarian-testimonials.jpg": {
+"file": "literati-librarian-testimonials.webp",
+"w": 1280,
+"h": 720,
+"bytes": 64284
+},
+"new/literati-make-reading-fun-again-9x16.jpg": {
+"file": "literati-make-reading-fun-again-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 158602
+},
+"new/literati-pov-best-day-9x16.jpg": {
+"file": "literati-pov-best-day-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 37712
+},
+"new/literati-rejoined-9x16.jpg": {
+"file": "literati-rejoined-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 43558
+},
+"new/literati-start-your-book-fair.jpg": {
+"file": "literati-start-your-book-fair.webp",
+"w": 1280,
+"h": 720,
+"bytes": 82810
+},
+"new/literati-storytime-reimagined-1x1.jpg": {
+"file": "literati-storytime-reimagined-1x1.webp",
+"w": 1080,
+"h": 1080,
+"bytes": 85482
+},
+"new/literati-unboxing-moments-9x16.jpg": {
+"file": "literati-unboxing-moments-9x16.webp",
+"w": 720,
+"h": 1280,
+"bytes": 150344
+},
+"new/ufl-defenders-rankings-ep1.jpg": {
+"file": "ufl-defenders-rankings-ep1.webp",
+"w": 720,
+"h": 1280,
+"bytes": 51794
+},
+"new/ufl-battlehawks-rock-and-roll-ep2.jpg": {
+"file": "ufl-battlehawks-rock-and-roll-ep2.webp",
+"w": 720,
+"h": 1280,
+"bytes": 57456
 }
 }
