@@ -1949,8 +1949,8 @@ def post_page(p):
 # seam included (a row's first and last frames meet). Public Rec's Zero Short came out November 6, 2026: its still is the same
 # DTLA scene as All Day Every Day's, so the two read as one video shown twice.
 HOME_HERO = [
-    ['1119136322', 'grantpuckett-studio-product.webp', 'whoop-behind-the-drivers-seat-lewis.mp4', '984139678', '1217480327', 'edjy-01.mp4', '1000153543', 'protect-static-v2.webp', '847156288',
-     'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '833777565', '753024501', 'grantpuckett-active-4.webp', '727974264'],
+    ['1119136322', 'grantpuckett-studio-product.webp', 'whoop-behind-the-drivers-seat-lewis.mp4', '833777565', '1217480327', 'edjy-01.mp4', '1000153543', 'protect-static-v2.webp', '847156288',
+     'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '984139678', '753024501', 'grantpuckett-active-4.webp', '727974264'],   # 833777565 and 984139678 traded places November 10, 2026
     ['640557935', 'gardyn-ugc-hana-new-year.mp4', 'whoop-al-standalone-4x5.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
      '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '895391449'],
 ]

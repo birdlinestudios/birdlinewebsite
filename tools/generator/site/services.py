@@ -7,6 +7,7 @@
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
 from extras import AI_WORK, AI_HERO, NOV8, NOV9_PM, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN, LITERATI_STATICS
+LIT_OOH = {it['src'].split('/')[-1][:-4]: ('site', it['src'], it['alt']) for it in LITERATI_STATICS}   # the Literati statics by name, for the OOH page
 
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
@@ -468,8 +469,9 @@ SERVICES = [
         formats=['Billboards', 'Transit & shelters', 'Digital OOH loops', 'Trade-show booths', 'Stadium & arena screens', 'Retail displays', 'Office & lobby screens', 'Event recaps'],
         hero=[('asset', 'svc-ooh', 'Public Rec', 'A Public Rec mural on a building: a seated man in a white shirt and a couple walking, beside the Public Rec wordmark.'), NOV8['whoop-psg-giant-screen-ad'], '2024/05/IMG_8421.jpg'],
         gallery=[('asset', 'svc-ooh', 'Public Rec', 'A Public Rec mural on a building: a seated man in a white shirt and a couple walking, beside the Public Rec wordmark.'), NOV8['whoop-psg-giant-screen-ad'], '2024/05/IMG_8421.jpg',
-                 '2024/05/HD-Expo-FreePower-Recap.jpg', ('site', '2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg', 'FreePower'), '2024/05/HD-Expo-Jake-Interview.jpg', '2026/08/thumb-46.jpg',
-                 '2026/08/thumb-45.jpg', '2024/05/EVERYWHERE_1080x2160_Ad.jpg', '2024/05/OPTION-1A.jpg'],
+                 LIT_OOH['literati-s27-acrylic-sign'], '2024/05/HD-Expo-FreePower-Recap.jpg', LIT_OOH['literati-s27-fair-announcement-poster'], ('site', '2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg', 'FreePower'),
+                 LIT_OOH['literati-flyer-pages-5-6'], '2024/05/HD-Expo-Jake-Interview.jpg', LIT_OOH['literati-f26-online-fair-flyer-front'], '2026/08/thumb-46.jpg', LIT_OOH['literati-s27-checkout-sign-1'],
+                 '2026/08/thumb-45.jpg', LIT_OOH['literati-flyer-back-cover'], '2024/05/EVERYWHERE_1080x2160_Ad.jpg', LIT_OOH['literati-f26-online-fair-flyer-back'], '2024/05/OPTION-1A.jpg'],   # the Literati print pieces joined November 10, 2026
         cases=['public-rec', 'freepower', 'whoop', 'solidroad'],
         faq=[('Do you handle the media buy?', 'No. We design and deliver to the vendor’s specs; placement stays with your media team or the venue.'),
              ('Can you cover our event?', 'Yes. A crew shoots the booth, the floor and the interviews, and clips go out while the event is still on.'),
