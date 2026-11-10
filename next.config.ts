@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/img/:path*", headers: [{ key: "Cache-Control", value: IMAGES }] },
+      { source: "/fonts/:path*", headers: [{ key: "Cache-Control", value: IMAGES }] },
       { source: "/video/:path*", headers: [{ key: "Cache-Control", value: VIDEOS }] },
     ];
   },

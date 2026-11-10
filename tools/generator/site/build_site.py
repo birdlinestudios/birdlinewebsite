@@ -128,7 +128,13 @@ def play_attrs(vid, title, poster_file=None, file=None, w=None, h=None):
                 % (v['file'], v['file'], vid_fallback(v['file']), v['w'] / v['h'], esc(title), (' data-poster="{{ROOT}}img/%s"' % poster_file) if poster_file else ''))
     return 'href="https://vimeo.com/%s" data-lb="video" data-vimeo="%s" data-title="%s" data-kind="Video" target="_blank" rel="noopener"' % (vid, vid, esc(title))
 
-style = open(os.path.join(ROOT, 'style.css'), encoding='utf-8').read() + '\n' + open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
+# the two typefaces, self-hosted (November 10, 2026): variable woff2 files (latin) from Fontsource in site/fonts/, declared under the
+# family names the CSS already uses, so nothing waits on fonts.googleapis.com
+FONT_FILES = [('Host Grotesk', 'host-grotesk-latin-wght.woff2', '300 800'), ('Inter', 'inter-latin-wght.woff2', '100 900')]
+LATIN = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'
+FONT_FACES = ''.join('@font-face{font-family:"%s";font-style:normal;font-weight:%s;font-display:swap;src:url(/fonts/%s) format("woff2-variations"),url(/fonts/%s) format("woff2");unicode-range:%s}\n'
+                     % (fam, wght, f, f, LATIN) for fam, f, wght in FONT_FILES)
+style = FONT_FACES + open(os.path.join(ROOT, 'style.css'), encoding='utf-8').read() + '\n' + open(os.path.join(HERE, 'site.css'), encoding='utf-8').read()
 script = open(os.path.join(ROOT, 'script.js'), encoding='utf-8').read() + '\n' + open(os.path.join(HERE, 'site.js'), encoding='utf-8').read()
 body = open(os.path.join(ROOT, 'body.html'), encoding='utf-8').read().replace('{{GIF}}', GIF)
 
@@ -387,8 +393,7 @@ ZOOM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=
 ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>'
 CHEV_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>'
 CHEV_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>'
-FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">')
+FONTS = '\n'.join('<link rel="preload" href="/fonts/%s" as="font" type="font/woff2" crossorigin>' % f for _fam, f, _w in FONT_FILES)
 
 def tt(s):
     """a two-tone heading, as on the About page: the part after the | marker goes periwinkle"""
@@ -410,10 +415,100 @@ def esc(s):
 NEXT = os.environ.get('BIRDLINE_NEXT')
 DOCS = []  # (title, description, inner html with clean links), one per page, in the order the pages are built
 
+# ---- responsive images (November 10, 2026): a tile does not need a 2000px file. For every <img> of 800px or more that sits in a
+# place whose rendered width is known (the Work shelves, the galleries, the cards, the full-bleed heroes...), smaller copies are
+# made (480, 800, 1280, 1920 wide, webp) and the tag gets a srcset and the sizes that place renders at, so each screen fetches the
+# copy it needs. Variants are cached in site/.variants by the source's content hash. Unknown places keep the single file.
+from html.parser import HTMLParser
+VARIANT_WIDTHS = [480, 800, 1280, 1920]
+VARIANT_CACHE = os.path.join(HERE, '.variants'); os.makedirs(VARIANT_CACHE, exist_ok=True)
+variant_imgs = set()   # the variant files written to out/img, for the Next.js export
+SIZES = [   # (an ancestor's class, the sizes attribute); the first entry whose class is among the image's ancestors wins. A dict gives
+            # the sizes by the image's shape (wide, square, tall) where a row of tiles shares one height and a frame's width follows its proportions
+    ('svc-strip', '(max-width: 720px) 50vw, 340px'),
+    ('tv-media', dict(wide='(max-width: 720px) 80vw, 600px', square='(max-width: 720px) 60vw, 340px', tall='(max-width: 720px) 45vw, 210px')),
+    ('m-tile', dict(wide='(max-width: 720px) 92vw, 600px', square='(max-width: 720px) 60vw, 340px', tall='(max-width: 720px) 45vw, 200px')),
+    ('gi', dict(wide='(max-width: 720px) 100vw, (max-width: 1040px) 66vw, 690px', square='(max-width: 720px) 50vw, (max-width: 1040px) 33vw, 345px', tall='(max-width: 720px) 50vw, (max-width: 1040px) 33vw, 345px')),
+    ('cs-media', '(max-width: 720px) 45vw, 680px'), ('svc-thumb', '(max-width: 720px) 85vw, 420px'),
+    ('blg-media', '(max-width: 640px) 100vw, (max-width: 1040px) 50vw, 440px'), ('blg-feat-media', '(max-width: 860px) 100vw, 55vw'), ('blg-cover', '(max-width: 1220px) 100vw, 1180px'),
+    ('flow-tile', '(max-width: 720px) 70vw, 150px'), ('lib-tile', '(max-width: 720px) 30vw, 250px'), ('cl-thumbs', '140px'), ('cl-still', '140px'), ('sf', '210px'),
+    ('q-logo', '260px'), ('tmp-logo', '260px'), ('logo-set', '260px'), ('st-logo', '260px'), ('cs-logo', '260px'),
+    ('close-media', '100vw'), ('tv-slide', '100vw'), ('hero-media', '100vw'), ('cs-hero-media', '100vw'), ('ab-banner', '100vw'), ('ws-screens', '(max-width: 720px) 100vw, 1360px'),
+    ('fr-screen', '(max-width: 720px) 100vw, 900px'), ('app-screen', '(max-width: 720px) 100vw, 900px'), ('screen', '(max-width: 720px) 100vw, 900px'),
+    ('hw-tiles', '(max-width: 720px) 100vw, 33vw'), ('dpanel-media', '(max-width: 720px) 100vw, 50vw'), ('prod-media', '(max-width: 720px) 100vw, 50vw'),
+    ('smart-video', '(max-width: 720px) 100vw, 50vw'), ('rs-vis', '(max-width: 720px) 100vw, 50vw'), ('hc-stage', '(max-width: 720px) 100vw, 50vw'),
+]
+VOID = {'img', 'br', 'hr', 'input', 'meta', 'link', 'source', 'track', 'wbr', 'area', 'base', 'col', 'embed', 'param'}
+
+class _ImgScan(HTMLParser):
+    """finds every <img> with the classes of its ancestors and its position in the text"""
+    def __init__(self, text):
+        super().__init__(convert_charrefs=False)
+        self.lines = [0]
+        for i, ch in enumerate(text):
+            if ch == '\n': self.lines.append(i + 1)
+        self.stack, self.found = [], []
+    def _abs(self):
+        line, col = self.getpos(); return self.lines[line - 1] + col
+    def handle_starttag(self, tag, attrs):
+        if tag == 'img':
+            a = dict(attrs); self.found.append((self._abs(), len(self.get_starttag_text()), a, [c for cls in self.stack for c in cls]))
+        elif tag not in VOID:
+            self.stack.append((dict(attrs).get('class') or '').split())
+    def handle_startendtag(self, tag, attrs):
+        if tag == 'img': self.handle_starttag(tag, attrs)
+    def handle_endtag(self, tag):
+        if tag not in VOID and self.stack: self.stack.pop()
+
+def _variant(file, width):
+    """the file name of a width-wide copy of out/img/<file>, made (or taken from the cache) and placed in out/img"""
+    src = os.path.join(OUT, 'img', file); stem = os.path.splitext(file)[0]; name = '%s-%d.webp' % (stem, width)
+    dst = os.path.join(OUT, 'img', name)
+    if name not in variant_imgs:
+        with open(src, 'rb') as fh: digest = hashlib.md5(fh.read()).hexdigest()
+        cached = os.path.join(VARIANT_CACHE, '%s-%d.webp' % (digest, width))
+        if not os.path.exists(cached):
+            from PIL import Image
+            im = Image.open(src)
+            if getattr(im, 'is_animated', False): return None
+            im = im.convert('RGBA' if im.mode in ('RGBA', 'LA', 'P') and 'transparency' in im.info or im.mode == 'RGBA' else 'RGB')
+            im = im.resize((width, max(1, round(im.height * width / im.width))), Image.LANCZOS)
+            im.save(cached, 'WEBP', quality=80, method=4)
+        shutil.copyfile(cached, dst); variant_imgs.add(name)
+    return name
+
+def responsive(html):
+    """adds srcset and sizes to the large images in known places (see SIZES)"""
+    sc = _ImgScan(html); sc.feed(html)
+    out = html
+    for start, length, a, ancestors in reversed(sc.found):
+        src = a.get('src', '')
+        m = re.match(r'\{\{ROOT\}\}img/([A-Za-z0-9._-]+)$', src)
+        if not m or 'srcset' in a or a.get('data-img'): continue
+        file = m.group(1); ext = os.path.splitext(file)[1].lower()
+        if ext not in ('.webp', '.jpg', '.jpeg', '.png'): continue
+        try: w, h = int(a.get('width') or 0), int(a.get('height') or 0)
+        except ValueError: continue
+        if w < 800 or not h or not os.path.exists(os.path.join(OUT, 'img', file)): continue
+        sizes = next((sz for cls, sz in SIZES if cls in ancestors), None)
+        if isinstance(sizes, dict): sizes = sizes[shape_of(w, h)]
+        if not sizes: continue
+        widths = [x for x in VARIANT_WIDTHS if x <= w * 0.8]
+        cands = []
+        for x in widths:
+            name = _variant(file, x)
+            if name: cands.append('{{ROOT}}img/%s %dw' % (name, x))
+        if not cands: continue
+        cands.append('{{ROOT}}img/%s %dw' % (file, w))
+        tag = html[start:start + length]
+        tag = tag[:-1] + ' srcset="%s" sizes="%s">' % (', '.join(cands), sizes)
+        out = out[:start] + tag + out[start + length:]
+    return out
+
 def document(title, description, inner, root, on_home=False, artifact=False):
     local_ids = set(re.findall(r'\sid="([^"]+)"', inner))
     if NEXT and not artifact:
-        DOCS.append(dict(title=title, description=description, html=relink(inner, '/', on_home, local_ids=local_ids, clean=True)))
+        DOCS.append(dict(title=title, description=description, html=relink(responsive(inner), '/', on_home, local_ids=local_ids, clean=True)))
     page = '<div class="page">\n' + header + '\n<main>\n' + inner + '\n</main>\n' + footer + '\n' + LIGHTBOX + '\n' + BOOK + '\n</div>'
     page = relink(page, root, on_home, local_ids=local_ids)
     if artifact:
@@ -477,8 +572,8 @@ def tile(item, kind):
             poster = ' poster="{{ROOT}}img/%s"' % pf
         a = ('<a href="{{ROOT}}video/%s" data-lb="video" data-src="{{ROOT}}video/%s"%s data-shape="%s" data-asp="%.4f" data-title="%s" data-kind="Video" target="_blank" aria-label="%s">'
              % (item['video'], item['video'], vid_fallback(item['video']), shape_of(w, h), w / h, esc(label), esc('Play: ' + label)))
-        media = ('<video src="{{ROOT}}video/%s%s"%s width="%d" height="%d" style="aspect-ratio:%d / %d"%s muted playsinline preload="metadata" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
-                 % (item['video'], '' if poster else '#t=0.8', vid_fallback(item['video']), w, h, w, h, poster))
+        media = ('<video src="{{ROOT}}video/%s%s"%s width="%d" height="%d" style="aspect-ratio:%d / %d"%s muted playsinline preload="%s" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
+                 % (item['video'], '' if poster else '#t=0.8', vid_fallback(item['video']), w, h, w, h, poster, 'none' if poster else 'metadata'))
         icon = '<span class="gi-play gi-play--play" aria-hidden="true">%s</span>' % PLAY
         return '<div class="gi gi--video" role="listitem" data-gkind="video">%s%s%s<span class="gi-label">%s</span></a></div>' % (a, media, icon, esc(label))
     f, w, h = site_img(item['src'])
@@ -490,7 +585,7 @@ def tile(item, kind):
             f, _, _ = site_img(POSTERS[m.group(1)])
         if not label and not re.search(r'_|\d+x\d+|\bv\d|\bV\d', v['title']): label = v['title']  # a readable Vimeo title, never a file name
         a = '<a %s aria-label="%s">' % (play_attrs(m.group(1), label or v['title'], f).replace('data-asp="', 'data-shape="%s" data-asp="' % shape_of(vw, vh), 1), esc('Play: ' + (label or v['title'])))
-        media = ('<video src="{{ROOT}}video/%s" width="%d" height="%d" style="aspect-ratio:%d / %d" poster="{{ROOT}}img/%s" muted playsinline preload="metadata" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
+        media = ('<video src="{{ROOT}}video/%s" width="%d" height="%d" style="aspect-ratio:%d / %d" poster="{{ROOT}}img/%s" muted playsinline preload="none" loop disablepictureinpicture aria-hidden="true" tabindex="-1"></video>'
                  % (v['file'], vw, vh, vw, vh, f))
         icon = '<span class="gi-play gi-play--play" aria-hidden="true">%s</span>' % PLAY
         return '<div class="gi gi--video" role="listitem" data-gkind="video">%s%s%s<span class="gi-label">%s</span></a></div>' % (a, media, icon, esc(label or v['title']))
@@ -1913,7 +2008,7 @@ def home_page(artifact):
     description = ('Birdline pairs a premium creative studio with a production workspace: unlimited deliverables every month, '
                    'and the revenue every production earned, in one place.')
     if NEXT and not artifact:
-        DOCS.append(dict(title=title, description=description, html=relink(inner, '/', True, clean=True)))
+        DOCS.append(dict(title=title, description=description, html=relink(responsive(inner), '/', True, clean=True)))
     if artifact:
         # one document: the router fetches the other pages' content from the files published alongside it
         router = open(os.path.join(HERE, 'spa.js'), encoding='utf-8').read()
@@ -1954,7 +2049,7 @@ for f in list(site_imgs):
     if os.path.exists(src) and not os.path.exists(os.path.join(OUT, 'img', f)):
         shutil.copyfile(src, os.path.join(OUT, 'img', f))
 # img/ holds only what the pages use
-used = set(asset_ext[k] and k + asset_ext[k] for k in asset_ext) | site_imgs
+used = set(asset_ext[k] and k + asset_ext[k] for k in asset_ext) | site_imgs | variant_imgs
 for f in os.listdir(os.path.join(OUT, 'img')):
     if f not in used:
         os.remove(os.path.join(OUT, 'img', f))
@@ -2039,6 +2134,9 @@ if NEXT:
     os.makedirs(os.path.join(NEXT, 'public', 'js'), exist_ok=True)
     with open(os.path.join(NEXT, 'public', 'js', 'birdline.js'), 'w', encoding='utf-8') as fh:
         fh.write(script)
+    pub_fonts = os.path.join(NEXT, 'public', 'fonts'); os.makedirs(pub_fonts, exist_ok=True)
+    for _fam, _f, _w in FONT_FILES:
+        shutil.copyfile(os.path.join(HERE, 'fonts', _f), os.path.join(pub_fonts, _f))
     pub_img = os.path.join(NEXT, 'public', 'img'); os.makedirs(pub_img, exist_ok=True)
     for f in used:
         dst = os.path.join(pub_img, fingerprints[f])

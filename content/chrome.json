@@ -1,7 +1,7 @@
 {
  "fonts": [
-  "https://fonts.googleapis.com",
-  "https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+  "/fonts/host-grotesk-latin-wght.woff2",
+  "/fonts/inter-latin-wght.woff2"
  ],
  "topMark": {
   "tag": "span",

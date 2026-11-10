@@ -3,6 +3,7 @@
 // after the page is on screen. The header, footer, lightbox and modal come from content/chrome.json as the generator wrote them.
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { createElement } from "react";
 import { chrome, type Part } from "@/lib/content";
 import "./globals.css";
@@ -29,12 +30,12 @@ function Fragment({ part }: { part: Part }) {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const c = chrome();
-  const [preconnect, stylesheet] = c.fonts;
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href={preconnect} />
-        <link rel="stylesheet" href={stylesheet} />
+        {c.fonts.map((href) => (
+          <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
+        ))}
       </head>
       <body>
         <div className="page">
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Fragment part={c.book} />
         </div>
         <Script src="/js/birdline.js" strategy="afterInteractive" />
+        <SpeedInsights />
       </body>
     </html>
   );
