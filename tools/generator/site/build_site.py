@@ -7,7 +7,7 @@ import hashlib, html as H, json, os, re, shutil, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from extras import FALLBACK, REPLACE_VIDEOS, LITERATI_GIFS, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
+from extras import FALLBACK, REPLACE_VIDEOS, WR_CASE, EDJY_CASE, UFL_CASE, ADDED_WORK, AI_WORK, NO_CASE_WORK, ORDER, CARDS, LOGOS, PAGES, HEADSHOTS, WE_CREATE, PHOTO_BRANDS, PACKAGES, WORKFLOW, WORKFLOW_WIDE, PRODUCTION_TYPES, PILLARS, TEAM, WITHOUT, WITH, DELIVER, COLLAB, FAQ_PACKAGES, FAQ_EXTRA, LOOP, FEATURES, AROUND, FAQ_APP, WS_SCREENS, WS_SIZES, FLOATERS, HERO_TILES
 from services import SERVICES, GROUPS
 from rops import HERO as RP_HERO, FORMULAS, COMPARE, QUESTION, QUESTION_SUB, TELLS, STORY_STATS, STORY_LEDE, STORY_THEN, STORY_LESSON, MEASURE, DIY, NUMBERS, NUMBERS_NOTE, FAQ as RP_FAQ
 from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWHERE, PROCESS_SUB, PROCESS, ADDON
@@ -965,15 +965,9 @@ def case_page(slug):
     said = '' if not n else ('<section class="band band--tint cs-said">\n  <div class="wrap"><div class="head"><span class="eyebrow">Client Stories</span><h2 class="h2">In <span class="ai">Their Words</span></h2></div>'
             '<ul class="cs-quotes cs-quotes--%d" style="--n:%d">%s</ul></div>\n</section>' % (n, n, ''.join(quote_card(q, slug) for q in copy['quotes'])))
     tiles = '\n'.join(tile(it, 'work') for it in cs['gal'])
-    # what follows the work inside the same band: Literati's GIF loops; the UFL's radio spots (one section, one background, so the
-    # videos and the audio read as one body of work)
-    after, extra_cls = '', ''
-    if slug == 'literati':
-        gifs = ''.join('<li class="gif-tile"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy" decoding="async"><span>%s</span></li>'
-                       % (site_img(src) + (esc(label + ' — animated loop'), esc(label))) for src, label in LITERATI_GIFS)
-        after = ('<div class="head head--next" id="loops"><span class="eyebrow">Loops</span><h2 class="h2">Animated <span class="ai">GIFs</span></h2>'
-                 '<p class="sub">Short loops for email, web and social: the logo, the gift cards, the book stacks.</p></div>\n  <ul class="gif-grid" aria-label="Animated GIFs for %s">%s</ul>' % (esc(brand), gifs))
-        extra_cls = ' cs-work--loops'
+    # what follows the work inside the same band: the UFL's radio spots (one section, one background, so the videos and the audio
+    # read as one body of work)
+    after, extra_cls = '', ''   # (the Literati GIF loops had a block here for an hour on November 9, 2026; Mike took it out)
     if copy.get('radio'):
         r = copy['radio']
         after = ('<div class="head head--next" id="radio"><span class="eyebrow">On air</span><h2 class="h2">%s</h2><p class="sub">%s</p></div>\n  %s' % (tt(r['heading']), esc(r['sub']), radio_block(r)))
