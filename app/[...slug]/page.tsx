@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { page, pages } from "@/lib/content";
+import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ slug: string[] }> };
 
@@ -19,7 +20,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = page("/" + slug.join("/"));
-  return p ? { title: p.title, description: p.description } : {};
+  return p ? pageMetadata(p) : {};
 }
 
 export default async function SitePage({ params }: Props) {

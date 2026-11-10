@@ -2104,13 +2104,31 @@ if NEXT:
         fingerprints[f] = '%s.%s%s' % (stem, digest, ext)
     def fingerprint(text):
         return re.sub(r'/img/([A-Za-z0-9._-]+)', lambda m: '/img/' + fingerprints.get(m.group(1), m.group(1)), text)
+    # Every page gets its Open Graph card (og.py): the 1200×630 picture a shared link shows in Slack, iMessage, LinkedIn and X. The
+    # cards go out as /og/<page>.<hash>.jpg (the name carries the content hash, as the images do, so a redrawn card is a new address
+    # and the old one can stay cached anywhere), and the manifest names each page's card for the app's generateMetadata.
+    import og as OG
+    og_out = os.path.join(OUT, 'og'); os.makedirs(og_out, exist_ok=True)
+    pub_og = os.path.join(NEXT, 'public', 'og'); os.makedirs(pub_og, exist_ok=True)
+    og_kept, og_kinds = set(), {}
     manifest = []
     for name, doc in zip(names, DOCS):
         route = route_for(name)
         file = ('index' if route == '/' else route.strip('/').replace('/', '__')) + '.html'
         with open(os.path.join(cdir, file), 'w', encoding='utf-8') as fh:
             fh.write(fingerprint(doc['html'].strip()) + '\n')
-        manifest.append(dict(route=route, file=file, title=doc['title'], description=doc['description']))
+        card, kind = OG.card(route, doc, os.path.join(OUT, 'img'), og_out)
+        with open(os.path.join(og_out, card), 'rb') as fh:
+            digest = hashlib.md5(fh.read()).hexdigest()[:8]
+        og_name = '%s.%s.jpg' % (card[:-4], digest)
+        if not os.path.exists(os.path.join(pub_og, og_name)):
+            shutil.copyfile(os.path.join(og_out, card), os.path.join(pub_og, og_name))
+        og_kept.add(og_name); og_kinds[kind] = og_kinds.get(kind, 0) + 1
+        manifest.append(dict(route=route, file=file, title=doc['title'], description=doc['description'], image='/og/' + og_name))
+    for f in os.listdir(pub_og):
+        if f not in og_kept:
+            os.remove(os.path.join(pub_og, f))
+    print('open graph cards: %s' % ', '.join('%d %s' % (n, k) for k, n in sorted(og_kinds.items())))
     with open(os.path.join(NEXT, 'content', 'pages.json'), 'w', encoding='utf-8') as fh:
         json.dump(manifest, fh, indent=1, ensure_ascii=False)
     def element(frag):

@@ -466,7 +466,7 @@ SERVICES = [
                ('Adapt to every surface', 'Each placement laid out to its own proportions, with motion versions for the screens.'),
                ('Produce & deliver', 'Print-ready files and screen loops checked against the vendor’s specs and delivered.'),
                ('Capture the moment', 'Photos, recap video and social clips from the install or the event.')],
-        formats=['Billboards', 'Transit & shelters', 'Digital OOH loops', 'Trade-show booths', 'Stadium & arena screens', 'Retail displays', 'Office & lobby screens', 'Event recaps'],
+        formats=['Billboards', 'Digital OOH loops', 'Stadium & arena screens', 'Office & lobby screens', 'Event recaps'],
         hero=[('asset', 'svc-ooh', 'Public Rec', 'A Public Rec mural on a building: a seated man in a white shirt and a couple walking, beside the Public Rec wordmark.'), NOV8['whoop-psg-giant-screen-ad'], '2024/05/IMG_8421.jpg'],
         gallery=[('asset', 'svc-ooh', 'Public Rec', 'A Public Rec mural on a building: a seated man in a white shirt and a couple walking, beside the Public Rec wordmark.'), NOV8['whoop-psg-giant-screen-ad'], '2024/05/IMG_8421.jpg',
                  LIT_OOH['literati-s27-acrylic-sign'], '2024/05/HD-Expo-FreePower-Recap.jpg', LIT_OOH['literati-s27-fair-announcement-poster'], ('site', '2024/05/KBIS_FreePower_Lead-Image-scaled-1.jpg', 'FreePower'),
