@@ -150,6 +150,12 @@
   "description": "Notes from the production line: how Birdline thinks about creative that keeps paying off. Return on Production Spend, shooting for the library, briefs that land, the Content Snowball and how a partnership runs."
  },
  {
+  "route": "/blog/roas-production-spend-rops-rocs",
+  "file": "blog__roas-production-spend-rops-rocs.html",
+  "title": "ROAS Can’t Tell a $5K Shoot From a $100K One.: Birdline",
+  "description": "ROAS measures the media and ignores the shoot. How ROCS and ROPS put production spend back in the math, with a worked example and real Birdline figures."
+ },
+ {
   "route": "/blog/what-is-return-on-production-spend",
   "file": "blog__what-is-return-on-production-spend.html",
   "title": "What Is Return on Production Spend?: Birdline",
@@ -178,12 +184,6 @@
   "file": "blog__unlimited-deliverables-explained.html",
   "title": "Unlimited Deliverables, Explained: Birdline",
   "description": "What “unlimited” means in a Birdline partnership, how the queue works, and what it does not cover."
- },
- {
-  "route": "/blog/roas-tells-half-the-story",
-  "file": "blog__roas-tells-half-the-story.html",
-  "title": "ROAS Tells You Half the Story. ROCS Tells the Rest.: Birdline",
-  "description": "Return on Campaign Spend adds production to the equation, so a campaign’s real return finally includes the cost of making it."
  },
  {
   "route": "/blog/inside-a-birdline-kickoff",

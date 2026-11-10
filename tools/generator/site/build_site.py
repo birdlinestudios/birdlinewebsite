@@ -1738,13 +1738,17 @@ def blog_card(p, feat=False):
     f, w, h = site_img(p['cover'])
     chip = '<span class="blg-chip">%s</span>' % esc(p['category'])
     if feat:
-        return ('<article class="blg-feat" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-feat-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" fetchpriority="high"></span>'
+        return ('<article class="blg-feat" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-feat-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s"%s fetchpriority="high"></span>'
                 '<span class="blg-feat-body"><span class="blg-meta">%s<span>%d min read</span></span><h2>%s</h2><p>%s</p>'
                 '<span class="blg-foot"><span class="blg-date">%s</span><span class="hw-link">Read the article%s</span></span></span></a></article>'
-                % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date']), ARROW_GO))
-    return ('<li class="blg-card" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></span>'
+                % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), blog_focal(p), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date']), ARROW_GO))
+    return ('<li class="blg-card" data-cat="%s"><a href="{{ROOT}}blog/%s.html"><span class="blg-media"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s"%s loading="lazy"></span>'
             '<span class="blg-body"><span class="blg-meta">%s<span>%d min read</span></span><h3>%s</h3><p>%s</p><span class="blg-date">%s</span></span></a></li>'
-            % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date'])))
+            % (p['category'].lower(), p['slug'], f, w, h, esc(p['cover_alt']), blog_focal(p), chip, p['read'], esc(p['title']), esc(p['dek']), blog_date(p['date'])))
+
+def blog_focal(p):
+    """the cover's focal point (a post's `focal`, as an object-position), where the crop should keep something in frame"""
+    return (' style="object-position:%s"' % esc(p['focal'])) if p.get('focal') else ''
 
 def blog_page():
     posts = BG.POSTS
@@ -1779,8 +1783,22 @@ def blog_body(blocks):
             out.append('<h2 id="%s">%s</h2>' % (re.sub(r'[^a-z0-9]+', '-', val.lower()).strip('-'), esc(val)))
         elif kind == 'ul':   # an item that opens with a short lead sentence ("Alternate hooks. The first three seconds...") gets it in bold
             out.append('<ul>%s</ul>' % ''.join('<li>%s</li>' % re.sub(r'^([^.]{3,40}\.)\s+(?=.{20,})', lambda m: '<b>%s</b> ' % m.group(1), esc(x)) for x in val))
+        elif kind == 'ol':
+            out.append('<ol>%s</ol>' % ''.join('<li>%s</li>' % esc(x) for x in val))
         elif kind == 'quote':
             out.append('<blockquote class="blg-quote"><p>%s</p></blockquote>' % esc(val))
+        elif kind == 'table':   # (headers, rows): the first column is the row's label; a blank first header makes it a plain row-label table
+            heads, rows = val
+            th = ''.join('<th scope="col">%s</th>' % esc(x) for x in heads)
+            tr = ''.join('<tr>%s</tr>' % ''.join(('<th scope="row">%s</th>' % esc(c)) if i == 0 else ('<td data-th="%s">%s</td>' % (esc(heads[i]), esc(c))) for i, c in enumerate(r)) for r in rows)
+            out.append('<div class="blg-table%s"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (' blg-table--figures' if not heads[0] else ' blg-table--stack', th, tr))
+        elif kind == 'cta':
+            label, href = val
+            out.append('<p class="blg-cta"><a class="btn" href="%s">%s%s</a></p>' % (href, esc(label), ARROW_GO))
+        elif kind == 'sources':
+            items, note = val
+            li = ''.join('<li>%s</li>' % (('<a href="%s" rel="noopener"%s>%s</a>' % (x['href'], '' if x['href'].startswith('{{') else ' target="_blank"', esc(x['text']))) if x.get('href') else esc(x['text'])) for x in items)
+            out.append('<aside class="blg-sources"><b>Sources</b><ol>%s</ol>%s</aside>' % (li, ('<p>%s</p>' % esc(note)) if note else ''))
         else:
             raise SystemExit('unknown blog block ' + kind)
     return '\n'.join(out)
@@ -1793,8 +1811,8 @@ def post_page(p):
           '<span class="blg-by-meta">%s<i aria-hidden="true">·</i>%d min read</span></div>' % (a['face'], esc(a['name']), esc(a['role']), blog_date(p['date'], long=True), p['read']))
     hero = ('<!-- ===== The article: its title on navy, its cover across the hero’s bottom edge ===== -->\n'
             '<section class="hero hero--page hero--post on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow blg-crumb"><a href="{{ROOT}}blog.html">The Birdline blog</a><i aria-hidden="true">·</i>%s</span>'
-            '<h1>%s</h1><p class="lede">%s</p>%s</div><figure class="blg-cover"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" fetchpriority="high"></figure></div>\n</section>'
-            % (esc(p['category']), esc(p['title']), esc(p['dek']), by, f, w, h, esc(p['cover_alt'])))
+            '<h1>%s</h1><p class="lede">%s</p>%s</div><figure class="blg-cover"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s"%s fetchpriority="high"></figure></div>\n</section>'
+            % (esc(p['category']), esc(p['title']), esc(p['dek']), by, f, w, h, esc(p['cover_alt']), blog_focal(p)))
     take = ('<aside class="blg-take" aria-label="Key takeaways"><b>Key takeaways</b><ul>%s</ul></aside>' % ''.join('<li>%s</li>' % esc(x) for x in p['takeaways'])) if p.get('takeaways') else ''
     author = ('<div class="blg-author"><img src="{{ROOT}}img/bird-%s.webp" width="160" height="160" alt="" loading="lazy"><div><span class="blg-author-k">Written by</span><b>%s</b><span>%s</span><p>%s</p>'
               '<a class="hw-link" href="{{ROOT}}about.html">More about Birdline%s</a></div></div>' % (a['face'], esc(a['name']), esc(a['role']), esc(a['bio']), ARROW_GO))
@@ -1811,7 +1829,7 @@ def post_page(p):
             '<ul class="blg-grid" aria-label="More articles">%s</ul><div class="more"><a class="btn" href="{{ROOT}}blog.html">All articles</a></div></div>\n</section>'
             % (tt('More From |the Blog.'), ''.join(blog_card(q) for q in related)))
     close = close_section('All articles', '{{ROOT}}blog.html', heading=BG.CLOSE['heading'], sub=BG.CLOSE['sub'], photo=site_img(BG.CLOSE['photo']))
-    return document('%s: Birdline' % p['title'], p['dek'], '\n\n'.join([hero, article, more, close]), '../')
+    return document('%s: Birdline' % p['title'], p.get('meta') or p['dek'], '\n\n'.join([hero, article, more, close]), '../')
 
 # ---- the homepage, with its images as files and its links pointing at the new pages
 # ---- the homepage hero: two rows of Work-page pieces at their own proportions, each opening in the lightbox (November 3, 2026).
