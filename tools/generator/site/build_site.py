@@ -1171,7 +1171,9 @@ def packages_page():
     left = flow_column(cols[0], 'up', '96s', '0s') + flow_column(cols[1], 'down', '110s', '-20s')
     right = flow_column(cols[2], 'up', '104s', '-35s') + flow_column(cols[3], 'down', '90s', '-12s')
     tiles = [t for col in cols for t in col]
-    row = ''.join('<li class="flow-tile">%s<span>%s</span></li>' % (img, label) for img, label in tiles)
+    # the row on narrower screens: the service after the brand sits in its own span, which the row hides (site.css), so a long
+    # caption never widens its tile and opens a gap in the row (November 11, 2026)
+    row = ''.join('<li class="flow-tile">%s<span>%s<em class="flow-svc">%s</em></span></li>' % (img, label.split(' · ', 1)[0], (' · ' + label.split(' · ', 1)[1]) if ' · ' in label else '') for img, label in tiles)
     hero = ('<!-- ===== Packages: the copy on navy between columns of work that never stop flowing (two on each side, up and down; on narrower screens one row runs under the copy). The sets are in each track twice, so they loop. ===== -->\n'
             '<section class="hero hero--page hero--flow on-dark" id="top">\n'
             '  <div class="flow flow--l" aria-hidden="true">%s</div>\n  <div class="flow flow--r" aria-hidden="true">%s</div>\n'

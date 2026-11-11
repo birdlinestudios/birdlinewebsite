@@ -535,6 +535,9 @@ body:has(.lb[open]){overflow:hidden}
 .flow-row .flow-set{display:flex;align-items:flex-start;gap:14px;padding:0 14px 0 0}
 .flow-row .flow-tile{width:auto}
 .flow-row .flow-tile img{width:auto;height:150px}
+.flow-row .flow-tile span{width:0;min-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}   /* the caption never sets the tile's width */
+.flow-row .flow-svc{display:none}   /* the row shows the brand only */
+.flow-svc{font-style:normal}
 @media(hover:hover){.flow-col:hover{animation-play-state:paused}.flow--m:hover .flow-row{animation-play-state:paused}}
 @media(min-width:721px){.flow-row .flow-tile img{height:190px}.flow--m{margin-top:56px}}
 @media(min-width:1100px){

@@ -147,11 +147,11 @@ PACKAGES = [
     dict(key='video', name='Video Editing', price='$8,000', per='/mo', starting=True,
          blurb='Get unlimited video edits across commercials, paid social, and brand content—all managed by your dedicated post-production team.',
          items=['Unlimited Edits & Revisions', 'Dedicated Video Editor', 'Dedicated Project Manager', 'VFX & Text Animations', 'Color Correcting & Grading', 'Sound Design & Mix', 'Music Licensing', 'Script & Copywriting'],
-         workflow=['Birdline App', 'Slack Communication', 'Ongoing File Storage', 'Production Planning', 'Ad Performance Reviews', 'Recurring Strategy Calls', 'Weekly Project Tracker']),
+         workflow=['Birdline App', 'AI-Powered Creative', 'Slack Communication', 'Ongoing File Storage', 'Production Planning', 'Ad Performance Reviews', 'Recurring Strategy Calls', 'Weekly Project Tracker']),   # AI-Powered Creative joined November 11, 2026
     dict(key='design', name='Design & Animation', price='$6,000', per='/mo', starting=True,
          blurb='Scale your visuals with unlimited design and animations for paid ads, emails, and brand content—delivered fast, on-brand, and built to perform.',
          items=['Unlimited Designs & Animations', 'Dedicated Designer/Animator', 'Dedicated Project Manager', 'Graphic Design & Illustration', 'VFX, 3D, & Animation', 'Motion Graphics', 'Music Licensing', 'Copywriting'],
-         workflow=['Birdline App', 'Slack Communication', 'Ongoing File Storage', 'Production Planning', 'Ad Performance Reviews', 'Recurring Strategy Calls', 'Weekly Project Tracker']),
+         workflow=['Birdline App', 'AI-Powered Creative', 'Slack Communication', 'Ongoing File Storage', 'Production Planning', 'Ad Performance Reviews', 'Recurring Strategy Calls', 'Weekly Project Tracker']),   # AI-Powered Creative joined November 11, 2026
 ]
 WORKFLOW = ['Dedicated Project Manager', 'Slack Communication', 'Birdline App Integration', 'Recurring Strategy Calls', 'Ad Performance Reviews', 'Weekly Project Tracker']
 WORKFLOW_WIDE = 'Campaign Workspace: every brief, deliverable, and result in the Birdline App'
