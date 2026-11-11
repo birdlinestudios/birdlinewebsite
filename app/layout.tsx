@@ -38,6 +38,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        {/* The Google tag for the GTM-5P37SSRM container, first in <head> as Google's install steps ask (November 10, 2026). The
+            inline part is Google's own snippet, verbatim. */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5P37SSRM" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());",
+          }}
+        />
         {c.fonts.map((href) => (
           <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
         ))}

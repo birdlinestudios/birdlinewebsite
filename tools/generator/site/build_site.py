@@ -864,11 +864,12 @@ def portfolio_page():
     # November 10, 2026 (the Gardyn Song, the 686 animation frame and Humiint left): no two of one brand or one kind in a row
     by_key = {vkey(v): v for v in videos}
     by_pane = {it['src']: it for it in panes['photo'] + panes['graphic']}
-    FEATURED = [('video', 'warmer-real-advice.mp4'), ('photo', '2024/05/Gardyn-4-30-25-GrantPuckett26940.jpeg'), ('video', 'whoop-behind-the-drivers-seat-lewis.mp4'),
-                ('design', '2024/05/thumb-4-3-e1721004821170.jpg'), ('video', '640557935'), ('photo', '2025/08/GrantPuckett-Product.jpeg'), ('video', 'ufl-nobull-what-no-can-do.mp4'),
-                ('design', '2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png'), ('video', '1119136322'), ('photo', '2025/08/Grant-Puckett-AB-9.jpeg'), ('video', '1087155996'),
-                ('design', '2024/05/thumb-26.jpg'), ('video', 'whoop-al-standalone-4x5.mp4'), ('photo', '2025/08/GrantPuckett-Studio-Product.jpeg'), ('video', '844754785'),
-                ('photo', '2024/05/Gardyn_7_29_2025_26229.jpeg'), ('video', '1087156021'), ('design', '2024/05/thumb-6-3.jpg'), ('video', '833777565'), ('photo', '2024/06/GrantPuckett-Active-4.jpeg')]
+    FEATURED = [('video', 'warmer-real-advice.mp4'), ('photo', '2024/05/Gardyn-4-30-25-GrantPuckett26940.jpeg'), ('video', 'whoop-psg-giant-screen-ad.mp4'),
+                ('design', '2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png'), ('video', '640557935'), ('photo', '2025/08/GrantPuckett-Product.jpeg'), ('video', 'ufl-nobull-what-no-can-do.mp4'),
+                ('video', 'wr-3d-bottle-swap.mp4'), ('video', 'whoop-behind-the-drivers-seat-lewis.mp4'), ('photo', '2025/08/Grant-Puckett-AB-9.jpeg'), ('video', '1119136322'),
+                ('video', '895391449'), ('design', '2024/05/thumb-26.jpg'), ('video', '1087155996'), ('photo', '2025/08/GrantPuckett-Studio-Product.jpeg'), ('video', 'whoop-perfmedia-product-render-16x9.mp4'),
+                ('video', '844754785'), ('photo', '2024/05/Gardyn_7_29_2025_26229.jpeg'), ('video', '1217478661'), ('design', '2024/05/thumb-6-3.jpg'), ('video', 'whoop-al-standalone-4x5.mp4'),
+                ('video', '1087156021'), ('photo', '2024/06/GrantPuckett-Active-4.jpeg'), ('video', '833777565')]   # the PSG screen, the WHOOP render and Rich Roll episode, 686's goggles and the Willie's bottle joined; the Route reel's thumbnail left (November 10, 2026, late)
     featured = []
     for kind, key in FEATURED:
         if kind == 'video' and key in by_key: featured.append(tv_tile(by_key[key], None, 'film'))
@@ -1954,8 +1955,8 @@ def post_page(p):
 HOME_HERO = [
     ['1119136322', 'grantpuckett-studio-product.webp', 'whoop-behind-the-drivers-seat-lewis.mp4', '833777565', '1217480327', 'edjy-01.mp4', '1000153543', 'protect-static-v2.webp', '847156288',
      'wr-3d-social.mp4', '1116472030', '1087155996', 'grantpuckett-product.webp', '863369992', '984139678', '753024501', 'grantpuckett-active-4.webp', '727974264'],   # 833777565 and 984139678 traded places November 10, 2026
-    ['640557935', 'gardyn-ugc-hana-new-year.mp4', 'whoop-al-standalone-4x5.mp4', '1217481666', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
-     '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'c4cr-unboxing-moments-1x1-v2-1.webp', '895391449'],
+    ['640557935', 'gardyn-ugc-hana-new-year.mp4', 'whoop-al-standalone-4x5.mp4', 'whoop-perfmedia-product-render-16x9.mp4', 'grantpuckett-product-36.webp', '776002616', 'literati-f26-promo.mp4', 'publicrec-ugc-anton-dealmaker.mp4',
+     '983994096', 'grant-puckett-ab-9.webp', 'wr-3d-bottle-swap.mp4', '876232748', '1000128286', '892462752', 'edjy-16.mp4', 'lbf-f25043-socialpost-bookfairannouncement-english-2x-2.webp', '895391449'],
 ]
 HERO_PACE = [7.2, 9.0]   # seconds per tile-height of track, per row: the rows keep the speeds they had with ten tiles each
 def hero_marquee():

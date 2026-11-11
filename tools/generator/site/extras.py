@@ -384,7 +384,6 @@ AI_WORK = [
     _ai('ai-gardyn-grocery-store-rebel', 'Gardyn · Grocery store rebel', 720, 1280),
     _ai('ai-gardyn-variety-showcase', 'Gardyn · Variety showcase', 720, 1280),
     _ai('ai-gardyn-ypod-lettuce', 'Gardyn · yPod variety, lettuce', 1080, 1080),
-    _ai('ai-gardyn-ypod-variety-blue', 'Gardyn · yPod variety, 120+ varieties', 1080, 1080),
     _ai('ai-gardyn-ypod-variety-cream', 'Gardyn · yPod variety, year-round', 1080, 1080),
 ]
 AI_HERO = [AI_WORK[0], AI_WORK[1], AI_WORK[2]]   # Luxonis, Venus et Fleur, FreePower across the hero
