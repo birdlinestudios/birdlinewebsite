@@ -621,13 +621,15 @@ TV_FEATURED = [
     # (slide key, slug or None for the reel, eyebrow, title, tags, description, watch: vimeo id or None for the brand's first wide video)
     ('reel', None, 'Birdline · Showreel', 'Our |Bird’s Work', ['Video', 'Photo', 'Design & Animation'],
      'Our creators don’t just make content at scale, but work that makes an impact.', '1049385390'),
-    # the case slides, in the order Mike changed them to (twice) on November 9, 2026
-    ('patrol', 'patrol', 'Case study · Patrol', None, None, None, None),
-    ('686', '686', 'Case study · 686', None, None, None, None),
+    # the case slides, in the order Mike set on November 10, 2026 (Patrol and 686 left, WHOOP and Literati joined)
+    ('whoop', 'whoop', 'Case study · WHOOP', None, None, None, None),
     ('gardyn', 'gardyn', 'Case study · Gardyn', None, None, None, None),
-    ('route', 'route', 'Case study · Route', None, None, None, None),
+    ('literati', 'literati', 'Case study · Literati', None, None, None, None),
     ('public-rec', 'public-rec', 'Case study · Public Rec', None, None, None, None),
+    ('route', 'route', 'Case study · Route', None, None, None, None),
 ]
+# the brand shelves under the Work page's service shelves, in Mike's order (November 10, 2026); a brand needs three videos for a shelf
+TV_BRAND_SHELVES = ['whoop', 'gardyn', 'literati', 'public-rec', 'ufl', 'solidroad', 'route', 'edjy', 'willies-remedy', '686', 'freepower', 'patrol']
 TV_BRAND_WORDS = [('public rec', 'public-rec'), ('route', 'route'), ('gardyn', 'gardyn'), ('freepower', 'freepower'), ('686', '686'),
                   ('patrol', 'patrol'), ('literati', 'literati'), ('solidroad', 'solidroad'), ('whoop', 'whoop')]
 
@@ -838,8 +840,8 @@ def portfolio_page():
             ctas = ('<a class="btn btn--light" %s aria-label="%s">%s Watch</a>'
                     '<a class="btn btn--ghost" href="{{ROOT}}case-studies/%s.html">Go to case study</a>' % (play_attrs(vid, c['brand']), esc('Play: ' + c['brand']), PLAY, slug))
         else:
-            img = '<img src="{{ROOT}}img/%s" width="2200" height="1468" alt="" fetchpriority="high">' % asset('hero-moto')
-            focal = '50% 45%'
+            img = '<img src="{{ROOT}}img/%s" width="2400" height="1350" alt="" fetchpriority="high">' % asset('reel-cover')   # the sled frame Mike sent on November 10, 2026
+            focal = '50% 50%'
             ctas = ('<a class="btn btn--light" %s aria-label="Play: the Birdline reel">%s Watch the reel</a>'
                     '<a class="btn btn--ghost" href="{{CALENDLY}}">Book a call</a>' % (play_attrs(vid, 'Birdline showreel'), PLAY))
         tag = 'h1' if i == 0 else 'h2'
@@ -858,19 +860,19 @@ def portfolio_page():
     shelves = []
     panes = {p['id']: p['items'] for p in pf['panes']}
     kinds = {'wide': 'Video', 'tall': 'Vertical video', 'square': 'Square cut'}
-    # Featured: the newest videos, photographs and designs, interleaved, each at its own proportions in a row of one height
+    # Featured: videos, photographs and designs, each at its own proportions in a row of one height, in the order set on
+    # November 10, 2026 (the Gardyn Song, the 686 animation frame and Humiint left): no two of one brand or one kind in a row
     by_key = {vkey(v): v for v in videos}
-    # the Featured videos, reshuffled again on November 9, 2026: Lewis leads, then the new Gardyn :30, What No Can Do, and the rest
-    FEATURED_VIDEOS = ['warmer-real-advice.mp4', 'whoop-behind-the-drivers-seat-lewis.mp4', 'gardyn-song-30.mp4', '1087155996', 'ufl-nobull-what-no-can-do.mp4', '844754785', 'whoop-al-standalone-4x5.mp4',
-                       '640557935', '1119136322', '1087156021', '833777565']   # the Warmer spot leads (November 9, 2026, late)
-    recent = [by_key[k] for k in FEATURED_VIDEOS if k in by_key]
-    photos = panes['photo'][9:12] + panes['photo'][0:3]
-    designs = [it for it in panes['graphic'] if it['src'] != '2024/05/thumb-20-1.jpg'][7:13]   # not the 16:9 Gardyn static
+    by_pane = {it['src']: it for it in panes['photo'] + panes['graphic']}
+    FEATURED = [('video', 'warmer-real-advice.mp4'), ('photo', '2024/05/Gardyn-4-30-25-GrantPuckett26940.jpeg'), ('video', 'whoop-behind-the-drivers-seat-lewis.mp4'),
+                ('design', '2024/05/thumb-4-3-e1721004821170.jpg'), ('video', '640557935'), ('photo', '2025/08/GrantPuckett-Product.jpeg'), ('video', 'ufl-nobull-what-no-can-do.mp4'),
+                ('design', '2024/05/LBF-F25043_SocialPost_ThankYou_English_2X.png'), ('video', '1119136322'), ('photo', '2025/08/Grant-Puckett-AB-9.jpeg'), ('video', '1087155996'),
+                ('design', '2024/05/thumb-26.jpg'), ('video', 'whoop-al-standalone-4x5.mp4'), ('photo', '2025/08/GrantPuckett-Studio-Product.jpeg'), ('video', '844754785'),
+                ('photo', '2024/05/Gardyn_7_29_2025_26229.jpeg'), ('video', '1087156021'), ('design', '2024/05/thumb-6-3.jpg'), ('video', '833777565'), ('photo', '2024/06/GrantPuckett-Active-4.jpeg')]
     featured = []
-    for i in range(len(recent)):
-        if i < len(recent): featured.append(tv_tile(recent[i], None, 'film'))
-        if i < len(photos): featured.append(tv_still_tile(photos[i], 'photo'))
-        if i < len(designs): featured.append(tv_still_tile(designs[i], 'design'))
+    for kind, key in FEATURED:
+        if kind == 'video' and key in by_key: featured.append(tv_tile(by_key[key], None, 'film'))
+        elif kind != 'video' and key in by_pane: featured.append(tv_still_tile(by_pane[key], kind))
     shelves.append(tv_shelf('recent', 'Featured', featured, note='Video, photo and design, the latest from our Birds. Tap a frame to play it or see it at full size.'))
     # Case studies
     cases = []
@@ -934,7 +936,7 @@ def portfolio_page():
         if i < len(design_v): design.append(tv_tile(design_v[i][1], SVC_BY_SRC.get(design_v[i][1]['src'], 'Motion Graphics'), 'film'))
     shelves.append(tv_shelf('design', 'Design & animation', design, note='Motion, static ads, social posts and key art.'))
     if profiles_shelf: shelves.append(profiles_shelf)
-    for slug in ORDER:
+    for slug in TV_BRAND_SHELVES:
         vs = by_slug.get(slug, [])
         if len(vs) < 3:
             continue
@@ -1250,6 +1252,7 @@ STORIES = [   # in the order Mike set on November 8, 2026, with John (EDJY) and 
      'Super creative. Super fast. Simply put, Birdline gets it done—and makes it fun. Working with them feels like an extension of our team.',
      [('3', 'episodes of The Green Guide'), ('8', '3D product animations')]),
 ]
+ABOUT_STORIES_OUT = {'edjy', 'willies-remedy'}   # John's and Adam's stories left the About page on November 10, 2026
 REEL = '1049385390'
 
 def about_page():
@@ -1273,7 +1276,7 @@ def about_page():
              '<cite>Mike Pagan, Founder and CEO</cite></blockquote></div>'
              '<a class="smart-video" %s aria-label="Play: the Birdline reel">'
              '<img src="{{ROOT}}img/%s" width="2200" height="1468" alt="" loading="lazy"><span class="smart-play" aria-hidden="true">%s</span>'
-             '<span class="smart-tag"><b>Our Bird’s Work</b><small>Watch the reel</small></span></a></div></div>\n</section>' % (play_attrs(REEL, 'Birdline showreel'), asset('hero-moto'), PLAY))
+             '<span class="smart-tag"><b>Our Bird’s Work</b><small>Watch the reel</small></span></a></div></div>\n</section>' % (play_attrs(REEL, 'Birdline showreel'), asset('reel-cover'), PLAY))
     clicks = ('<section class="band band--wash ab-clicks">\n  <div class="wrap"><div class="head"><span class="eyebrow">Built for brands that can’t slow down</span><h2 class="h2">A Content Partner That <span class="ai">Just Clicks.</span></h2></div>'
               '<ul class="clicks">%s</ul></div>\n</section>'
               % ''.join('<li><span class="svc-ic" aria-hidden="true">%s</span><span class="click-k">%s</span><h3>%s</h3><p>%s</p></li>' % (ICONS[k], esc(lab), esc(t), esc(d)) for k, lab, t, d in CLICKS))
@@ -1282,7 +1285,7 @@ def about_page():
             '<p class="sub">Partner with world-class creatives across video, photo, design, AI, and animation—operating as an extension of your in-house team.</p></div></div>\n'
             '  %s\n</section>' % team_loop())
     tabs, panels = [], []
-    for i, (slug, name, title, av, quote, stats) in enumerate(STORIES):
+    for i, (slug, name, title, av, quote, stats) in enumerate(s for s in STORIES if s[0] not in ABOUT_STORIES_OUT):
         brand = CARDS[slug]['brand']
         if av:
             hs = HEADSHOTS[name]

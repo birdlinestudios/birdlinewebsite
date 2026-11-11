@@ -507,6 +507,33 @@ PUBLICREC_STILLS = [
     _still('publicrec-still-office-coffee', 'Public Rec · Office', 1334, 2000),
     _still('publicrec-still-ledge', 'Public Rec · On the ledge', 1000, 1200),
 ]
+# the stills Mike sent on November 10, 2026: the shorts shoot (digital, in the studio and on the stairs) and the film frames from
+# the same rolls as IMG1803-R01-012 and -033 (the stairs and the boxing gym) and the women's roll (IMG8682). The film frames
+# also show on the Film service page (services.py), with the House Beer frame that is film too but not Public Rec.
+PUBLICREC_NOV10 = [
+    _still('publicrec-film-stairs', 'Public Rec · On film', 1336, 2000),
+    _still('publicrec-still-kettlebell-grip', 'Public Rec · Kettlebell', 1334, 2000),
+    _still('publicrec-film-field', 'Public Rec · On film', 2000, 1340),
+    _still('publicrec-still-shorts-studio', 'Public Rec · The shorts', 1334, 2000),
+    _still('publicrec-film-boxer', 'Public Rec · On film', 1336, 2000),
+    _still('publicrec-still-backpack-stairs', 'Public Rec · The backpack', 2000, 1334),
+    _still('publicrec-film-coat', 'Public Rec · On film', 1340, 2000),
+    _still('publicrec-still-kettlebell-swing', 'Public Rec · The swing', 1334, 2000),
+]
+HOUSE_BEER_FILM = _still('house-beer-forest', 'House Beer · On film', 1500, 2000)
+GARDYN_NOV10 = [
+    _still('gardyn-kitchen-wide', 'Gardyn · In the kitchen', 2000, 1334),
+    _still('gardyn-product-studio', 'Gardyn · The tower', 1334, 2000),
+    _still('gardyn-kitchen-tall', 'Gardyn · In the kitchen', 1334, 2000),
+]
+
+def _spread(items, extra, start=1, every=3):
+    """items with the extra pieces dealt in among them, one every few places from start, so stills and videos mix"""
+    out, extra = list(items), list(extra)
+    at = start
+    while extra and at <= len(out):
+        out.insert(at, extra.pop(0)); at += every
+    return out + extra
 # library videos a new piece replaces, in place, on the case study and the Work page (November 9, 2026): the 686 Gore-Tex Pro
 # review gives way to the 686 × The Hundreds collab; the Gardyn 4.0 twin that sat in the FreePower folder (the same spot as
 # 923557755) gives way to the Health enthusiasts ad
@@ -586,7 +613,7 @@ ADDED_WORK = {
                  NOV8['literati-treasured-tales-intro'], NOV8['literati-treasured-tales-store-promo'],
                  _new('literati-f26-promo', 'Fall ’26 store promo · Animation', 1280, 720, 'Motion Graphics')],
     '686': [NOV9_PM['686-features-color-change-2023'], UNWORK_KEEGAN],   # the WNTR goggles colour jump left on November 9, 2026
-    'public-rec': [NOV9_PM['publicrec-nobull-built-for-this'], NOV9_PM['publicrec-gamechanger-tv-2024'], PUBLICREC_STILLS[0], NOV9_PM['publicrec-dad-reel-daymakers'],
+    'public-rec': _spread([NOV9_PM['publicrec-nobull-built-for-this'], NOV9_PM['publicrec-gamechanger-tv-2024'], PUBLICREC_STILLS[0], NOV9_PM['publicrec-dad-reel-daymakers'],
                    NOV9_PM['publicrec-dealmakers-anniversary-sale-4x5'], PUBLICREC_STILLS[1], NOV9_PM['publicrec-dad-reel-gamechangers'], PUBLICREC_STILLS[2],
                    NOV9_PM['publicrec-aded-pant-drawstring-4x5'], NOV9_PM['publicrec-dad-reel-dealmaker'], PUBLICREC_STILLS[3], PUBLICREC_STILLS[4],
                    NOV9_PM['publicrec-dad-reel-mashup'], PUBLICREC_STILLS[5],
@@ -594,16 +621,18 @@ ADDED_WORK = {
                    _new('publicrec-comfort-rules-anthem', 'Comfort Rules · Anthem', 1280, 720, 'Commercial'),
                    _new('publicrec-ugc-anton-gamechanger', 'Gamechanger Rec pants · UGC with Anton', 720, 1280, 'UGC'),
                    _new('publicrec-ugc-anton-dealmaker', 'Deal Maker 5 pants · UGC with Anton', 720, 1280, 'UGC')],
+                  PUBLICREC_NOV10, start=2, every=3),   # the November 10 stills dealt in after Built for This and the TV spot
     'freepower': [_new('freepower-partnership-overview', 'The Cosentino partnership · Interview at KBIS', 1280, 720, 'Profiles'),
                   _new('freepower-your-charger-looks-different', 'Your charger looks different now · Paid social', 720, 1280, 'Paid Social'),
                   _new('freepower-ugc-hana-script-2', 'Hana tries FreePower · UGC', 720, 1280, 'UGC')],
-    'gardyn': [GARDYN_NOV9[k] for k in ('gardyn-song-30', 'gardyn-fresh-got-easier', 'gardyn-ctv-2026-grow-something', 'gardyn-grow-it-at-home', 'gardyn-if-youve-been-waiting-9x16')] + [
+    'gardyn': _spread([GARDYN_NOV9[k] for k in ('gardyn-song-30', 'gardyn-fresh-got-easier', 'gardyn-ctv-2026-grow-something', 'gardyn-grow-it-at-home', 'gardyn-if-youve-been-waiting-9x16')] + [
                _new('gardyn-taste-of-the-holidays', 'Taste of the Holidays · Commercial', 1280, 720, 'Commercial'),
                _new('gardyn-pays-for-itself', 'Gardyn pays for itself · Black Friday ad', 720, 1280, 'Paid Social'),
                _new('gardyn-kelby-script', 'Kelby, the AI gardening assistant · UGC', 720, 1280, 'UGC'),
                _new('gardyn-ugc-hana-new-year', 'New Year with Hana · UGC', 720, 1280, 'UGC'),
                _new('gardyn-give-mom-gardyn', 'Give Mom Gardyn · Mother’s Day UGC', 720, 1280, 'UGC'),
                _new('gardyn-around-the-gardyn', 'Around the Gardyn · 4:5 ad', 1024, 1280, 'Paid Social')],
+              GARDYN_NOV10, start=1, every=3),   # the three product stills Mike sent on November 10, 2026
 }
 
 # ---- UFL (November 2, 2026): the case Mike wrote. The challenge, the six parts of the solution, the results in numbers, and a quote still

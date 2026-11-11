@@ -6,8 +6,9 @@
 # Every example is a piece from the Work page or a case-study gallery, named by its source path in content.json; ('asset', key, alt)
 # names one of the homepage's own images instead. The first few of each list run across the page's hero as a strip.
 
-from extras import AI_WORK, AI_HERO, NOV8, NOV9_PM, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN, LITERATI_STATICS
+from extras import AI_WORK, AI_HERO, NOV8, NOV9_PM, WR_3D, GARDYN_NOV9, UFL_WNCD, UNWORK_KEEGAN, LITERATI_STATICS, PUBLICREC_NOV10, HOUSE_BEER_FILM
 LIT_OOH = {it['src'].split('/')[-1][:-4]: ('site', it['src'], it['alt']) for it in LITERATI_STATICS}   # the Literati statics by name, for the OOH page
+PR_FILM = {it['src'].split('/')[-1][len('publicrec-film-'):-4]: it for it in PUBLICREC_NOV10 if 'publicrec-film-' in it['src']}   # the Public Rec film frames by name, for the Film page
 
 GROUPS = [
     ('video', 'Video', 'From the hero spot to the clip that sells it.'),
@@ -405,8 +406,9 @@ SERVICES = [
         formats=['Super 8', '16mm', '35mm', 'Film stills', 'Hybrid film + digital shoots', 'Scan & grade', 'Brand films'],
         hero=[NOV9_PM['nike-la-dunk'], '2024/06/IMG1803-R01-012-scaled-1.jpg', NOV8['commercial-chivas-nike-paisa-boys']],
         gallery=[NOV9_PM['nike-la-dunk'], '2024/06/IMG1803-R01-012-scaled-1.jpg', NOV8['commercial-chivas-nike-paisa-boys'], ('site', 'new/film-3f3a4578.jpg', 'On film'),
-                 '2024/06/000020670014-scaled-1.jpg', ('site', 'new/film-pr-pants-1.jpg', 'Public Rec pants · On film'),
-                 ('site', 'new/film-17160011.jpg', 'On film'), ('site', 'new/film-pr-pants-2.jpg', 'Public Rec pants · On film'), ('site', 'new/film-img-2541.jpg', 'On film')],
+                 PR_FILM['stairs'], '2024/06/000020670014-scaled-1.jpg', PR_FILM['coat'], ('site', 'new/film-pr-pants-1.jpg', 'Public Rec pants · On film'), HOUSE_BEER_FILM,
+                 ('site', 'new/film-17160011.jpg', 'On film'), PR_FILM['boxer'], ('site', 'new/film-pr-pants-2.jpg', 'Public Rec pants · On film'), '2024/05/IMG1803-R01-033-scaled-1.jpg',
+                 ('site', 'new/film-img-2541.jpg', 'On film'), PR_FILM['field']],   # the Public Rec rolls and the House Beer frame joined on November 10, 2026
         cases=['patrol', '686', 'public-rec', 'gardyn'],
         faq=[('Is film more expensive?', 'Stock, processing and scanning add line items, and they show in the brief’s budget. For the right idea the look is worth it, and a hybrid shoot keeps digital coverage for everything else.'),
              ('Can we mix film and digital?', 'Yes. Most film productions pair a film camera for the hero moments with digital coverage for social and stills.'),

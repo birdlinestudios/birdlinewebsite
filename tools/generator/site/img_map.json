@@ -2860,5 +2860,77 @@
 "w": 720,
 "h": 1280,
 "bytes": 57456
+},
+"new/publicrec-still-kettlebell-grip.jpg": {
+"file": "publicrec-still-kettlebell-grip.webp",
+"w": 1334,
+"h": 2000,
+"bytes": 114762
+},
+"new/publicrec-film-stairs.jpg": {
+"file": "publicrec-film-stairs.webp",
+"w": 1336,
+"h": 2000,
+"bytes": 280408
+},
+"new/publicrec-film-boxer.jpg": {
+"file": "publicrec-film-boxer.webp",
+"w": 1336,
+"h": 2000,
+"bytes": 147174
+},
+"new/publicrec-still-shorts-studio.jpg": {
+"file": "publicrec-still-shorts-studio.webp",
+"w": 1334,
+"h": 2000,
+"bytes": 125986
+},
+"new/publicrec-still-backpack-stairs.jpg": {
+"file": "publicrec-still-backpack-stairs.webp",
+"w": 2000,
+"h": 1334,
+"bytes": 137282
+},
+"new/publicrec-film-coat.jpg": {
+"file": "publicrec-film-coat.webp",
+"w": 1340,
+"h": 2000,
+"bytes": 192496
+},
+"new/publicrec-film-field.jpg": {
+"file": "publicrec-film-field.webp",
+"w": 2000,
+"h": 1340,
+"bytes": 185446
+},
+"new/publicrec-still-kettlebell-swing.jpg": {
+"file": "publicrec-still-kettlebell-swing.webp",
+"w": 1334,
+"h": 2000,
+"bytes": 131852
+},
+"new/house-beer-forest.jpg": {
+"file": "house-beer-forest.webp",
+"w": 1500,
+"h": 2000,
+"bytes": 556542
+},
+"new/gardyn-kitchen-wide.jpg": {
+"file": "gardyn-kitchen-wide.webp",
+"w": 2000,
+"h": 1334,
+"bytes": 212314
+},
+"new/gardyn-product-studio.jpg": {
+"file": "gardyn-product-studio.webp",
+"w": 1334,
+"h": 2000,
+"bytes": 140232
+},
+"new/gardyn-kitchen-tall.jpg": {
+"file": "gardyn-kitchen-tall.webp",
+"w": 1334,
+"h": 2000,
+"bytes": 216670
 }
 }

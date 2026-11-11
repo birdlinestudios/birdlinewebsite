@@ -652,15 +652,21 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .mx-hint{display:none;margin:12px 0 0;text-align:center;font-size:12px;color:var(--on-navy-3)}
 @media(max-width:899px){
   .mx-wrap{margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}
-  .mx tbody th{position:sticky;left:0;z-index:1;min-width:230px;background:var(--navy)}
-  .mx-bl th{background:#ffffff!important}
+  /* the option column sticks over the page's gutter (left: -gutter puts it at the edge of the screen), and its background sits on the
+     option itself rather than the cell: WebKit leaves a stuck cell's background where the cell was, so on iPhones the other cells showed
+     through under the names and to their left */
+  .mx tbody th{position:sticky;left:calc(-1 * var(--gutter));z-index:1;min-width:230px;padding:0;background:transparent}
+  .mx-bl th{background:transparent!important}
+  .mx tbody th .mx-opt{padding:18px 22px;background:var(--navy);border-radius:16px 0 0 16px}
+  .mx tbody .mx-bl th .mx-opt{background:#ffffff}
   .mx tbody th .mx-opt small{display:none}
   .mx-hint{display:block}
 }
 /* phones: the sticky option column shrinks to its name, so two or three comparison columns show before any swipe */
 @media(max-width:559px){
   .mx{min-width:760px}
-  .mx tbody th{width:1%;min-width:0;padding:14px 12px 14px 14px;white-space:nowrap}
+  .mx tbody th{width:1%;min-width:0;padding:0;white-space:nowrap}
+  .mx tbody th .mx-opt{padding:14px 12px 14px 14px}
   .mx th,.mx td{padding:14px 8px}
   .mx thead th{font-size:12px}
   .mx-opt{gap:10px;align-items:center}
@@ -2005,7 +2011,7 @@ body:has(.lb[open]){overflow:hidden}
 .hw-stats li{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--line-2)}
 .hw-stats b{font:600 clamp(28px,3vw,40px)/1.05 var(--display);letter-spacing:-.03em;color:var(--navy);font-variant-numeric:tabular-nums}
 .hw-stats span{font-size:14.5px;line-height:1.45;color:var(--muted);text-wrap:pretty}
-@media(min-width:720px){.hw-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:720px){.hw-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* the six steps on navy: three across (two rows), with room for the longer copy */
 .hw-run .steps li p{font-size:15px;line-height:1.55}
 @media(min-width:900px){.hw-run .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.hw-run .steps li:last-child:nth-child(odd){grid-column:auto}}

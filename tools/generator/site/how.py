@@ -23,7 +23,7 @@ SHORT = dict(
         ('workspace', 'It lands in your library', 'Approved files go into the Birdline App, tied to their brief and campaign, ready to launch and easy to find again.'),
     ],
     # the numbers under the three moves
-    stats=[('Unlimited', 'deliverables and revisions within your plan'), ('~1 week', 'for a typical first edit'), ('Every 2 weeks', 'a strategy call, weekly when needed'), ('1 team', 'a project manager and the Birds who make your work')],
+    stats=[('Unlimited', 'deliverables and revisions within your plan'), ('Every 2 weeks', 'a strategy call, weekly when needed'), ('1 team', 'a project manager and the Birds who make your work')],   # the ~1 week first-edit figure left on November 10, 2026
 )
 
 # how a partnership runs, step by step (the numbered grid on navy)

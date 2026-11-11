@@ -1197,7 +1197,7 @@ body:has(.lb[open]){overflow:hidden}
 .hw-stats li{display:grid;gap:6px;padding-top:18px;border-top:1px solid var(--line-2)}
 .hw-stats b{font:600 clamp(28px,3vw,40px)/1.05 var(--display);letter-spacing:-.03em;color:var(--navy);font-variant-numeric:tabular-nums}
 .hw-stats span{font-size:14.5px;line-height:1.45;color:var(--muted);text-wrap:pretty}
-@media(min-width:720px){.hw-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:720px){.hw-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* the six steps on navy: three across (two rows), with room for the longer copy */
 .hw-run .steps li p{font-size:15px;line-height:1.55}
 @media(min-width:900px){.hw-run .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.hw-run .steps li:last-child:nth-child(odd){grid-column:auto}}
