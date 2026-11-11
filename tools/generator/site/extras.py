@@ -108,7 +108,7 @@ PAGES = {
         headline='Making Cannabis Education |Approachable.',
         lede='The Green Guide: a Vox-style YouTube series that explains THC drinks to newcomers, built for Willie’s Remedy in halftone, black-and-white texture and a washed green, with 3D product animation alongside it.',
         since='2026', focal='50% 50%',
-        stats=[('3', 'episodes, delivered monthly'), ('2–3 min', 'per Vox-style explainer'), ('1.2×', 'voiceover pace, now the series standard')]),
+        stats=[('3', 'episodes, delivered monthly'), ('2–3 min', 'per Vox-style explainer')]),   # the 1.2× pacing stat and paragraph left on November 11, 2026
     'edjy': dict(
         headline='One Product Launch, |a Full Video Engine.',
         lede='How a creative partnership turned one product launch into a full video engine.',
@@ -274,7 +274,6 @@ WR_CASE = dict(
         overview=[
             'Willie’s Remedy wanted an educational, entertaining YouTube series for a broad audience, including viewers who are older or new to cannabis. The brief: Vox-style explainers of two to three minutes each, with AI voiceover, that make THC drinks easy to understand.',
             'We presented two visual directions in Figma. The client chose the first: halftone and black-and-white textures, illustrations that pay homage to the Willie mascot, a slightly western theme, and a subtle washed green. The animation mixes illustration, texture, lifestyle footage, and motion-heavy text slides.',
-            'After Episode 1, the client asked for a faster pace. We retimed the animation to a 1.2× voiceover, which cut 20 to 30 seconds, and that became the standard. By Episode 2 the intro and pacing were locked, so later episodes came together faster.',
             'Alongside the series, our 3D animator built product animations for social: the Willie’s Remedy+ bottle, the social tonic trio, and the Sleep Like a Legend gummies.',
         ],
         results=[
