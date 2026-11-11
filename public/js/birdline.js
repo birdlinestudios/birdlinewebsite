@@ -844,10 +844,11 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
   });
 })();
 
-/* The content-library board on the Why Us page: productions on the left, the campaigns cut from them on the right, and lines
-   between them drawn from the cards' positions. Pointing at or tapping a card lights what it fed or drew on; the board walks through
-   the year on its own while on screen until someone takes over. Clicks are delegated; scan() draws and arms (the artifact's router
-   calls it after swapping a page in). */
+/* The content-library board on the Why Us, About and Production Process pages: productions on the left, the campaigns cut from
+   them on the right, and lines between them drawn from the cards' positions, at every width (the board shows in miniature under
+   900px). Pointing at or tapping a card lights what it fed or drew on; the board walks through the year on its own while on screen
+   until someone takes over. Clicks are delegated; scan() draws, watches and arms (the artifact's router calls it after swapping a
+   page in). */
 (function () {
   "use strict";
   var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -874,8 +875,23 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
       path.setAttribute('d', 'M' + x1.toFixed(1) + ' ' + y1.toFixed(1) + ' C ' + mx.toFixed(1) + ' ' + y1.toFixed(1) + ', ' + mx.toFixed(1) + ' ' + y2.toFixed(1) + ', ' + x2.toFixed(1) + ' ' + y2.toFixed(1));
       path.setAttribute('data-from', l[0]); path.setAttribute('data-to', l[1]);
       svg.appendChild(path);
+      // its length, so the line can draw itself in when it lights up (site.css, .cl-svg--dash)
+      try { path.style.setProperty('--len', path.getTotalLength().toFixed(1) + 'px'); } catch (err) {}
     });
+    svg.classList.add('cl-svg--dash');
     light(root, root.getAttribute('data-flow-active') || '');
+  }
+  // the lines follow the cards: redraw whenever the board or a card changes size (fonts arriving, a turned phone)
+  function watch(root) {
+    if (root.__flowRO || !window.ResizeObserver) return;
+    var board = root.querySelector('.cl-board'), raf = 0;
+    if (!board) return;
+    root.__flowRO = new window.ResizeObserver(function () {
+      if (raf) return;
+      raf = window.requestAnimationFrame(function () { raf = 0; draw(root); });
+    });
+    root.__flowRO.observe(board);
+    Array.prototype.forEach.call(root.querySelectorAll('[data-node]'), function (c) { root.__flowRO.observe(c); });
   }
   function light(root, key) {
     var cards = root.querySelectorAll('[data-node]'), paths = root.querySelectorAll('.cl-svg path'), cap = root.querySelector('[data-flow-cap]');
@@ -933,7 +949,7 @@ try { window.__birdline = enhance(document); } catch (err) { console.error(err);
   }
   var roots = [];
   function scan(r) {
-    Array.prototype.forEach.call((r || document).querySelectorAll('[data-flow]'), function (root) { if (roots.indexOf(root) < 0) roots.push(root); draw(root); arm(root); });
+    Array.prototype.forEach.call((r || document).querySelectorAll('[data-flow]'), function (root) { if (roots.indexOf(root) < 0) roots.push(root); draw(root); watch(root); arm(root); });
   }
   window.__siteTl = scan;
   scan(document);

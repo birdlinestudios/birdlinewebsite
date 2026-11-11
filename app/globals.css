@@ -1682,7 +1682,8 @@ body:has(.lb[open]){overflow:hidden}
 @media(min-width:1100px){.rs-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.rs-vis{height:160px}}
 /* the content library as a board: the productions down the left, the campaigns cut from them down the right, and the lines between
    them (site.js draws them from the cards' positions). A card that is pointed at or tapped lights up with what it fed or drew on;
-   the rest dims. Under 900px the columns stack and the lines give way to the "cut from" tags on the campaigns. */
+   the rest dims. Under 900px the same board shows in miniature (the block after the stats below), so a phone sees the whole year on
+   one screen. */
 .why-library .head .sub{color:var(--on-navy-2)}
 .cl{display:grid;gap:22px;margin-top:var(--gap)}
 .cl-board{position:relative;display:grid;gap:28px}
@@ -1709,8 +1710,17 @@ body:has(.lb[open]){overflow:hidden}
 .cl-from em::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--peri);rotate:45deg}
 .cl-from em.is-on{background:var(--peri);color:var(--navy)}
 .cl-from em.is-on::before{background:var(--navy)}
-.cl-port{display:none}
-.cl-svg{display:none}
+.cl-top i,.cl-h i{font-style:normal}
+.cl-mo-l{display:none}   /* "Nov, the next year" from 1100px; "Next Nov" below, where the long form ran out of the card */
+.cl-svg{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.cl-svg path{fill:none;stroke:var(--peri);stroke-width:2.5;stroke-linecap:round;opacity:.38;transition:opacity .3s,stroke-width .3s}
+.cl-svg path.is-on{opacity:1;stroke-width:4;filter:drop-shadow(0 0 6px rgba(143,163,255,.6))}
+.cl.has-active .cl-svg path:not(.is-on){opacity:.1}
+.cl-port{position:absolute;top:50%;z-index:1;display:block;width:12px;height:12px;margin-top:-6px;border:2px solid var(--peri);border-radius:50%;background:var(--navy);transition:background-color .3s,border-color .3s}
+.cl-card--prod .cl-port{right:-7px}
+.cl-card--camp .cl-port{left:-7px}
+.cl-card.is-on .cl-port,.cl-card.is-linked .cl-port{background:var(--peri)}
+.cl-card.is-on .cl-port{border-color:#ffffff;background:#ffffff}
 /* lit: the card and what it connects to */
 .cl-card.is-on{border-color:#ffffff;background:rgba(255,255,255,.1);box-shadow:0 0 0 1px #ffffff,0 24px 50px -30px rgba(0,0,0,.8)}
 .cl-card.is-linked{border-color:var(--peri);background:rgba(143,163,255,.12);box-shadow:0 0 0 1px rgba(143,163,255,.5)}
@@ -1731,20 +1741,62 @@ body:has(.lb[open]){overflow:hidden}
   .cl-col--camp{grid-column:3}
   .cl-card{align-self:center}
   .cl-card.is-on{translate:0 -2px}
-  .cl-svg{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
-  .cl-svg path{fill:none;stroke:var(--peri);stroke-width:2.5;stroke-linecap:round;opacity:.38;transition:opacity .3s,stroke-width .3s}
-  .cl-svg path.is-on{opacity:1;stroke-width:4;filter:drop-shadow(0 0 6px rgba(143,163,255,.6))}
-  .cl.has-active .cl-svg path:not(.is-on){opacity:.1}
-  .cl-port{position:absolute;top:50%;z-index:1;display:block;width:12px;height:12px;margin-top:-6px;border:2px solid var(--peri);border-radius:50%;background:var(--navy);transition:background-color .3s,border-color .3s}
-  .cl-card--prod .cl-port{right:-7px}
-  .cl-card--camp .cl-port{left:-7px}
-  .cl-card.is-on .cl-port,.cl-card.is-linked .cl-port{background:var(--peri)}
-  .cl-card.is-on .cl-port{border-color:#ffffff;background:#ffffff}
   .cl-thumbs{height:70px}
   .cl-thumbs li{width:calc(70px * var(--asp,1.5))}
 }
-@media(min-width:1100px){.cl-board{grid-template-columns:minmax(0,1fr) 180px minmax(0,1fr)}.cl-card{padding:18px 20px 20px}.cl-top b{font-size:21px}.cl-thumbs{height:78px}.cl-thumbs li{width:calc(78px * var(--asp,1.5))}.cl-card--camp{grid-template-columns:132px minmax(0,1fr)}}
-@media(prefers-reduced-motion:reduce){.cl-card,.cl-svg path{transition:none}}
+@media(min-width:1100px){.cl-board{grid-template-columns:minmax(0,1fr) 180px minmax(0,1fr)}.cl-card{padding:18px 20px 20px}.cl-top b{font-size:21px}.cl-thumbs{height:78px}.cl-thumbs li{width:calc(78px * var(--asp,1.5))}.cl-card--camp{grid-template-columns:132px minmax(0,1fr)}.cl-mo-l{display:inline}.cl-mo-s{display:none}}
+/* Under 900px: the same board in miniature, so the whole year fits one phone screen (it ran to two and a half screens stacked,
+   until November 11, 2026). The two columns and the lines stay; each production is its name and month over its lead frame, each
+   campaign a small still beside its name and month, and the lines stand in for the "cut from" tags. Sizes follow the screen's width
+   from a 320px phone to a tablet: the three frames of a production come back at 600px, the full labels at 720px. */
+@media(max-width:899px){
+  .cl{gap:14px}
+  .cl-board{grid-template-columns:minmax(0,var(--cl-prod,.58fr)) clamp(28px,9.5vw,92px) minmax(0,1fr);gap:0}
+  .cl-col{grid-template-rows:auto;grid-auto-rows:minmax(0,1fr);gap:clamp(8px,2.4vw,14px);align-items:center}
+  .cl-col--prod{grid-column:1}
+  .cl-col--camp{grid-column:3}
+  .cl-h{align-self:start;gap:1px;margin:0 0 2px}
+  .cl-h b{font-size:clamp(11px,2.9vw,14px)}
+  .cl-h span{font-size:clamp(11px,2.8vw,13px);line-height:1.35}
+  .cl-card{align-self:center;gap:clamp(6px,1.8vw,10px);padding:clamp(7px,2vw,12px);border-radius:clamp(13px,3.6vw,18px);-webkit-tap-highlight-color:transparent}
+  .cl-top{flex-wrap:wrap;gap:1px 6px}
+  .cl-top b{font-size:clamp(14.5px,3.9vw,18px);line-height:1.15}
+  .cl-top span{font-size:clamp(10px,2.7vw,11px);line-height:1.3}
+  .cl-sub,.cl-from{display:none}
+  /* a production: its three frames across the card, each as wide as its own proportions ask */
+  .cl-card--prod .cl-top{padding-inline:2px}
+  .cl-thumbs{height:clamp(44px,8vw,62px);gap:clamp(4px,1vw,6px)}
+  .cl-thumbs li{position:relative;flex:var(--asp,1.5) 1 0;width:auto;min-width:0;max-width:none;border-radius:clamp(6px,1.6vw,9px)}
+  .cl-thumbs img,.cl-still img{position:absolute;inset:0}   /* the frames fill their boxes whatever sets the box's height */
+  /* a campaign: a square still, then the name over the month */
+  .cl-card--camp{grid-template-columns:clamp(40px,11.5vw,66px) minmax(0,1fr);grid-template-areas:"still top";align-items:center;column-gap:clamp(8px,2.4vw,14px);padding-right:clamp(8px,2.4vw,14px)}
+  .cl-card--camp .cl-top{gap:2px}
+  .cl-still{position:relative;aspect-ratio:1;border-radius:clamp(7px,1.8vw,10px)}
+  /* the lines and their ports, finer at this size; a line that lights up draws itself from the production to the campaign */
+  .cl-svg path{stroke-width:1.5}
+  .cl-svg path.is-on{stroke-width:2.5;filter:drop-shadow(0 0 4px rgba(143,163,255,.7))}
+  .cl-svg--dash path.is-on{stroke-dasharray:var(--len,none);animation:cl-draw .65s cubic-bezier(.4,0,.2,1) both}   /* --len: the path's length, from site.js */
+  .cl-port{width:9px;height:9px;margin-top:-4.5px;border-width:1.5px}
+  .cl-card--prod .cl-port{right:-5px}
+  .cl-card--camp .cl-port{left:-5px}
+  .cl-cap{min-height:3em;font-size:14px}
+}
+/* under 720px the labels are the short ones: "Jun" beside a production's name, "Days on set" and "Cut from the library" over the columns */
+@media(max-width:719px){
+  .cl-card--prod .cl-kind,.cl-x{display:none}
+}
+/* phones: one frame for each production (three would be slivers) and the month alone under each campaign's name */
+@media(max-width:599px){
+  .cl-kind{display:none}
+  .cl-thumbs{height:auto}
+  .cl-thumbs li{flex:none;width:100%;aspect-ratio:16 / 10}
+  .cl-thumbs li:nth-child(n+2){display:none}
+  .cl-cap{min-height:4.5em}
+}
+@media(max-width:374px){.cl-card--prod .cl-top{flex-direction:column;align-items:flex-start;gap:1px}}   /* the narrowest phones: the month under the name, where it would not always fit beside it */
+@media(min-width:600px) and (max-width:899px){.cl-board{--cl-prod:.8fr}}
+@keyframes cl-draw{from{stroke-dashoffset:var(--len,0)}to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.cl-card,.cl-svg path{transition:none}.cl-svg--dash path.is-on{animation:none}}
 /* ROPS and ROCS: the two metrics and the Public Rec numbers on the left, the calculator's form on the right, all on navy */
 .why-rops .head .sub{color:var(--on-navy-2)}
 .earn{display:grid;gap:20px;margin-top:var(--gap)}

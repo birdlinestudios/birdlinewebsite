@@ -1327,12 +1327,18 @@ def about_page():
 
 def library_section():
     """the content library: the productions on the left, the campaigns cut from them on the right, and the lines between them
-    (site.js draws the lines from the cards' positions, [data-flow]); on the Why Us and About pages"""
+    (site.js draws the lines from the cards' positions, [data-flow]); on the Why Us, About and Production Process pages. Under 900px
+    the same board shows in miniature (site.css): the parts a phone has no room for sit in their own elements (cl-kind, cl-x, the
+    long and short months) so the stylesheet can leave them out"""
     # the library: the productions on the left, the campaigns cut from them on the right, and the lines between them (site.js draws
     # the lines from the cards' positions, [data-flow]); pointing at or tapping a card lights what it fed or drew on
     names = {key: name for key, name, _m, _p in PRODUCTIONS}
     def mo(m):
         return MONTHS[m % 12] + (', the next year' if m >= 12 else '')
+    def when(kind, m):
+        """a card's "Production · Jun" line; a month in the next year also carries a short form ("Next Nov") for small screens"""
+        month = ('<i class="cl-mo-l">%s</i><i class="cl-mo-s">Next %s</i>' % (mo(m), MONTHS[m % 12])) if m >= 12 else mo(m)
+        return '<span><i class="cl-kind">%s · </i>%s</span>' % (kind, month)
     fed = {key: [c for c in CAMPAIGNS if key in c[3]] for key, *_ in PRODUCTIONS}
     def join(xs):
         return xs[0] if len(xs) == 1 else ', '.join(xs[:-1]) + ' and ' + xs[-1]
@@ -1346,18 +1352,18 @@ def library_section():
         span = camps[-1][2] - m if camps else 0
         cap = '%s, %s: one day on set, then %s campaign%s cut from it%s.' % (name, mo(m), len(camps), '' if len(camps) == 1 else 's', (', from %s to %s' % (mo(camps[0][2]), mo(camps[-1][2]))) if len(camps) > 1 else '')
         prods.append('<button class="cl-card cl-card--prod" type="button" data-node="%s" data-kind="production" data-order="%d" data-caption="%s">'
-                     '<span class="cl-top"><b>%s</b><span>Production · %s</span></span><ul class="cl-thumbs">%s</ul><span class="cl-sub">Commercial · UGC · Stills</span><i class="cl-port" aria-hidden="true"></i></button>'
-                     % (key, m, esc(cap), esc(name), mo(m), ''.join(thumb(x) for x in pcs)))
+                     '<span class="cl-top"><b>%s</b>%s</span><ul class="cl-thumbs">%s</ul><span class="cl-sub">Commercial · UGC · Stills</span><i class="cl-port" aria-hidden="true"></i></button>'
+                     % (key, m, esc(cap), esc(name), when('Production', m), ''.join(thumb(x) for x in pcs)))
     camps = []
     for key, name, m, srcs, src in CAMPAIGNS:
         it = piece(src)
         f, w, h = site_img(it['src'])
         cap = '%s, %s: cut from the %s set%s, with no new shoot.' % (name, mo(m), join([names[x] for x in srcs]), '' if len(srcs) == 1 else 's')
         camps.append('<button class="cl-card cl-card--camp" type="button" data-node="%s" data-kind="campaign" data-order="%d" data-from="%s" data-caption="%s">'
-                     '<i class="cl-port" aria-hidden="true"></i><span class="cl-top"><b>%s</b><span>Campaign · %s</span></span><span class="cl-still"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></span>'
+                     '<i class="cl-port" aria-hidden="true"></i><span class="cl-top"><b>%s</b>%s</span><span class="cl-still"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"></span>'
                      '<span class="cl-from"><span>Cut from</span>%s</span></button>'
-                     % (key, m, ' '.join(srcs), esc(cap), esc(name), mo(m), f, w, h, esc((it['alt'] or 'Gardyn') + ' — still'), ''.join('<em data-ref="%s">%s</em>' % (x, esc(names[x])) for x in srcs)))
-    default_cap = 'Point at a production to see every campaign it fed, or at a campaign to see where it came from.'
+                     % (key, m, ' '.join(srcs), esc(cap), esc(name), when('Campaign', m), f, w, h, esc((it['alt'] or 'Gardyn') + ' — still'), ''.join('<em data-ref="%s">%s</em>' % (x, esc(names[x])) for x in srcs)))
+    default_cap = 'Select a production to see every campaign it fed, or a campaign to see where it came from.'
     library = ('<!-- ===== The content library: a year at Gardyn. The productions on the left, the campaigns cut from them on the right, and\n'
                '     lines between them drawn by site.js ([data-flow]); pointing at or tapping a card lights what it fed or drew on, and\n'
                '     the board walks through the year on its own until someone takes over ===== -->\n'
@@ -1365,9 +1371,9 @@ def library_section():
                '  <div class="wrap"><div class="head"><span class="eyebrow">Content Library</span><h2 class="h2">From a Single Production… <span class="ai">to Evergreen Use.</span></h2>'
                '<p class="sub">%s</p></div>'
                '<div class="cl" data-flow data-flow-auto="3600"><div class="cl-board">'
-               '<div class="cl-col cl-col--prod"><h3 class="cl-h"><b>Productions</b><span>Days on set that fill the library</span></h3>%s</div>'
+               '<div class="cl-col cl-col--prod"><h3 class="cl-h"><b>Productions</b><span>Days on set<i class="cl-x"> that fill the library</i></span></h3>%s</div>'
                '<svg class="cl-svg" aria-hidden="true"></svg>'
-               '<div class="cl-col cl-col--camp"><h3 class="cl-h"><b>Campaigns</b><span>Cut from the library, no new shoot</span></h3>%s</div></div>'
+               '<div class="cl-col cl-col--camp"><h3 class="cl-h"><b>Campaigns</b><span>Cut from the library<i class="cl-x">, no new shoot</i></span></h3>%s</div></div>'
                '<p class="cl-cap" data-flow-cap data-flow-default="%s" aria-live="polite">%s</p></div>'
                '<ul class="cl-stats" aria-label="The year in numbers">%s</ul>'
                '<p class="tl-statement"><span>%s</span> <em>%s</em></p></div>\n</section>'
