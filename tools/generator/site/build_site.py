@@ -1920,20 +1920,18 @@ def blog_body(blocks):
     return '\n'.join(out)
 
 def post_page(p):
-    a = BG.AUTHOR
-    site_imgs.add('bird-%s.webp' % a['face'])
     f, w, h = site_img(p['cover'])
-    by = ('<div class="blg-by"><img src="{{ROOT}}img/bird-%s.webp" width="112" height="112" alt="" loading="lazy"><div><b>%s</b><span>%s</span></div>'
-          '<span class="blg-by-meta">%s<i aria-hidden="true">·</i>%d min read</span></div>' % (a['face'], esc(a['name']), esc(a['role']), blog_date(p['date'], long=True), p['read']))
+    # the line under the lede: the date and the read time (the byline with Mike's face and name left on November 11, 2026, as did the
+    # author card after the article: the posts are Birdline's, not one person's)
+    by = '<div class="blg-by"><span class="blg-by-meta">%s<i aria-hidden="true">·</i>%d min read</span></div>' % (blog_date(p['date'], long=True), p['read'])
     hero = ('<!-- ===== The article: its title on navy, its cover across the hero’s bottom edge ===== -->\n'
             '<section class="hero hero--page hero--post on-dark" id="top">\n  <div class="wrap"><div class="hero-copy"><span class="eyebrow blg-crumb"><a href="{{ROOT}}blog.html">The Birdline blog</a><i aria-hidden="true">·</i>%s</span>'
             '<h1>%s</h1><p class="lede">%s</p>%s</div><figure class="blg-cover"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s"%s fetchpriority="high"></figure></div>\n</section>'
             % (esc(p['category']), esc(p['title']), esc(p['dek']), by, f, w, h, esc(p['cover_alt']), blog_focal(p)))
     take = ('<aside class="blg-take" aria-label="Key takeaways"><b>Key takeaways</b><ul>%s</ul></aside>' % ''.join('<li>%s</li>' % esc(x) for x in p['takeaways'])) if p.get('takeaways') else ''
-    author = ('<div class="blg-author"><img src="{{ROOT}}img/bird-%s.webp" width="160" height="160" alt="" loading="lazy"><div><span class="blg-author-k">Written by</span><b>%s</b><span>%s</span><p>%s</p>'
-              '<a class="hw-link" href="{{ROOT}}about.html">More about Birdline%s</a></div></div>' % (a['face'], esc(a['name']), esc(a['role']), esc(a['bio']), ARROW_GO))
+    author = ''
     ld = json.dumps(dict(**{'@context': 'https://schema.org', '@type': 'BlogPosting'}, headline=p['title'], description=p['dek'], datePublished=p['date'],
-                         author={'@type': 'Person', 'name': a['name']}, publisher={'@type': 'Organization', 'name': 'Birdline'}), ensure_ascii=False).replace('</', '<\\/')
+                         author={'@type': 'Organization', 'name': 'Birdline'}, publisher={'@type': 'Organization', 'name': 'Birdline'}), ensure_ascii=False).replace('</', '<\\/')
     article = ('<!-- ===== The article ===== -->\n'
                '<section class="band blg-article">\n  <div class="wrap"><div class="blg-col">%s<div class="blg-prose">%s</div>%s</div></div>\n'
                '<script type="application/ld+json">%s</script>\n</section>' % (take, blog_body(p['body']), author, ld))
