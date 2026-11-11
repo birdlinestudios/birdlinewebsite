@@ -4,6 +4,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { createElement } from "react";
 import { chrome, type Part } from "@/lib/content";
 import { SITE_URL } from "@/lib/site";
@@ -55,6 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <Script src="/js/birdline.js" strategy="afterInteractive" />
         <SpeedInsights />
+        {/* GA4 (property 563739787) through gtag.js, wired directly rather than through the GTM container so it collects now. In-site
+            navigations count as page views through the stream's enhanced measurement (page changes on history events, on by
+            default). If a GA4 tag is ever added to GTM-5P37SSRM, take this out, or page views double. */}
+        <GoogleAnalytics gaId="G-NYB8HESJB3" />
       </body>
     </html>
   );
