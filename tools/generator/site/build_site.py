@@ -1193,7 +1193,7 @@ def packages_page():
         plans.append('<li class="plan"><div class="plan-top"><div class="plan-head"><h3>%s</h3><span class="plan-k">Monthly package</span></div>'
                      '<div class="plan-price">%s<b>%s</b><span>%s</span></div><p class="plan-p">%s</p>'
                      '<a class="btn plan-btn" href="{{CALENDLY}}">Book a call</a></div>'
-                     '<div class="plan-body">%s<span class="plan-wf">The Birdline Workflow</span>%s<p class="plan-note">Rolling monthly retainer, no fixed term. Cancel anytime with 60 days’ notice.</p></div></li>'
+                     '<div class="plan-body">%s<span class="plan-wf">Always Included</span>%s<p class="plan-note">Rolling monthly retainer, no fixed term. Cancel anytime with 60 days’ notice.</p></div></li>'
                      % (esc(pk['name']), '<em class="plan-from">Starting at</em>' if pk.get('starting') else '', esc(pk['price']), esc(pk['per']), esc(pk['blurb']), ck_list(pk['items']), ck_list(pk['workflow'])))
     prod = ('<div class="prod prod--navy"><div class="prod-media"><img src="{{ROOT}}img/production-set.webp" width="1600" height="1068" alt="A Birdline shoot: a camera on a tripod, two people in conversation on set, and a producer watching the monitor." loading="lazy"></div>'
             '<div class="prod-body"><span class="plan-k">Scoped separately, per project</span><h3>Productions</h3>'
