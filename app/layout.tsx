@@ -6,17 +6,11 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { createElement } from "react";
 import { chrome, type Part } from "@/lib/content";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-// The address every absolute URL in the metadata (the Open Graph card images above all) is made against: the domain Vercel serves
-// production from (VERCEL_PROJECT_PRODUCTION_URL: the project's vercel.app domain until a custom domain is attached, then that),
-// or NEXT_PUBLIC_SITE_URL where that is not set.
-const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : process.env.NEXT_PUBLIC_SITE_URL || "https://birdlinestudios.com";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(SITE_URL), // every absolute URL in the metadata is made against this (lib/site.ts)
   title: "Birdline",
   openGraph: { siteName: "Birdline", type: "website", locale: "en_US" },
 };
