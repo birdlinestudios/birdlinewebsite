@@ -129,7 +129,7 @@
   "route": "/services",
   "file": "services.html",
   "title": "Services: Birdline",
-  "description": "Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.",
+  "description": "Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / VFX, motion graphics, design, CTV & broadcast, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.",
   "image": "/og/services.3dbbb366.jpg"
  },
  {
@@ -275,9 +275,9 @@
  {
   "route": "/services/ctv",
   "file": "services__ctv.html",
-  "title": "CTV: Birdline",
-  "description": "Broadcast-quality commercials in CTV and OTT specs, produced new or cut from the footage you already own.",
-  "image": "/og/services-ctv.dcd7df81.jpg"
+  "title": "CTV & Broadcast: Birdline",
+  "description": "Commercials mastered to broadcast, CTV and OTT specs, produced new or cut from the footage you already own.",
+  "image": "/og/services-ctv.b40f26cc.jpg"
  },
  {
   "route": "/services/profiles",
