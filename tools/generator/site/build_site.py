@@ -288,7 +288,7 @@ FLOW_COLUMNS = [
 LIB_TILES = [
     (1, 4, 15, '-4deg', '0s', '2024/05/HD-Expo-FreePower-Recap.jpg', 'OOH'),
     (18.5, 2, 7.5, '3deg', '0.08s', '2024/05/Gardyn-Unboxing-1.jpg', 'UGC'),
-    (41, 2, 16, '-2deg', '0.16s', '2024/05/thumb-32.jpg', 'CTV'),
+    (41, 2, 16, '-2deg', '0.16s', '2024/05/thumb-32.jpg', 'CTV & Broadcast'),
     (73, 4, 17, '3deg', '0.24s', '2024/05/thumb-18-2.jpg', 'Commercial'),
     (3, 29, 10, '2deg', '0.32s', '2025/08/GrantPuckett-Product-36.jpeg', 'Photography'),
     (16, 42, 10, '-5deg', '0.4s', '2026/08/thumb-57.jpg', 'Motion Graphics'),
@@ -307,7 +307,7 @@ def lib_tiles_html():
         f, iw, ih = site_img(src)
         out.append('<li class="lib-tile" style="--x:%s;--y:%s;--w:%s;--r:%s;--d:%s"><img src="{{ROOT}}img/%s" width="%d" height="%d" alt="%s" loading="lazy"><span>%s</span></li>'
                    % (x, y, w, r, d, f, iw, ih, esc(label + ' — a piece from the content library'), esc(label)))
-    return ('<ul class="lib-tiles" aria-label="Work from client content libraries: OOH, UGC, CTV, commercials, photography, motion graphics, design, 3D, paid social, illustration, profiles, video podcasts, film and AI content">\n        '
+    return ('<ul class="lib-tiles" aria-label="Work from client content libraries: OOH, UGC, CTV and broadcast, commercials, photography, motion graphics, design, 3D, paid social, illustration, profiles, video podcasts, film and AI content">\n        '
             + '\n        '.join(out) + '\n      </ul>')
 
 def flow_tiles():
@@ -695,7 +695,7 @@ for _slug in SVC_PRIORITY:
     if not _s: continue
     for _ref in _s.get('hero', []) + _s.get('gallery', []):
         if isinstance(_ref, str): SVC_BY_SRC.setdefault(_ref, SVC_NAME[_slug])
-TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV', 'Paid social': 'Paid Social', 'UGC': 'UGC', 'Social': 'Paid Social', 'Animation': 'Motion Graphics', 'VFX': '3D / VFX',
+TAG_SVC = {'Commercial': 'Commercial', 'TV': 'CTV & Broadcast', 'Paid social': 'Paid Social', 'UGC': 'UGC', 'Social': 'Paid Social', 'Animation': 'Motion Graphics', 'VFX': '3D / VFX',
            'Video': 'Film', 'YouTube': 'Film', '3D': '3D / VFX', 'Illustration': 'Illustrations', 'Design': 'Design', 'Photo': 'Photography', 'Production': 'Film'}
 UGC_WORDS = re.compile(r'ugc|interview|reactions|mashup|testimonial|review|pov|unboxing|comment', re.I)
 
@@ -1578,7 +1578,7 @@ def services_page():
             '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="{{ROOT}}packages.html">See the packages</a></div></div></div>\n</section>')
     index = '<section class="band svc-index">\n  <div class="wrap"><ul class="svc-grid svc-grid--3">%s</ul></div>\n</section>' % ''.join(svc_card(s, large=True) for s in SERVICES)
     inner = '\n\n'.join([hero, index, testimonials, close_section('See the work', '{{ROOT}}portfolio.html')])
-    return document('Services: Birdline', 'Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / VFX, motion graphics, design, CTV, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.', inner, '')
+    return document('Services: Birdline', 'Birdline’s fifteen services: commercials, paid social, photography, UGC, 3D / VFX, motion graphics, design, CTV & broadcast, profiles, video podcasts, illustration, film, audio, OOH and AI content, on the Monthly Partnership or scoped as a production.', inner, '')
 
 def service_page(svc):
     slug, name = svc['slug'], svc['name']
@@ -1588,7 +1588,7 @@ def service_page(svc):
             '<span class="eyebrow">Services · %s</span><h1>%s</h1><p class="lede">%s</p>'
             '<div class="cta-row"><a class="btn btn--light" href="{{CALENDLY}}">Book a call</a><a class="btn btn--ghost" href="#examples">See examples</a></div></div>'
             '<div class="svc-strip" role="list" aria-label="%s">%s</div></div>\n</section>'
-            % (name, ARROW_L, esc(GROUP_NAME[svc['cat']]), tt(svc['h1']), esc(svc['lede']), esc('Examples of ' + name.lower() if name not in ('UGC', 'CTV', 'OOH', '3D / VFX', 'AI Content') else 'Examples of ' + name), strip))
+            % (name, ARROW_L, esc(GROUP_NAME[svc['cat']]), tt(svc['h1']), esc(svc['lede']), esc('Examples of ' + name.lower() if name not in ('UGC', 'CTV & Broadcast', 'OOH', '3D / VFX', 'AI Content') else 'Examples of ' + name), strip))
     facts = ''.join('<li><span>%s</span><b>%s</b></li>' % (esc(k), esc(v)) for k, v in svc['facts'])
     intro = ('<section class="band svc-intro">\n  <div class="wrap"><div class="cs-cols"><div class="cs-side"><span class="eyebrow">What it is</span><h2>%s</h2></div>'
              '<div class="cs-text">%s<ul class="svc-facts">%s</ul></div></div>'
