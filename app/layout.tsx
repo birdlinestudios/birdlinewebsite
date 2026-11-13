@@ -41,6 +41,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());",
           }}
         />
+        {/* The Google tag for the Google Ads account (AW-18369278264), which Google Ads reads conversions through, in <head> as
+            its install steps ask (November 12, 2026). Both parts are Google's own snippet, verbatim, so it repeats the dataLayer
+            lines above; that is harmless. It is here as plain <script> tags because GoogleAnalytics below can only be used once
+            (a second one shares its script ids and never loads) and loads after the page is interactive, not in <head>. */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369278264" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\n\ngtag('config', 'AW-18369278264');",
+          }}
+        />
         {c.fonts.map((href) => (
           <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
         ))}
