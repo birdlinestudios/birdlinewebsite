@@ -44,11 +44,13 @@ SERVICES = [
         # reordered and widened on November 9, 2026: more 16:9 spots (Patrol, Public Rec, the UFL × NOBULL spot, DYNA, 686, the new Gardyn finals),
         # the Paisa Boys spots, and Nestlé last; the 686 UNWORK profile left
         # the evening of November 9: Nike's LA Dunk film near the top and the two TAG Scrubs spots further down
-        gallery=['2024/05/maxresdefault_11zon.webp', NOV9_PM['warmer-real-advice'], UFL_WNCD, NOV9_PM['nike-la-dunk'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-song-30'],
-                 NOV8['commercial-chivas-nike-paisa-boys'], '2024/05/thumb-18-2.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', GARDYN_NOV9['gardyn-fresh-got-easier'],
-                 '2024/05/thumb-15_11zon.webp', NOV9_PM['tag-scrubs-quality'], '2024/05/Public-Rec-ADED.jpg', '2025/09/thumb-44.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg', '2024/05/thumb-4.jpg',
+        # November 12, 2026: the Gardyn 4.0 personas spot, Public Rec's Decision Made and Gamechanger, Route's User Experience and Gardyn's
+        # Grow Something join; the Gardyn Song and Public Rec's It's Your World leave
+        gallery=['2024/05/maxresdefault_11zon.webp', NOV9_PM['warmer-real-advice'], UFL_WNCD, NOV9_PM['nike-la-dunk'], '2025/06/Screenshot-2025-06-20-at-10.00.40-PM.jpg', GARDYN_NOV9['gardyn-ctv-2026-grow-something'],
+                 NOV8['commercial-chivas-nike-paisa-boys'], NOV9_PM['publicrec-gamechanger-tv-2024'], '2024/05/thumb-18-2.jpg', '2025/06/Screenshot-2025-06-20-at-9.49.44-PM.jpeg', GARDYN_NOV9['gardyn-fresh-got-easier'],
+                 '2024/07/Route-App.webp', '2024/05/thumb-15_11zon.webp', NOV9_PM['tag-scrubs-quality'], '2024/05/Public-Rec-ADED.jpg', '2025/09/thumb-44.jpg', '2024/05/thumb-15-2.jpg', '2024/05/thumb-17-1.jpg', '2024/05/thumb-32.jpg',
                  NOV8['commercial-nike-paisa-boys-mexico'], NOV9_PM['tag-scrubs-perks'], '2024/05/thumb-6-2.jpg', '2024/05/thumb-9-2-e1720507088117.jpg', '2025/06/Screenshot-2025-06-20-at-9.48.16-PM.jpeg',
-                 GARDYN_NOV9['gardyn-grow-it-at-home'], '2024/05/thumb-2.jpg', '2024/05/Nestle-uai-2133x1200-1.png'],
+                 GARDYN_NOV9['gardyn-grow-it-at-home'], '2024/05/thumb.jpg', '2024/05/thumb-2.jpg', '2024/05/Nestle-uai-2133x1200-1.png'],
         cases=['public-rec', 'ufl', 'patrol', 'gardyn'],
         faq=[('Do we need a Monthly Partnership to book a commercial?', 'No. Productions are scoped on their own, per project. Most partners add one to a Video Editing or Design & Animation package so the footage keeps turning into new deliverables every month, but a single production stands on its own.'),
              ('Who’s on the crew?', 'Our Birds: a director, DP, producer and the crew the concept calls for, from a team whose credits include Red Bull, Nike, Nestlé and Marvel. Every production is cast and crewed to its idea, medium and budget.'),
