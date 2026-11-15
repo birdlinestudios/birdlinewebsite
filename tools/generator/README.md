@@ -21,6 +21,7 @@ renders: `content/pages/*.html`, `content/pages.json`, `content/chrome.json`, `c
 | `site/content.json` | The original case-study copy and portfolio items pulled from the previous site. |
 | `site/extras.py` | Everything written since: the Willie's Remedy, EDJY and UFL case studies, videos added per brand (`ADDED_WORK`), the Packages, the team, FAQs, the order of the case studies. |
 | `site/services.py`, `rops.py`, `production.py`, `why.py` | The Services, ROPS & ROCS, Production Process and Why Birdline pages' copy. |
+| `site/blog.py`, `site/teamcalc.py` | The blog's posts, and the team calculator one of them carries: its figures, the model and the markup as it opens. `site.js` holds the same model for the page; change both together. |
 | `site/site.css`, `site/site.js` | Styles and behaviours of the non-homepage pages (galleries, lightbox, carousels, radio player). |
 | `site/spa.js` | The hash router used only by the claude.ai artifact; not part of the Next.js site. |
 | `site/img/` + `site/img_map.json` | Every image used outside the homepage, with its size. |

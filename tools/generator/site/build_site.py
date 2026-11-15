@@ -14,6 +14,7 @@ from production import HERO as PD_HERO, ANYWHERE_H2, ANYWHERE_SUB, PLACES, ANYWH
 import how as HW
 import testimonials as TM
 import blog as BG
+import teamcalc as TC
 from why import HERO_LEDE, REASONS, REASONS_LINE, LIBRARY_INTRO, PRODUCTIONS, CAMPAIGNS, MONTHS, LIBRARY_STATS, LIBRARY_STATEMENT, ROPS_INTRO, METRICS, PROOF, PROOF_NOTE, APP_SUB, APP_CHAIN, APP_TAIL
 
 ASSETS, OUT = sys.argv[1], sys.argv[2]
@@ -1917,6 +1918,8 @@ def blog_body(blocks):
         elif kind == 'cta':
             label, href = val
             out.append('<p class="blg-cta"><a class="btn" href="%s">%s%s</a></p>' % (href, esc(label), ARROW_GO))
+        elif kind == 'calc':   # the team calculator, as it opens (teamcalc.py); site.js takes it from there
+            out.append(TC.render(esc))
         elif kind == 'sources':
             items, note = val
             li = ''.join('<li>%s</li>' % (('<a href="%s" rel="noopener"%s>%s</a>' % (x['href'], '' if x['href'].startswith('{{') else ' target="_blank"', esc(x['text']))) if x.get('href') else esc(x['text'])) for x in items)

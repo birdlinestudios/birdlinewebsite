@@ -604,3 +604,163 @@
     if (empty) empty.hidden = shown > 0;
   });
 })();
+
+/* The team calculator ([data-team-calc], in the blog post on hiring a full-time team). teamcalc.py renders it as it opens and holds
+   the same model; model() and view() here must agree with it line for line. The numbers (salaries, output per person, the load on a
+   salary, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
+   assumptions" opens every figure behind it. Each element marked data-tc is rewritten with the figure of that name. The line a screen
+   reader hears (data-tc-live) changes only when a control is let go, not on every step of a drag.
+   window.__siteTeamCalc(root) arms a calculator added to the page later. */
+(function () {
+  "use strict";
+  var SUPPORT = ['producer', 'writer', 'director'];
+  function rnd(x) { return Math.floor(x + 0.5); }
+  function money(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
+  function start(c) {
+    var s = { size: c.start.size, ads: c.start.ads, shoots: c.start.shoots, design: c.start.design, salary: {},
+              cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, shoot: c.shoot,
+              over: { producer: null, writer: null, director: null } };
+    c.roles.forEach(function (r) { s.salary[r[0]] = r[1]; });
+    return s;
+  }
+  function model(c, s) {
+    var video = rnd(s.ads * (100 - s.design) / 100), design = s.ads - video;
+    var n = { editor: video ? Math.ceil(video / s.cap.editor) : 0, designer: design ? Math.ceil(design / s.cap.designer) : 0 };
+    var makers = n.editor + n.designer, two = makers >= 2, auto = { producer: 0, writer: 0, director: 0 };
+    if ((s.size >= 1 && two) || makers >= 3 || s.shoots >= 6) auto.producer = Math.max(1, Math.ceil(makers / 8)) + (s.shoots >= 12 ? 1 : 0);
+    if (two && (s.size >= 2 || s.ads >= 60)) auto.writer = 1;
+    if ((s.size >= 3 && two) || makers >= 5) auto.director = 1;
+    SUPPORT.forEach(function (k) { var o = s.over[k]; n[k] = o === null ? auto[k] : (o ? Math.max(auto[k], 1) : 0); });
+    var heads = 0, salaries = 0;
+    c.roles.forEach(function (r) { heads += n[r[0]]; salaries += n[r[0]] * s.salary[r[0]]; });
+    var benefits = rnd(salaries * s.load / 100), seats = heads * s.seat, team = salaries + benefits + seats, shoots = s.shoots * s.shoot;
+    var monthly = n.editor * c.price.editor + n.designer * c.price.designer, partner = monthly * 12;
+    return { video: video, design: design, n: n, auto: auto, makers: makers, heads: heads, salaries: salaries, benefits: benefits, seats: seats,
+             team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots };
+  }
+  function view(c, s) {
+    var m = model(c, s), n = m.n, v = {}, off = [], pct;
+    v['ads-out'] = String(s.ads);
+    v['shoots-out'] = String(s.shoots);
+    v['mix-out'] = s.design === 0 ? s.ads + ' video' : s.design === 100 ? s.ads + ' design' : m.video + ' video, ' + m.design + ' design';
+    var diff = m.inTotal - m.blTotal;
+    if (diff > 0) {
+      pct = rnd(diff / m.inTotal * 100);
+      v.lead = 'Birdline comes in'; v.hero = money(diff);
+      var team = m.heads === 1 ? 'one hire' : 'a team of ' + m.heads;
+      v.tail = pct >= 3 ? 'a year lower, ' + pct + '% under ' + team + ' on payroll.' : 'a year lower. Close to even.';
+    } else if (diff < 0) {
+      pct = rnd(-diff / m.blTotal * 100);
+      v.lead = 'A team on payroll comes in'; v.hero = money(-diff);
+      v.tail = pct >= 3 ? 'a year lower, ' + pct + '% under Birdline.' : 'a year lower. Close to even.';
+    } else {
+      v.lead = 'Both come to'; v.hero = money(m.inTotal); v.tail = 'a year. Even on cost.';
+    }
+    v['in-total-bar'] = money(m.inTotal); v['bl-total-bar'] = money(m.blTotal);
+    v.heads = String(m.heads);
+    v['heads-l'] = plural(m.heads, 'person', 'people');
+    c.roles.forEach(function (r) { v['n-' + r[0]] = String(n[r[0]]); });
+    var months = s.ads * 12;
+    v['perad-in'] = money(rnd(m.team / months)); v['perad-bl'] = money(rnd(m.partner / months));
+    c.roles.forEach(function (r) {
+      var k = r[0];
+      if (n[k]) {
+        v['in-' + k] = money(n[k] * s.salary[k]); v['in-' + k + '-n'] = n[k] + ' × ' + money(s.salary[k]);
+      } else {
+        off.push(k);
+        v['in-' + k] = '—';
+        v['in-' + k + '-n'] = k === 'editor' ? 'No video in the mix' : k === 'designer' ? 'No design in the mix' : s.over[k] === null ? 'Not at this size' : 'Left out';
+      }
+    });
+    [['editor', 'Video Editing', 'dedicated editor', 'dedicated editors'], ['designer', 'Design & Animation', 'dedicated designer/animator', 'dedicated designers/animators']].forEach(function (p) {
+      var k = p[0];
+      if (n[k]) {
+        v['bl-' + k] = money(n[k] * c.price[k] * 12);
+        v['bl-' + k + '-x'] = p[1] + ', ' + plural(n[k], p[2], p[3]) + ', ';
+        v['bl-' + k + '-n'] = money(n[k] * c.price[k]) + '/mo';
+      } else {
+        v['bl-' + k] = '—'; v['bl-' + k + '-x'] = ''; v['bl-' + k + '-n'] = '';
+      }
+    });
+    v['in-benefits'] = money(m.benefits); v['in-benefits-n'] = s.load + '% of salaries';
+    v['in-seats'] = money(m.seats); v['in-seats-n'] = m.heads + ' × ' + money(s.seat);
+    v['in-team'] = money(m.team); v['bl-team'] = money(m.partner); v['bl-team-n'] = money(m.monthly) + '/mo';
+    v['in-shoots'] = v['bl-shoots'] = money(m.shoots);
+    v['in-shoots-n'] = v['bl-shoots-n'] = s.shoots + ' × ' + money(s.shoot);
+    v['in-total'] = money(m.inTotal); v['bl-total'] = money(m.blTotal);
+    var birds = n.editor ? [plural(n.editor, 'dedicated editor')] : [];
+    if (n.designer) birds.push(plural(n.designer, 'dedicated designer/animator', 'dedicated designers/animators'));
+    v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager' : 'the project management to run them') + '. We hire and manage them. You send the briefs.';
+    v.sr = 'On payroll: ' + plural(m.heads, 'person', 'people') + ', ' + money(m.inTotal) + ' a year. With Birdline: ' + money(m.blTotal) + ' a year.';
+    var top = Math.max(m.inTotal, m.blTotal, 1);
+    var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };
+    return { v: v, w: w, off: off, m: m };
+  }
+  var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], shoot: [0, 2000000] };
+  function arm(root) {
+    if (root.__tc) return;
+    var c;
+    try { c = JSON.parse(root.getAttribute('data-team-calc')); } catch (err) { return; }
+    if (!c || !c.roles) return;
+    root.__tc = true;
+    root.classList.add('is-live');
+    var all = function (q) { return Array.prototype.slice.call(root.querySelectorAll(q)); };
+    var texts = all('[data-tc]'), widths = all('[data-tc-w]'), rows = all('[data-tc-row]'), ranges = all('input[type="range"][data-tc-in]'),
+        sizes = all('input[type="radio"][data-tc-in="size"]'), fields = all('[data-tc-set]'), roles = all('[data-tc-role]'),
+        chips = all('[data-tc-chip]'), bars = root.querySelector('[data-tc-bars]'), live = root.querySelector('[data-tc-live]');
+    var s = start(c);
+    function get(path) { var p = path.split('.'); return p.length === 2 ? s[p[0]][p[1]] : s[p[0]]; }
+    function set(path, val) { var p = path.split('.'); if (p.length === 2) s[p[0]][p[1]] = val; else s[p[0]] = val; }
+    function parse(el) {   // a typed figure: digits only, held inside its limits
+      var path = el.getAttribute('data-tc-set'), lim = LIMIT[path.split('.')[0]], d = el.value.replace(/[^0-9]/g, '');
+      var val = d === '' ? lim[0] : Math.min(lim[1], Math.max(lim[0], parseInt(d.slice(0, 9), 10)));
+      set(path, val);
+      return val;
+    }
+    // what the page holds when the script arrives: a browser restores sliders and typed figures after a reload or a step back
+    ranges.forEach(function (el) { var x = parseInt(el.value, 10); if (!isNaN(x)) s[el.getAttribute('data-tc-in')] = x; });
+    sizes.forEach(function (el) { if (el.checked) s.size = parseInt(el.value, 10); });
+    fields.forEach(parse);
+    function paint(settled) {
+      var r = view(c, s), v = r.v;
+      texts.forEach(function (el) { var k = el.getAttribute('data-tc'); if (k in v && el.textContent !== v[k]) el.textContent = v[k]; });
+      widths.forEach(function (el) { el.style.flexBasis = r.w[el.getAttribute('data-tc-w')].toFixed(2) + '%'; });
+      rows.forEach(function (el) { el.classList.toggle('is-off', r.off.indexOf(el.getAttribute('data-tc-row')) >= 0); });
+      ranges.forEach(function (el) {
+        var lo = parseFloat(el.min), hi = parseFloat(el.max), k = el.getAttribute('data-tc-in');
+        el.style.setProperty('--f', ((s[k] - lo) / (hi - lo)).toFixed(4));
+        el.setAttribute('aria-valuetext', k === 'ads' ? s.ads + ' ads a month' : k === 'shoots' ? plural(s.shoots, 'production') + ' a year' : v['mix-out']);
+      });
+      roles.forEach(function (el) { el.checked = r.m.n[el.getAttribute('data-tc-role')] > 0; });
+      if (bars) { bars.setAttribute('aria-label', v.sr); bars.classList.toggle('is-flat', r.m.shoots === 0); }
+      chips.forEach(function (el) { el.hidden = r.m.n[el.getAttribute('data-tc-chip')] === 0; });
+      if (live && settled) live.textContent = v.sr;
+    }
+    root.addEventListener('input', function (e) {
+      var el = e.target;
+      if (el.matches('input[type="range"][data-tc-in]')) { s[el.getAttribute('data-tc-in')] = parseInt(el.value, 10); paint(false); }
+      else if (el.matches('[data-tc-set]')) { parse(el); paint(false); }
+    });
+    root.addEventListener('change', function (e) {
+      var el = e.target;
+      if (el.matches('input[type="radio"][data-tc-in="size"]')) s.size = parseInt(el.value, 10);
+      else if (el.matches('[data-tc-role]')) s.over[el.getAttribute('data-tc-role')] = el.checked;
+      else if (el.matches('[data-tc-set]')) el.value = String(parse(el)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');   // the figure as it was read
+      paint(true);
+    });
+    root.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('[data-tc-reset]')) return;
+      s = start(c);
+      ranges.forEach(function (el) { el.value = s[el.getAttribute('data-tc-in')]; });
+      sizes.forEach(function (el) { el.checked = parseInt(el.value, 10) === s.size; });
+      fields.forEach(function (el) { el.value = String(get(el.getAttribute('data-tc-set'))).replace(/\B(?=(\d{3})+(?!\d))/g, ','); });
+      paint(true);
+    });
+    paint(false);
+  }
+  function scan(r) { Array.prototype.forEach.call((r || document).querySelectorAll('[data-team-calc]'), arm); }
+  scan.model = model; scan.view = view; scan.start = start;
+  window.__siteTeamCalc = scan;
+  scan(document);
+})();

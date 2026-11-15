@@ -106,6 +106,7 @@
     if (window.__siteFloat) window.__siteFloat(target.main);
     if (window.__siteTv) window.__siteTv(target.main);
     if (window.__siteTl) window.__siteTl(target.main);
+    if (window.__siteTeamCalc) window.__siteTeamCalc(target.main);
     var el = frag ? document.getElementById(frag) : null;
     if (el) el.scrollIntoView();
     else if (!initial || key) window.scrollTo(0, 0);

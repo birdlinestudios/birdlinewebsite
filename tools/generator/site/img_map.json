@@ -2932,5 +2932,11 @@
 "w": 1334,
 "h": 2000,
 "bytes": 216670
+},
+"new/production-set.jpg": {
+"file": "production-set.webp",
+"w": 1600,
+"h": 1068,
+"bytes": 115866
 }
 }
