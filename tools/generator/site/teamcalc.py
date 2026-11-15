@@ -16,7 +16,13 @@ The figures and where they come from:
   insurance $4.58 + retirement and savings $1.94 + legally required $3.76 = $10.28 an hour, against $36.97 in wages plus $4.40
   in paid leave (which a salary already includes) = $41.37, or 24.8%. Bonuses and other supplemental pay are left out.
 - software and equipment: $2,500 a seat a year (Adobe Creative Cloud Pro for teams lists at $99.99 a month; the rest is a
-  workstation over a few years, review tools and stock)
+  workstation over a few years and stock)
+- workflow tools: $300 a person a year, a project tracker and a review tool (Asana Starter lists at $10.99 a user a month billed
+  annually, Frame.io Pro at $15 a member a month: $311.88 a year). On the Birdline side the Birdline App and Frame.io review are
+  included in every partnership (the Packages page)
+- the start (November 15, 2026, with the Birdline App): a seat takes 39 days to fill at the median (SHRM, 2026), and Birdline
+  starts within a week (the Packages and How It Works pages). "Ads shipped in the first 90 days" gives each side its full
+  monthly rate from the day it starts, every seat searched at once: generous to the payroll side
 - drives: editors cut from portable SSDs and the footage is backed up to hard drives. Two 4TB SSDs per video editor a year
   ($936.98 each at B&H, November 2026: $1,900) and one 8TB desktop hard drive per production ($279.99 at B&H: $280). On the
   Birdline side the drives are ours
@@ -33,9 +39,13 @@ CONFIG = dict(
     cap=dict(editor=20, designer=30),          # finished ads one person ships a month
     load=25,                                   # benefits and payroll taxes, percent of salary
     seat=2500,                                 # software and equipment, per person per year
+    tools=300,                                 # workflow tools, per person per year: a project tracker and a review tool
     ssd=1900,                                  # editing SSDs, per video editor per year: two 4TB portable SSDs
     backup=280,                                # a backup hard drive for each production's footage: one 8TB desktop drive
     shoot=20000,                               # budget per production: crew, talent, locations, gear
+    fill=39,                                   # days to fill a seat: SHRM's 2026 median time-to-fill, nonexecutive roles
+    onboard=7,                                 # days before a Birdline partnership starts: within a week
+    window=90,                                 # the days counted in "ads shipped in the first 90 days"
     price=dict(editor=8000, designer=6000),    # Birdline, per dedicated creative per month (Video Editing, Design & Animation)
     ads=(5, 200, 5), shoots=(0, 24, 1), design=(0, 100, 25),      # the sliders: min, max, step
     start=dict(size=2, ads=40, shoots=4, design=50),              # how the calculator opens
@@ -46,7 +56,8 @@ SUPPORT = ['producer', 'writer', 'director']
 def start_state():
     s = dict(CONFIG['start'])
     s.update(salary={k: v for k, _n, v in CONFIG['roles']}, cap=dict(CONFIG['cap']), load=CONFIG['load'], seat=CONFIG['seat'],
-             ssd=CONFIG['ssd'], backup=CONFIG['backup'], shoot=CONFIG['shoot'], over={k: None for k in SUPPORT})
+             tools=CONFIG['tools'], ssd=CONFIG['ssd'], backup=CONFIG['backup'], shoot=CONFIG['shoot'], fill=CONFIG['fill'],
+             over={k: None for k in SUPPORT})
     return s
 
 def rnd(x):
@@ -77,12 +88,17 @@ def model(s):
     benefits = rnd(salaries * s['load'] / 100)
     seats = heads * s['seat']
     drives = n['editor'] * s['ssd'] + s['shoots'] * s['backup']     # SSDs to edit from, and a backup of each production's footage
-    team = salaries + benefits + seats + drives
+    flow = heads * s['tools']     # a tracker and a review tool for each person; the Birdline App covers it on a partnership
+    team = salaries + benefits + seats + flow + drives
     shoots = s['shoots'] * s['shoot']
     monthly = n['editor'] * CONFIG['price']['editor'] + n['designer'] * CONFIG['price']['designer']
     partner = monthly * 12
+    # the first 90 days: each side ships at its full monthly rate from the day it starts (a search on payroll, a week with Birdline)
+    ramp_in = rnd(s['ads'] * max(0, CONFIG['window'] - s['fill']) / 30)
+    ramp_bl = rnd(s['ads'] * (CONFIG['window'] - CONFIG['onboard']) / 30)
     return dict(video=video, design=design, n=n, auto=auto, makers=makers, heads=heads, salaries=salaries, benefits=benefits, seats=seats,
-                drives=drives, team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots)
+                flow=flow, drives=drives, team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots,
+                ramp_in=ramp_in, ramp_bl=ramp_bl)
 
 def plural(n, one, many=None):
     return '%d %s' % (n, one if n == 1 else (many or one + 's'))
@@ -115,6 +131,8 @@ def view(s):
         v['n-' + k] = str(n[k])
     months = s['ads'] * 12
     v['perad-in'], v['perad-bl'] = money(rnd(m['team'] / months)), money(rnd(m['partner'] / months))
+    v['start-in'] = str(s['fill'])
+    v['ramp-in'], v['ramp-bl'] = str(m['ramp_in']), str(m['ramp_bl'])
     off = []
     for k in ROLE_KEYS:
         if n[k]:
@@ -134,6 +152,7 @@ def view(s):
             v['bl-' + k], v['bl-%s-x' % k], v['bl-%s-n' % k] = '—', '', ''
     v['in-benefits'], v['in-benefits-n'] = money(m['benefits']), '%s%% of salaries' % s['load']
     v['in-seats'], v['in-seats-n'] = money(m['seats']), '%d × %s' % (m['heads'], money(s['seat']))
+    v['in-flow'], v['in-flow-n'] = money(m['flow']), '%d × %s' % (m['heads'], money(s['tools']))
     # each term holds together and the line breaks before the plus (no-break spaces), so a narrow column reads "1 × $1,900 / + 4 × $280"
     terms = (['%d\u00a0×\u00a0%s' % (n['editor'], money(s['ssd']))] if n['editor'] else []) + (['%d\u00a0×\u00a0%s' % (s['shoots'], money(s['backup']))] if s['shoots'] else [])
     if terms:
@@ -166,6 +185,11 @@ def figures():
 
 # ---- the markup: every figure in it is the opening state's; site.js rewrites the elements marked data-tc
 INCLUDED = dict(producer='A dedicated project manager', writer='Script and copywriting', director='We hire and manage the team')
+# the Birdline App, which every partnership runs through: the three ways it saves time and money, in the app page's own terms
+# (Smart Brief, shot list, deliverables, Insights and the Generate New Brief button)
+APP = [('Less friction', 'Every brief, deliverable and final file lives in one place, tied to its campaign. Nobody digs through an inbox for the latest version.'),
+       ('Faster to execution', 'A Smart Brief becomes a shot list and assigned deliverables, so edits and productions start sooner.'),
+       ('More, newer content', 'Ad results sit beside the creative that earned them, and the next brief starts from what worked. New ads launch faster.')]
 
 def render(esc):
     c = CONFIG
@@ -204,9 +228,11 @@ def render(esc):
            '<div class="tc-team"><div class="tc-team-h"><span>The team this takes</span><b data-tc="heads-l">%s</b></div><div class="tc-chips">%s</div></div>'
            '<table class="tc-kpis"><thead><tr><td></td><th scope="col">On payroll</th><th scope="col">Birdline</th></tr></thead><tbody>'
            '<tr><th scope="row">People to hire and manage</th><td>%s</td><td>0</td></tr>'
-           '<tr><th scope="row">Cost per finished ad</th><td>%s</td><td>%s</td></tr></tbody></table></div>'
+           '<tr><th scope="row">Cost per finished ad</th><td>%s</td><td>%s</td></tr>'
+           '<tr><th scope="row">Days until the work starts</th><td>%s</td><td>%d</td></tr>'
+           '<tr><th scope="row">Ads shipped in the first %d days</th><td>%s</td><td>%s</td></tr></tbody></table></div>'
            % ('' if m['shoots'] else ' is-flat', esc(v['sr']), bar('', 'On payroll', 'in-team', 'in-shoot', 'in-total-bar'), bar(' tc-bar--bl', 'Birdline', 'bl-team', 'bl-shoot', 'bl-total-bar'),
-              esc(v['heads-l']), chips, t('heads'), t('perad-in'), t('perad-bl')))
+              esc(v['heads-l']), chips, t('heads'), t('perad-in'), t('perad-bl'), t('start-in'), c['onboard'], c['window'], t('ramp-in'), t('ramp-bl')))
     def cell(amount, note, extra=None, cls=''):
         x = ('<span class="tc-x" data-tc="%s">%s</span>' % (extra, esc(v[extra]))) if extra else ''
         return '<td%s><b data-tc="%s">%s</b><small>%s<span data-tc="%s">%s</span></small></td>' % (cls, amount, esc(v[amount]), x, note, esc(v[note]))
@@ -217,7 +243,8 @@ def render(esc):
         bl = cell('bl-' + k, 'bl-%s-n' % k, 'bl-%s-x' % k, ' class="tc-bl"') if k in c['price'] else fixed('Included', INCLUDED[k])
         rows.append('<tr data-tc-row="%s"%s><th scope="row">%s</th>%s%s</tr>' % (k, ' class="is-off"' if k in off else '', esc(names[k]), cell('in-' + k, 'in-%s-n' % k), bl))
     rows.append('<tr><th scope="row">Benefits and payroll taxes</th>%s%s</tr>' % (cell('in-benefits', 'in-benefits-n'), fixed('$0', 'No payroll to run')))
-    rows.append('<tr><th scope="row">Software and equipment</th>%s%s</tr>' % (cell('in-seats', 'in-seats-n'), fixed('Included', 'Tools and licensing')))
+    rows.append('<tr><th scope="row">Software and equipment</th>%s%s</tr>' % (cell('in-seats', 'in-seats-n'), fixed('Included', 'Licenses and workstations')))
+    rows.append('<tr><th scope="row">Workflow tools</th>%s%s</tr>' % (cell('in-flow', 'in-flow-n'), fixed('Included', 'The Birdline App and Frame.io review')))
     rows.append('<tr data-tc-row="drives"%s><th scope="row">Editing SSDs and backup drives</th>%s%s</tr>'
                 % (' class="is-off"' if 'drives' in off else '', cell('in-drives', 'in-drives-n'), fixed('Included', 'We edit from our own SSDs')))
     rows.append('<tr class="tc-r tc-r--sub"><th scope="row">Team, a year</th><td><b data-tc="in-team">%s</b></td><td class="tc-bl"><b data-tc="bl-team">%s</b><small data-tc="bl-team-n">%s</small></td></tr>'
@@ -228,28 +255,37 @@ def render(esc):
                 % (esc(v['in-total']), esc(v['bl-total'])))
     ledger = ('<div class="tc-ledger"><table><caption class="sr">The team on payroll and the same output with Birdline, line by line</caption>'
               '<thead><tr><td></td><th scope="col">On payroll</th><th scope="col" class="tc-bl"><span class="tc-x">With </span>Birdline</th></tr></thead><tbody>%s</tbody></table>'
-              '<p class="tc-birds" data-tc="birds">%s</p></div>' % (''.join(rows), esc(v['birds'])))
+              '<p class="tc-birds" data-tc="birds">%s</p>'
+              '<div class="tc-app"><div class="tc-app-h"><h4>The Birdline App comes with it</h4>'
+              '<p>One production workspace for your team and our Birds, where the brief, the shot list, every deliverable and its ad results stay connected. It saves time and money three ways.</p>'
+              '<a href="{{ROOT}}workspace.html">Explore the Birdline App</a></div>'
+              '<ul class="tc-app-l">%s</ul></div></div>'
+              % (''.join(rows), esc(v['birds']), ''.join('<li><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in APP)))
     def field(key, label, val, unit='$', after=''):
         return ('<label class="tc-field"><span>%s</span><span class="tc-inp">%s<input type="text" inputmode="numeric" autocomplete="off" value="%s" data-tc-set="%s" aria-label="%s">%s</span></label>'
                 % (esc(label), ('<i aria-hidden="true">%s</i>' % unit) if unit else '', format(val, ','), key, esc(label), ('<i aria-hidden="true">%s</i>' % after) if after else ''))
     checks = ''.join('<label class="tc-check"><input type="checkbox" data-tc-role="%s"%s><span>%s</span></label>' % (k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
-    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, drives, budgets</small></summary><div class="tc-adv-in">'
+    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, costs, hiring time</small></summary><div class="tc-adv-in">'
            '<div class="tc-g"><b>Salaries, a year</b><div class="tc-fields">%s</div></div>'
-           '<div class="tc-g"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These three follow company size and volume until you set them.</p></div>'
-           '<div class="tc-g"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s</div></div>'
+           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These three follow company size and volume until you set them.</p></div>'
+           '<div class="tc-g tc-g--tall"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s%s</div></div>'
+           '<div class="tc-g"><b>Hiring time</b><div class="tc-fields">%s</div><p>The median for a nonexecutive role. Birdline starts within a week.</p></div>'
            '<button class="tc-reset" type="button" data-tc-reset>Reset everything</button></div></details>'
            % (''.join(field('salary.' + k, names[k], s['salary'][k]) for k in ROLE_KEYS), checks,
               field('cap.editor', 'Ads one editor ships a month', s['cap']['editor'], unit=''),
               field('cap.designer', 'Ads one designer ships a month', s['cap']['designer'], unit=''),
               field('load', 'Benefits and payroll taxes', s['load'], unit='', after='%'),
               field('seat', 'Software and equipment, per person', s['seat']),
+              field('tools', 'Workflow tools, per person', s['tools']),
               field('ssd', 'Editing SSDs, per editor a year', s['ssd']),
               field('backup', 'Backup drive, per production', s['backup']),
-              field('shoot', 'Budget per production', s['shoot'])))
+              field('shoot', 'Budget per production', s['shoot']),
+              field('fill', 'Days to fill a seat', s['fill'], unit='', after='days')))
     foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics: senior pay, the 75th percentile, for the editor and the designer, and the median for the rest. Birdline figures use our starting prices, '
-            'one package per dedicated creative. Productions use the same budget on both sides.</p>'
+            'one package per dedicated creative. Productions use the same budget on both sides. The first 90 days assume every seat is filled at once and both sides ship at full rate from their first day.</p>'
             '<div class="tc-cta"><a class="btn" href="{{CALENDLY}}">Book a call</a><a class="btn btn--outline" href="{{ROOT}}packages.html">See the packages</a></div></div>')
-    cfg = dict(roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'], price=c['price'], start=c['start'])
+    cfg = dict(roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], tools=c['tools'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'],
+               fill=c['fill'], onboard=c['onboard'], window=c['window'], price=c['price'], start=c['start'])
     return ('<figure class="tc" id="calculator" data-team-calc="%s" aria-label="Team calculator">\n<div class="tc-top on-dark">%s<div class="tc-body">%s%s%s</div></div>\n%s\n%s\n%s\n'
             '<p class="sr" aria-live="polite" data-tc-live></p>\n</figure>'
             % (esc(json.dumps(cfg, separators=(',', ':'))), head, inputs, summary, out, ledger, adv, foot))

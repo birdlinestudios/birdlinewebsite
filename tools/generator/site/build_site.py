@@ -1920,6 +1920,13 @@ def blog_body(blocks):
             out.append('<p class="blg-cta"><a class="btn" href="%s">%s%s</a></p>' % (href, esc(label), ARROW_GO))
         elif kind == 'calc':   # the team calculator, as it opens (teamcalc.py); site.js takes it from there
             out.append(TC.render(esc))
+        elif kind == 'figure':   # a screen of the Birdline App: the wide capture over 720px, the narrower one on phones (img/ws-<key>*.webp)
+            key, alt, cap = val
+            (w, h), (mw, mh) = WS_SIZES['d'], WS_SIZES['m']
+            site_imgs.add('ws-%s.webp' % key); site_imgs.add('ws-%s-m.webp' % key)
+            out.append('<figure class="blg-fig"><img class="d-only" src="{{ROOT}}img/ws-%s.webp" width="%d" height="%d" alt="%s" loading="lazy">'
+                       '<img class="m-only" src="{{ROOT}}img/ws-%s-m.webp" width="%d" height="%d" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure>'
+                       % (key, w, h, esc(alt), key, mw, mh, esc(alt), esc(cap)))
         elif kind == 'sources':
             items, note = val
             li = ''.join('<li>%s</li>' % (('<a href="%s" rel="noopener"%s>%s</a>' % (x['href'], '' if x['href'].startswith('{{') else ' target="_blank"', esc(x['text']))) if x.get('href') else esc(x['text'])) for x in items)

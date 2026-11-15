@@ -607,7 +607,7 @@
 
 /* The team calculator ([data-team-calc], in the blog post on hiring a full-time team). teamcalc.py renders it as it opens and holds
    the same model; model() and view() here must agree with it line for line. The numbers (salaries, output per person, the load on a
-   salary, the seat, the drives, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
+   salary, the seat, the tools, the drives, the days to fill a seat, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
    assumptions" opens every figure behind it. Each element marked data-tc is rewritten with the figure of that name. The line a screen
    reader hears (data-tc-live) changes only when a control is let go, not on every step of a drag.
    window.__siteTeamCalc(root) arms a calculator added to the page later. */
@@ -619,7 +619,8 @@
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
   function start(c) {
     var s = { size: c.start.size, ads: c.start.ads, shoots: c.start.shoots, design: c.start.design, salary: {},
-              cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, ssd: c.ssd || 0, backup: c.backup || 0, shoot: c.shoot,
+              cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, tools: c.tools || 0, ssd: c.ssd || 0, backup: c.backup || 0, shoot: c.shoot,
+              fill: c.fill || 0,
               over: { producer: null, writer: null, director: null } };
     c.roles.forEach(function (r) { s.salary[r[0]] = r[1]; });
     return s;
@@ -635,10 +636,14 @@
     var heads = 0, salaries = 0;
     c.roles.forEach(function (r) { heads += n[r[0]]; salaries += n[r[0]] * s.salary[r[0]]; });
     var benefits = rnd(salaries * s.load / 100), seats = heads * s.seat, drives = n.editor * s.ssd + s.shoots * s.backup;   // SSDs to edit from, and a backup of each production's footage
-    var team = salaries + benefits + seats + drives, shoots = s.shoots * s.shoot;
+    var flow = heads * s.tools;   // a tracker and a review tool for each person; the Birdline App covers it on a partnership
+    var team = salaries + benefits + seats + flow + drives, shoots = s.shoots * s.shoot;
     var monthly = n.editor * c.price.editor + n.designer * c.price.designer, partner = monthly * 12;
+    // the first 90 days: each side ships at its full monthly rate from the day it starts (a search on payroll, a week with Birdline)
+    var win = c.window || 90, rampIn = rnd(s.ads * Math.max(0, win - s.fill) / 30), rampBl = rnd(s.ads * (win - (c.onboard || 0)) / 30);
     return { video: video, design: design, n: n, auto: auto, makers: makers, heads: heads, salaries: salaries, benefits: benefits, seats: seats,
-             drives: drives, team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots };
+             flow: flow, drives: drives, team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots,
+             rampIn: rampIn, rampBl: rampBl };
   }
   function view(c, s) {
     var m = model(c, s), n = m.n, v = {}, off = [], pct;
@@ -664,6 +669,8 @@
     c.roles.forEach(function (r) { v['n-' + r[0]] = String(n[r[0]]); });
     var months = s.ads * 12;
     v['perad-in'] = money(rnd(m.team / months)); v['perad-bl'] = money(rnd(m.partner / months));
+    v['start-in'] = String(s.fill);
+    v['ramp-in'] = String(m.rampIn); v['ramp-bl'] = String(m.rampBl);
     c.roles.forEach(function (r) {
       var k = r[0];
       if (n[k]) {
@@ -686,6 +693,7 @@
     });
     v['in-benefits'] = money(m.benefits); v['in-benefits-n'] = s.load + '% of salaries';
     v['in-seats'] = money(m.seats); v['in-seats-n'] = m.heads + ' × ' + money(s.seat);
+    v['in-flow'] = money(m.flow); v['in-flow-n'] = m.heads + ' × ' + money(s.tools);
     // each term holds together and the line breaks before the plus (no-break spaces)
     var terms = (n.editor ? [n.editor + '\u00a0×\u00a0' + money(s.ssd)] : []).concat(s.shoots ? [s.shoots + '\u00a0×\u00a0' + money(s.backup)] : []);
     if (terms.length) { v['in-drives'] = money(m.drives); v['in-drives-n'] = terms.join(' +\u00a0'); }
@@ -702,7 +710,8 @@
     var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };
     return { v: v, w: w, off: off, m: m };
   }
-  var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], ssd: [0, 100000], backup: [0, 100000], shoot: [0, 2000000] };
+  var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], tools: [0, 100000], ssd: [0, 100000], backup: [0, 100000], shoot: [0, 2000000],
+                fill: [0, 365] };
   function arm(root) {
     if (root.__tc) return;
     var c;
