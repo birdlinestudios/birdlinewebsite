@@ -7,14 +7,19 @@ data-team-calc, so the numbers live in one place. The two must agree line for li
 over a grid of inputs.
 
 The figures and where they come from:
-- salaries: U.S. medians, BLS Occupational Outlook Handbook, May 2025 (film and video editors $75,420; graphic designers
-  $62,960 and special effects artists and animators $102,030, whose midpoint stands for a designer who also animates;
-  producers and directors $90,360; writers and authors $76,910; art directors $114,850)
+- salaries: BLS Occupational Employment and Wage Statistics, May 2025, U.S. The two makers are priced at senior level, the
+  75th percentile, because every Birdline editor and designer/animator is senior or expert level (Mike, November 15, 2026):
+  film and video editors $105,310 (median $75,420); graphic designers $81,830 and special effects artists and animators
+  $139,130, whose midpoint, $110,480, rounded to $110,500, stands for a senior designer who also animates. The three support
+  roles stay at the median: producers and directors $90,360; writers and authors $76,910; art directors $114,850
 - benefits and payroll taxes: BLS Employer Costs for Employee Compensation, June 2026, full-time private industry workers:
   insurance $4.58 + retirement and savings $1.94 + legally required $3.76 = $10.28 an hour, against $36.97 in wages plus $4.40
   in paid leave (which a salary already includes) = $41.37, or 24.8%. Bonuses and other supplemental pay are left out.
 - software and equipment: $2,500 a seat a year (Adobe Creative Cloud Pro for teams lists at $99.99 a month; the rest is a
-  workstation over a few years, review tools, stock and storage)
+  workstation over a few years, review tools and stock)
+- drives: editors cut from portable SSDs and the footage is backed up to hard drives. Two 4TB SSDs per video editor a year
+  ($936.98 each at B&H, November 2026: $1,900) and one 8TB desktop hard drive per production ($279.99 at B&H: $280). On the
+  Birdline side the drives are ours
 - Birdline: the starting prices on the Packages page, one package per dedicated creative
 - productions: one budget per shoot, the same on both sides
 - the rules that staff the team are Birdline's working assumptions, stated in the post and open to change in the calculator"""
@@ -23,11 +28,13 @@ from math import ceil, floor
 
 CONFIG = dict(
     sizes=['1–10', '11–50', '51–200', '201–500', '501–1,000', '1,000+'],     # employees, as the booking form asks
-    roles=[('editor', 'Video editor', 75420), ('designer', 'Designer / animator', 82500), ('producer', 'Producer / project manager', 90360),
+    roles=[('editor', 'Senior video editor', 105310), ('designer', 'Senior designer / animator', 110500), ('producer', 'Producer / project manager', 90360),
            ('writer', 'Copywriter', 76910), ('director', 'Creative director', 114850)],
     cap=dict(editor=20, designer=30),          # finished ads one person ships a month
     load=25,                                   # benefits and payroll taxes, percent of salary
     seat=2500,                                 # software and equipment, per person per year
+    ssd=1900,                                  # editing SSDs, per video editor per year: two 4TB portable SSDs
+    backup=280,                                # a backup hard drive for each production's footage: one 8TB desktop drive
     shoot=20000,                               # budget per production: crew, talent, locations, gear
     price=dict(editor=8000, designer=6000),    # Birdline, per dedicated creative per month (Video Editing, Design & Animation)
     ads=(5, 200, 5), shoots=(0, 24, 1), design=(0, 100, 25),      # the sliders: min, max, step
@@ -39,7 +46,7 @@ SUPPORT = ['producer', 'writer', 'director']
 def start_state():
     s = dict(CONFIG['start'])
     s.update(salary={k: v for k, _n, v in CONFIG['roles']}, cap=dict(CONFIG['cap']), load=CONFIG['load'], seat=CONFIG['seat'],
-             shoot=CONFIG['shoot'], over={k: None for k in SUPPORT})
+             ssd=CONFIG['ssd'], backup=CONFIG['backup'], shoot=CONFIG['shoot'], over={k: None for k in SUPPORT})
     return s
 
 def rnd(x):
@@ -69,12 +76,13 @@ def model(s):
     salaries = sum(n[k] * s['salary'][k] for k in ROLE_KEYS)
     benefits = rnd(salaries * s['load'] / 100)
     seats = heads * s['seat']
-    team = salaries + benefits + seats
+    drives = n['editor'] * s['ssd'] + s['shoots'] * s['backup']     # SSDs to edit from, and a backup of each production's footage
+    team = salaries + benefits + seats + drives
     shoots = s['shoots'] * s['shoot']
     monthly = n['editor'] * CONFIG['price']['editor'] + n['designer'] * CONFIG['price']['designer']
     partner = monthly * 12
     return dict(video=video, design=design, n=n, auto=auto, makers=makers, heads=heads, salaries=salaries, benefits=benefits, seats=seats,
-                team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots)
+                drives=drives, team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots)
 
 def plural(n, one, many=None):
     return '%d %s' % (n, one if n == 1 else (many or one + 's'))
@@ -116,8 +124,8 @@ def view(s):
             v['in-' + k] = '—'
             v['in-%s-n' % k] = ('No video in the mix' if k == 'editor' else 'No design in the mix' if k == 'designer'
                                 else 'Not at this size' if s['over'][k] is None else 'Left out')
-    for k, pack, who, whos in (('editor', 'Video Editing', 'dedicated editor', 'dedicated editors'),
-                               ('designer', 'Design & Animation', 'dedicated designer/animator', 'dedicated designers/animators')):
+    for k, pack, who, whos in (('editor', 'Video Editing', 'dedicated senior editor', 'dedicated senior editors'),
+                               ('designer', 'Design & Animation', 'dedicated senior designer/animator', 'dedicated senior designers/animators')):
         if n[k]:
             v['bl-' + k] = money(n[k] * CONFIG['price'][k] * 12)
             v['bl-%s-x' % k] = '%s, %s, ' % (pack, plural(n[k], who, whos))
@@ -126,13 +134,20 @@ def view(s):
             v['bl-' + k], v['bl-%s-x' % k], v['bl-%s-n' % k] = '—', '', ''
     v['in-benefits'], v['in-benefits-n'] = money(m['benefits']), '%s%% of salaries' % s['load']
     v['in-seats'], v['in-seats-n'] = money(m['seats']), '%d × %s' % (m['heads'], money(s['seat']))
+    # each term holds together and the line breaks before the plus (no-break spaces), so a narrow column reads "1 × $1,900 / + 4 × $280"
+    terms = (['%d\u00a0×\u00a0%s' % (n['editor'], money(s['ssd']))] if n['editor'] else []) + (['%d\u00a0×\u00a0%s' % (s['shoots'], money(s['backup']))] if s['shoots'] else [])
+    if terms:
+        v['in-drives'], v['in-drives-n'] = money(m['drives']), ' +\u00a0'.join(terms)
+    else:     # nothing to cut and nothing shot: no drives to buy
+        off.append('drives')
+        v['in-drives'], v['in-drives-n'] = '—', 'No video or productions'
     v['in-team'], v['bl-team'], v['bl-team-n'] = money(m['team']), money(m['partner']), '%s/mo' % money(m['monthly'])
     v['in-shoots'] = v['bl-shoots'] = money(m['shoots'])
     v['in-shoots-n'] = v['bl-shoots-n'] = '%d × %s' % (s['shoots'], money(s['shoot']))
     v['in-total'], v['bl-total'] = money(m['in_total']), money(m['bl_total'])
-    birds = [plural(n['editor'], 'dedicated editor')] if n['editor'] else []
+    birds = [plural(n['editor'], 'dedicated senior editor')] if n['editor'] else []
     if n['designer']:
-        birds.append(plural(n['designer'], 'dedicated designer/animator', 'dedicated designers/animators'))
+        birds.append(plural(n['designer'], 'dedicated senior designer/animator', 'dedicated senior designers/animators'))
     v['birds'] = ('With Birdline that is %s and %s. We hire and manage them. You send the briefs.'
                   % (', '.join(birds), 'a project manager' if m['makers'] <= 3 else 'the project management to run them'))
     v['sr'] = 'On payroll: %s, %s a year. With Birdline: %s a year.' % (plural(m['heads'], 'person', 'people'), money(m['in_total']), money(m['bl_total']))
@@ -202,7 +217,9 @@ def render(esc):
         bl = cell('bl-' + k, 'bl-%s-n' % k, 'bl-%s-x' % k, ' class="tc-bl"') if k in c['price'] else fixed('Included', INCLUDED[k])
         rows.append('<tr data-tc-row="%s"%s><th scope="row">%s</th>%s%s</tr>' % (k, ' class="is-off"' if k in off else '', esc(names[k]), cell('in-' + k, 'in-%s-n' % k), bl))
     rows.append('<tr><th scope="row">Benefits and payroll taxes</th>%s%s</tr>' % (cell('in-benefits', 'in-benefits-n'), fixed('$0', 'No payroll to run')))
-    rows.append('<tr><th scope="row">Software and equipment</th>%s%s</tr>' % (cell('in-seats', 'in-seats-n'), fixed('Included', 'Tools, licensing and storage')))
+    rows.append('<tr><th scope="row">Software and equipment</th>%s%s</tr>' % (cell('in-seats', 'in-seats-n'), fixed('Included', 'Tools and licensing')))
+    rows.append('<tr data-tc-row="drives"%s><th scope="row">Editing SSDs and backup drives</th>%s%s</tr>'
+                % (' class="is-off"' if 'drives' in off else '', cell('in-drives', 'in-drives-n'), fixed('Included', 'We edit from our own SSDs')))
     rows.append('<tr class="tc-r tc-r--sub"><th scope="row">Team, a year</th><td><b data-tc="in-team">%s</b></td><td class="tc-bl"><b data-tc="bl-team">%s</b><small data-tc="bl-team-n">%s</small></td></tr>'
                 % (esc(v['in-team']), esc(v['bl-team']), esc(v['bl-team-n'])))
     rows.append('<tr><th scope="row">Productions</th>%s<td class="tc-bl"><b data-tc="bl-shoots">%s</b><small><span data-tc="bl-shoots-n">%s</span><span class="tc-x">, scoped per project</span></small></td></tr>'
@@ -216,21 +233,23 @@ def render(esc):
         return ('<label class="tc-field"><span>%s</span><span class="tc-inp">%s<input type="text" inputmode="numeric" autocomplete="off" value="%s" data-tc-set="%s" aria-label="%s">%s</span></label>'
                 % (esc(label), ('<i aria-hidden="true">%s</i>' % unit) if unit else '', format(val, ','), key, esc(label), ('<i aria-hidden="true">%s</i>' % after) if after else ''))
     checks = ''.join('<label class="tc-check"><input type="checkbox" data-tc-role="%s"%s><span>%s</span></label>' % (k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
-    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, budgets</small></summary><div class="tc-adv-in">'
+    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, drives, budgets</small></summary><div class="tc-adv-in">'
            '<div class="tc-g"><b>Salaries, a year</b><div class="tc-fields">%s</div></div>'
            '<div class="tc-g"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These three follow company size and volume until you set them.</p></div>'
-           '<div class="tc-g"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s</div></div>'
+           '<div class="tc-g"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s</div></div>'
            '<button class="tc-reset" type="button" data-tc-reset>Reset everything</button></div></details>'
            % (''.join(field('salary.' + k, names[k], s['salary'][k]) for k in ROLE_KEYS), checks,
               field('cap.editor', 'Ads one editor ships a month', s['cap']['editor'], unit=''),
               field('cap.designer', 'Ads one designer ships a month', s['cap']['designer'], unit=''),
               field('load', 'Benefits and payroll taxes', s['load'], unit='', after='%'),
               field('seat', 'Software and equipment, per person', s['seat']),
+              field('ssd', 'Editing SSDs, per editor a year', s['ssd']),
+              field('backup', 'Backup drive, per production', s['backup']),
               field('shoot', 'Budget per production', s['shoot'])))
-    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. medians from the Bureau of Labor Statistics. Birdline figures use our starting prices, '
+    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics: senior pay, the 75th percentile, for the editor and the designer, and the median for the rest. Birdline figures use our starting prices, '
             'one package per dedicated creative. Productions use the same budget on both sides.</p>'
             '<div class="tc-cta"><a class="btn" href="{{CALENDLY}}">Book a call</a><a class="btn btn--outline" href="{{ROOT}}packages.html">See the packages</a></div></div>')
-    cfg = dict(roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], shoot=c['shoot'], price=c['price'], start=c['start'])
+    cfg = dict(roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'], price=c['price'], start=c['start'])
     return ('<figure class="tc" id="calculator" data-team-calc="%s" aria-label="Team calculator">\n<div class="tc-top on-dark">%s<div class="tc-body">%s%s%s</div></div>\n%s\n%s\n%s\n'
             '<p class="sr" aria-live="polite" data-tc-live></p>\n</figure>'
             % (esc(json.dumps(cfg, separators=(',', ':'))), head, inputs, summary, out, ledger, adv, foot))

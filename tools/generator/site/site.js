@@ -607,7 +607,7 @@
 
 /* The team calculator ([data-team-calc], in the blog post on hiring a full-time team). teamcalc.py renders it as it opens and holds
    the same model; model() and view() here must agree with it line for line. The numbers (salaries, output per person, the load on a
-   salary, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
+   salary, the seat, the drives, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
    assumptions" opens every figure behind it. Each element marked data-tc is rewritten with the figure of that name. The line a screen
    reader hears (data-tc-live) changes only when a control is let go, not on every step of a drag.
    window.__siteTeamCalc(root) arms a calculator added to the page later. */
@@ -619,7 +619,7 @@
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
   function start(c) {
     var s = { size: c.start.size, ads: c.start.ads, shoots: c.start.shoots, design: c.start.design, salary: {},
-              cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, shoot: c.shoot,
+              cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, ssd: c.ssd || 0, backup: c.backup || 0, shoot: c.shoot,
               over: { producer: null, writer: null, director: null } };
     c.roles.forEach(function (r) { s.salary[r[0]] = r[1]; });
     return s;
@@ -634,10 +634,11 @@
     SUPPORT.forEach(function (k) { var o = s.over[k]; n[k] = o === null ? auto[k] : (o ? Math.max(auto[k], 1) : 0); });
     var heads = 0, salaries = 0;
     c.roles.forEach(function (r) { heads += n[r[0]]; salaries += n[r[0]] * s.salary[r[0]]; });
-    var benefits = rnd(salaries * s.load / 100), seats = heads * s.seat, team = salaries + benefits + seats, shoots = s.shoots * s.shoot;
+    var benefits = rnd(salaries * s.load / 100), seats = heads * s.seat, drives = n.editor * s.ssd + s.shoots * s.backup;   // SSDs to edit from, and a backup of each production's footage
+    var team = salaries + benefits + seats + drives, shoots = s.shoots * s.shoot;
     var monthly = n.editor * c.price.editor + n.designer * c.price.designer, partner = monthly * 12;
     return { video: video, design: design, n: n, auto: auto, makers: makers, heads: heads, salaries: salaries, benefits: benefits, seats: seats,
-             team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots };
+             drives: drives, team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots };
   }
   function view(c, s) {
     var m = model(c, s), n = m.n, v = {}, off = [], pct;
@@ -673,7 +674,7 @@
         v['in-' + k + '-n'] = k === 'editor' ? 'No video in the mix' : k === 'designer' ? 'No design in the mix' : s.over[k] === null ? 'Not at this size' : 'Left out';
       }
     });
-    [['editor', 'Video Editing', 'dedicated editor', 'dedicated editors'], ['designer', 'Design & Animation', 'dedicated designer/animator', 'dedicated designers/animators']].forEach(function (p) {
+    [['editor', 'Video Editing', 'dedicated senior editor', 'dedicated senior editors'], ['designer', 'Design & Animation', 'dedicated senior designer/animator', 'dedicated senior designers/animators']].forEach(function (p) {
       var k = p[0];
       if (n[k]) {
         v['bl-' + k] = money(n[k] * c.price[k] * 12);
@@ -685,19 +686,23 @@
     });
     v['in-benefits'] = money(m.benefits); v['in-benefits-n'] = s.load + '% of salaries';
     v['in-seats'] = money(m.seats); v['in-seats-n'] = m.heads + ' × ' + money(s.seat);
+    // each term holds together and the line breaks before the plus (no-break spaces)
+    var terms = (n.editor ? [n.editor + '\u00a0×\u00a0' + money(s.ssd)] : []).concat(s.shoots ? [s.shoots + '\u00a0×\u00a0' + money(s.backup)] : []);
+    if (terms.length) { v['in-drives'] = money(m.drives); v['in-drives-n'] = terms.join(' +\u00a0'); }
+    else { off.push('drives'); v['in-drives'] = '—'; v['in-drives-n'] = 'No video or productions'; }   // nothing to cut and nothing shot
     v['in-team'] = money(m.team); v['bl-team'] = money(m.partner); v['bl-team-n'] = money(m.monthly) + '/mo';
     v['in-shoots'] = v['bl-shoots'] = money(m.shoots);
     v['in-shoots-n'] = v['bl-shoots-n'] = s.shoots + ' × ' + money(s.shoot);
     v['in-total'] = money(m.inTotal); v['bl-total'] = money(m.blTotal);
-    var birds = n.editor ? [plural(n.editor, 'dedicated editor')] : [];
-    if (n.designer) birds.push(plural(n.designer, 'dedicated designer/animator', 'dedicated designers/animators'));
+    var birds = n.editor ? [plural(n.editor, 'dedicated senior editor')] : [];
+    if (n.designer) birds.push(plural(n.designer, 'dedicated senior designer/animator', 'dedicated senior designers/animators'));
     v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager' : 'the project management to run them') + '. We hire and manage them. You send the briefs.';
     v.sr = 'On payroll: ' + plural(m.heads, 'person', 'people') + ', ' + money(m.inTotal) + ' a year. With Birdline: ' + money(m.blTotal) + ' a year.';
     var top = Math.max(m.inTotal, m.blTotal, 1);
     var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };
     return { v: v, w: w, off: off, m: m };
   }
-  var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], shoot: [0, 2000000] };
+  var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], ssd: [0, 100000], backup: [0, 100000], shoot: [0, 2000000] };
   function arm(root) {
     if (root.__tc) return;
     var c;

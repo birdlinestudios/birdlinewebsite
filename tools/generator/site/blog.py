@@ -9,10 +9,20 @@ import teamcalc as TC
 # the team calculator's opening figures, for the post that carries it: the prose quotes what the calculator shows as it opens
 _TC = TC.figures()
 _TCV, _TCM = _TC['v'], _TC['m']
-_solo = TC.start_state(); _solo.update(size=0, ads=20, shoots=0, design=0)     # one editor, nothing else
+_TCC = TC.CONFIG
+_solo = TC.start_state(); _solo.update(size=0, ads=20, shoots=0, design=0)     # one senior editor, nothing else
 _SOLO = TC.model(_solo)
-assert _SOLO['heads'] == 1 and abs(_SOLO['in_total'] - _SOLO['bl_total']) < 1000, _SOLO
-assert _TCM['heads'] == 4 and _TCM['n']['director'] == 0, _TCM
+_solo_mid = TC.start_state(); _solo_mid.update(size=0, ads=20, shoots=0, design=0); _solo_mid['salary']['editor'] = 75420     # the same seat at the BLS median
+_SOLO_MID = TC.model(_solo_mid)
+_solo_low = TC.start_state(); _solo_low.update(size=0, ads=20, shoots=0, design=0); _solo_low['salary']['editor'] = 52720     # and at the 25th percentile
+_SOLO_LOW = TC.model(_solo_low)
+# what the post says about one editor: about $40,000 over the package at senior pay, within $3,000 at the median, under it for a junior
+assert _SOLO['heads'] == 1 and 39500 <= _SOLO['in_total'] - _SOLO['bl_total'] < 40500, _SOLO
+assert 0 < _SOLO_MID['in_total'] - _SOLO_MID['bl_total'] < 3000, _SOLO_MID
+assert _SOLO_LOW['in_total'] < _SOLO_LOW['bl_total'], _SOLO_LOW
+assert _TCM['heads'] == 4 and _TCM['n']['director'] == 0 and _TCM['n']['editor'] == 1 and _TCM['n']['designer'] == 1, _TCM
+assert dict((k, v) for k, _n, v in _TCC['roles'])['editor'] == 105310 and dict((k, v) for k, _n, v in _TCC['roles'])['designer'] == 110500
+assert (_TCC['ssd'], _TCC['backup'], _TCC['seat'], _TCC['load'], _TCC['shoot']) == (1900, 280, 2500, 25, 20000)     # the figures the post spells out
 
 HERO = dict(
     eyebrow='The Birdline blog',
@@ -32,17 +42,20 @@ CLOSE = dict(heading='Put the Ideas to Work.', sub='Tell us what is in your pipe
 
 POSTS = [
     dict(   # November 15, 2026: the FAQ "Why wouldn't I just hire a full-time editor?", answered at length with the team calculator.
-            # Salaries are BLS medians (May 2025), the load on a salary is from BLS's June 2026 employer costs, time to fill is SHRM's
-            # 2026 benchmark; the staffing rules and the $2,500 seat are Birdline's working assumptions and say so.
+            # Salaries are BLS figures for May 2025: the 75th percentile for the editor and the designer/animator, because every Birdline
+            # editor and designer/animator is senior or expert level (Mike, the same day), and the median for the three support roles.
+            # The load on a salary is from BLS's June 2026 employer costs, time to fill is SHRM's 2026 benchmark, and the drive prices
+            # are B&H's that month; the staffing rules, the $2,500 seat and the drive counts are Birdline's working assumptions and say so.
         slug='in-house-content-team-cost-calculator',
         title='Why Wouldn’t I Just Hire a Full-Time Team?',
         dek='It is one of the first questions brands ask us, and the honest answer is a number. So we built a calculator: the team your volume needs on payroll, next to the same output on a Birdline partnership.',
-        meta='What an in-house content team costs: the roles, U.S. median salaries, benefits and payroll taxes, and a calculator that sets the team beside a Birdline partnership for the same output.',
+        meta='What an in-house content team costs: senior-level U.S. salaries, benefits, payroll taxes and drives, with a calculator that sets it beside a Birdline partnership.',
         category='Strategy', date='2026-11-15', read=7,
         cover='new/production-set.jpg',
         cover_alt='A Birdline shoot: a camera on a tripod in the foreground, two people in conversation on set, and a producer watching the monitor.',
         takeaways=['One hire covers one discipline. The fair comparison is a team.',
-                   'A hire costs the salary, about 25% more in benefits and payroll taxes, and the seat.',
+                   'Our editors and designers are senior level, so the hire we compare against is senior too.',
+                   'A hire costs the salary, about 25% more in benefits and payroll taxes, the seat and the drives.',
                    'A partnership adds or drops dedicated editors and designers as demand moves, with no payroll to run.'],
         body=[
             ('p', 'It is one of the first questions a brand asks us: for that money, why wouldn’t I just hire someone full-time?'),
@@ -58,36 +71,41 @@ POSTS = [
                     'A creative director. Sets the bar and manages the people, once there are people to manage.']),
             ('p', 'Nobody needs all five on day one. A ten-person brand gets by with a maker or two. By the time you are shipping forty ads a month across video and design, most of that list is on payroll.'),
             ('h2', 'What each seat pays'),
-            ('p', 'These are U.S. medians from the Bureau of Labor Statistics for May 2025, its most recent figures. Half the people in each job earn more.'),
-            ('table', (['Role', 'Median salary', 'How BLS counts it'], [
-                ['Video editor', '$75,420', 'Film and video editors'],
-                ['Designer / animator', '$82,500', 'The midpoint of graphic designers ($62,960) and special effects artists and animators ($102,030), rounded'],
-                ['Producer / project manager', '$90,360', 'Producers and directors'],
-                ['Copywriter', '$76,910', 'Writers and authors'],
-                ['Creative director', '$114,850', 'Art directors'],
+            ('p', 'Start with who you are comparing against. Every editor and designer/animator at Birdline is senior or expert level. So the like-for-like hire is senior too, not the average person in the job.'),
+            ('p', 'For those two seats we use the 75th percentile from the Bureau of Labor Statistics for May 2025, its most recent figures. Three in four people in the job earn less. The support roles stay at the median.'),
+            ('table', (['Role', 'Salary', 'How BLS counts it'], [
+                ['Senior video editor', '$105,310', 'Film and video editors, 75th percentile. The median is $75,420'],
+                ['Senior designer / animator', '$110,500', 'The midpoint of the 75th percentile for graphic designers ($81,830) and for special effects artists and animators ($139,130), rounded'],
+                ['Producer / project manager', '$90,360', 'Producers and directors, median'],
+                ['Copywriter', '$76,910', 'Writers and authors, median'],
+                ['Creative director', '$114,850', 'Art directors, median'],
             ])),
-            ('p', 'Two notes. BLS has no line for a designer who also animates, so we use the midpoint of the two jobs it does track. Robert Half’s 2027 salary guide puts the midpoint for a motion designer at $91,000 and for a creative director at $135,000, so both of our figures run low. And these are national numbers. In Los Angeles or New York, expect to pay more.'),
+            ('p', 'BLS has no line for a designer who also animates, so we use the midpoint of the two jobs it does track. And these are national numbers. In Los Angeles or New York, expect to pay more.'),
+            ('p', 'For a second opinion, Robert Half’s 2027 salary guide puts the high end of its national range at $90,250 for a video editor and $108,500 for a motion designer, and its midpoint for a creative director at $135,000. Our editor runs above theirs, our designer sits beside it and our creative director runs low. If your market says otherwise, change the salary in the calculator.'),
             ('h2', 'The salary is not the cost'),
             ('p', 'A hire costs more than the number on the offer letter. For full-time workers in private industry, BLS puts insurance, retirement and legally required costs like Social Security and Medicare at $10.28 an hour, on top of $41.37 in wages and paid leave. That is about 25 cents for every salary dollar, before any bonus.'),
-            ('p', 'Then the seat. Adobe lists Creative Cloud Pro for teams at $99.99 a month per license. Add a workstation, review tools, stock and storage, and we budget $2,500 a person per year.'),
+            ('p', 'Then the seat. Adobe lists Creative Cloud Pro for teams at $99.99 a month per license. Add a workstation, review tools and stock, and we budget $2,500 a person per year.'),
+            ('p', 'Then the drives. Video is heavy, and editors do not cut from a laptop’s own disk. They edit from fast portable SSDs, and the footage from every shoot gets backed up to a hard drive. As of this writing, B&H lists a 4TB portable SSD at about $940 and an 8TB desktop hard drive at about $280. We budget two SSDs per editor a year and one backup drive per production.'),
             ('p', 'Then the search. SHRM’s 2026 benchmark puts the median time to fill a nonexecutive role at 39 days. A four-person team is four searches.'),
             ('quote', 'A hire is a salary, a benefits bill, a seat and a search. A team is that, repeated.'),
             ('h2', 'Run your own numbers'),
             ('p', 'The calculator builds the team your volume calls for, prices it, and sets it beside the same output on a Birdline partnership. Every figure behind it sits under “Adjust the assumptions,” and you can change any of them.'),
             ('calc', 'team'),
-            ('p', 'It opens on a brand of 51 to 200 people shipping 40 ads a month, half video and half design, with four productions a year. That takes four people on payroll: %(salaries)s in salaries, and %(team)s once benefits, payroll taxes and software are in. The same output with Birdline is one dedicated editor, one dedicated designer/animator and a project manager: both packages, %(monthly)s a month, %(partner)s a year.'
+            ('p', 'It opens on a brand of 51 to 200 people shipping 40 ads a month, half video and half design, with four productions a year. That takes four people on payroll: %(salaries)s in salaries, and %(team)s once benefits, payroll taxes, software and drives are in. The same output with Birdline is one dedicated senior editor, one dedicated senior designer/animator and a project manager: both packages, %(monthly)s a month, %(partner)s a year.'
                   % dict(salaries=TC.money(_TCM['salaries']), team=TC.money(_TCM['team']), monthly=TC.money(_TCM['monthly']), partner=TC.money(_TCM['partner']))),
             ('h2', 'How the math works'),
-            ('ul', ['Makers. One editor for every 20 finished video ads a month, and one designer for every 30 statics or motion pieces. The same rule sets how many dedicated editors and designers a partnership needs, so both sides ship the same work.',
+            ('ul', ['Makers. One senior editor for every 20 finished video ads a month, and one senior designer/animator for every 30 statics or motion pieces. The same rule sets how many dedicated editors and designers a partnership needs, so both sides ship the same work at the same level.',
                     'Support. Support roles join once there are two makers. A producer or project manager for every eight makers, starting at a company past ten people or at three makers anywhere, and one more at a production a month. A copywriter from 51 employees or 60 ads a month. A creative director from 201 employees or five makers. Six productions a year call for a producer whatever the team.',
                     'Payroll. Salaries, plus 25% for benefits and payroll taxes, plus $2,500 a seat for software and equipment.',
-                    'Birdline. Our starting prices: Video Editing at $8,000 a month and Design & Animation at $6,000 a month, one package for each dedicated creative. The project manager, script and copywriting, strategy calls and the Birdline App come with it.',
+                    'Drives. Two 4TB editing SSDs for each editor a year, $1,900, and one 8TB backup hard drive for each production, $280.',
+                    'Birdline. Our starting prices: Video Editing at $8,000 a month and Design & Animation at $6,000 a month, one package for each dedicated creative. The project manager, script and copywriting, strategy calls, the Birdline App and the SSDs we edit from come with it.',
                     'Productions. A shoot costs what it costs: crew, talent, locations and gear. The calculator puts the same budget on both sides, $20,000 a production unless you change it.']),
             ('h2', 'What the calculator leaves out'),
-            ('p', 'The estimate is kind to the payroll side. It does not count:'),
+            ('p', 'The estimate leaves real costs off the payroll side. It does not count:'),
             ('ul', ['Recruiting, and the weeks each seat sits open before the work starts.',
                     'Bonuses, raises and the cost of replacing someone who leaves.',
                     'The hours someone senior spends managing, reviewing and covering vacations.',
+                    'Shared storage, cloud backup and replacing the drives that fail.',
                     'Office space, if the team works from one.']),
             ('p', 'On our side, package prices are starting prices. The real number comes out of a call, where we look at what you need made.'),
             ('h2', 'When demand moves'),
@@ -98,25 +116,28 @@ POSTS = [
             ('h2', 'When hiring is the right call'),
             ('p', 'None of this is an argument against in-house teams. A partnership works alongside yours.'),
             ('p', 'Hire for the roles that carry the brand: the person who owns the voice, sits in the product meetings and decides what gets made. Keep them close. Put the production capacity, the part that swells and shrinks with the calendar, on a partnership that can swell and shrink with it.'),
-            ('p', 'And if the calculator says a hire wins for you, hire. With a single editor and steady work, the two land within $1,000 a year of each other. The difference shows up with the second discipline.'),
+            ('p', 'And if the calculator says a hire wins for you, hire. It can. One editor at the median salary, $75,420, lands within $3,000 a year of the Video Editing package, and a junior editor comes in under it. What changes the math is the level. At senior pay, the level you get with us, that one seat runs about $40,000 a year over the package, and the gap widens with the second discipline.'),
             ('h2', 'The short version'),
             ('ul', ['The fair comparison is a team, not an editor.',
-                    'A hire costs the salary, about 25% more in benefits and payroll taxes, and the seat.',
+                    'Our editors and designers are senior level, so compare against a senior hire.',
+                    'A hire costs the salary, about 25% more in benefits and payroll taxes, the seat and the drives.',
                     'A partnership adds or drops dedicated editors and designers as demand moves, with no payroll to run.',
                     'Productions cost the same either way.',
                     'Run your own numbers before you decide.']),
             ('cta', ('See the packages', '{{ROOT}}packages.html')),
             ('sources', ([
-                dict(text='U.S. Bureau of Labor Statistics, Occupational Outlook Handbook: film and video editors, median pay, May 2025.', href='https://www.bls.gov/ooh/media-and-communication/film-and-video-editors-and-camera-operators.htm'),
-                dict(text='BLS, Occupational Outlook Handbook: graphic designers.', href='https://www.bls.gov/ooh/arts-and-design/graphic-designers.htm'),
-                dict(text='BLS, Occupational Outlook Handbook: special effects artists and animators.', href='https://www.bls.gov/ooh/arts-and-design/multimedia-artists-and-animators.htm'),
-                dict(text='BLS, Occupational Outlook Handbook: producers and directors.', href='https://www.bls.gov/ooh/entertainment-and-sports/producers-and-directors.htm'),
+                dict(text='U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics, May 2025, as published by CareerOneStop (U.S. Department of Labor): film and video editors, median and 75th percentile.', href='https://www.careeronestop.org/Toolkit/Careers/Occupations/occupation-profile.aspx?keyword=Film+and+Video+Editors&location=US&onetcode=27-4032.00'),
+                dict(text='BLS wages, May 2025, on CareerOneStop: graphic designers, 75th percentile.', href='https://www.careeronestop.org/Toolkit/Careers/Occupations/occupation-profile.aspx?keyword=Graphic+Designers&location=US&onetcode=27-1024.00'),
+                dict(text='BLS wages, May 2025, on CareerOneStop: special effects artists and animators, 75th percentile.', href='https://www.careeronestop.org/Toolkit/Careers/Occupations/occupation-profile.aspx?keyword=Special+Effects+Artists+and+Animators&location=US&onetcode=27-1014.00'),
+                dict(text='BLS, Occupational Outlook Handbook: producers and directors, median pay, May 2025.', href='https://www.bls.gov/ooh/entertainment-and-sports/producers-and-directors.htm'),
                 dict(text='BLS, Occupational Outlook Handbook: writers and authors.', href='https://www.bls.gov/ooh/media-and-communication/writers-and-authors.htm'),
                 dict(text='BLS, Occupational Outlook Handbook: art directors.', href='https://www.bls.gov/ooh/arts-and-design/art-directors.htm'),
                 dict(text='BLS, Employer Costs for Employee Compensation, June 2026 (released September 9, 2026): full-time private industry workers, Table 5.', href='https://www.bls.gov/news.release/ecec.htm'),
                 dict(text='SHRM, 2026 Recruiting Executives Benchmarking: median time-to-fill for nonexecutive positions.', href='https://www.shrm.org/topics-tools/research/recruiting-benchmarking'),
-                dict(text='Robert Half, 2027 Salary Guide: motion designer and creative director.', href='https://www.roberthalf.com/us/en/job-details/motion-designer'),
+                dict(text='Robert Half, 2027 Salary Guide: video editor, motion designer and creative director.', href='https://www.roberthalf.com/us/en/job-details/motion-designer'),
                 dict(text='Adobe: Creative Cloud Pro for teams, U.S. price per license.', href='https://helpx.adobe.com/account/individual/subscriptions-and-plans/plan-types-and-eligibility/changes-to-teams-plan.html'),
+                dict(text='B&H Photo: Samsung 4TB T9 Portable SSD, $936.98.', href='https://www.bhphotovideo.com/c/product/1787602-REG/samsung_mu_pg4t0b_am_4tb_t9_portable_ssd.html'),
+                dict(text='B&H Photo: Seagate 8TB Expansion Desktop Hard Drive, $279.99.', href='https://www.bhphotovideo.com/c/buy/expansion-desktop/ci/41480'),
                 dict(text='Birdline prices: the Packages page.', href='{{ROOT}}packages.html'),
             ], 'Figures as of November 2026. The calculator gives an estimate, not a quote.')),
         ],
