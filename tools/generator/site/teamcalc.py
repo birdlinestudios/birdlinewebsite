@@ -3,18 +3,23 @@ would need on payroll for its ad volume and shoots, what that team costs, and th
 
 One model, written twice: here (model() and view(), which render the calculator as it opens and supply the figures the post
 quotes) and in site.js (the same two functions, which redraw it as the inputs move). CONFIG goes to the page as JSON in
-data-team-calc, so the numbers live in one place. The two must agree line for line; the check in the build notes runs both
+data-teamcalc, so the numbers live in one place. The two must agree line for line; the check in the build notes runs both
 over a grid of inputs.
+
+CONFIG['v'] is the model's version, and site.js carries the same number (TEAMCALC_V; the build stops if they differ). A page and
+a script from different deployments can meet in a visitor's browser (a cached script, a restored tab): when the roles changed
+on November 15, 2026 that pairing drew "$NaN". The script now leaves alone a calculator whose version is not its own and loads
+the page again once, so the two match. Raise the number whenever the roles, the fields or the names of the figures change.
 
 The figures and where they come from:
 - salaries: BLS Occupational Employment and Wage Statistics, May 2025, U.S. The two makers are priced at senior level, the
   75th percentile, because every Birdline editor and designer/animator is senior or expert level (Mike, November 15, 2026):
   film and video editors $105,310 (median $75,420); graphic designers $81,830 and special effects artists and animators
-  $139,130, whose midpoint, $110,480, rounded to $110,500, stands for a senior designer who also animates. The two support
-  roles stay at the median: producers and directors $90,360; market research analysts and marketing specialists $78,760, the
-  occupation BLS files a creative strategist under. The strategist took the place of the copywriter and the creative director
-  on November 15, 2026 (Mike: Birdline is not out to replace copywriters and creative directors, and it does include ongoing
-  creative strategy)
+  $139,130, whose midpoint, $110,480, rounded to $110,500, stands for a senior designer who also animates. The one support
+  role, the producer / project manager, stays at the median: producers and directors $90,360. The copywriter and the creative
+  director left on November 15, 2026 (Mike: Birdline is not out to replace them), and creative strategy is not a seat of its
+  own: a creative strategist for creative marketing is always included with Birdline and is part of the producer / project
+  manager's role (Mike, the same day), so the payroll side counts one hire for both
 - benefits and payroll taxes: BLS Employer Costs for Employee Compensation, June 2026, full-time private industry workers:
   insurance $4.58 + retirement and savings $1.94 + legally required $3.76 = $10.28 an hour, against $36.97 in wages plus $4.40
   in paid leave (which a salary already includes) = $41.37, or 24.8%. Bonuses and other supplemental pay are left out.
@@ -39,8 +44,8 @@ from math import ceil, floor
 
 CONFIG = dict(
     sizes=['1–10', '11–50', '51–200', '201–500', '501–1,000', '1,000+'],     # employees, as the booking form asks
-    roles=[('editor', 'Senior video editor', 105310), ('designer', 'Senior designer / animator', 110500), ('producer', 'Producer / project manager', 90360),
-           ('strategist', 'Creative strategist', 78760)],
+    v=5,                                       # the model's version; site.js carries the same number (see the note above)
+    roles=[('editor', 'Senior video editor', 105310), ('designer', 'Senior designer / animator', 110500), ('producer', 'Producer / project manager', 90360)],
     cap=dict(editor=20, designer=50),          # finished ads one person ships a month, on average
     load=25,                                   # benefits and payroll taxes, percent of salary
     seat=2500,                                 # software and equipment, per person per year
@@ -56,7 +61,7 @@ CONFIG = dict(
     start=dict(size=2, ads=40, shoots=4, design=50),              # how the calculator opens
 )
 ROLE_KEYS = [k for k, _n, _s in CONFIG['roles']]
-SUPPORT = ['producer', 'strategist']
+SUPPORT = ['producer']
 
 def start_state():
     s = dict(CONFIG['start'])
@@ -77,12 +82,10 @@ def model(s):
     design = s['ads'] - video
     n = dict(editor=ceil(video / s['cap']['editor']) if video else 0, designer=ceil(design / s['cap']['designer']) if design else 0)
     makers = n['editor'] + n['designer']
-    auto = dict(producer=0, strategist=0)
+    auto = dict(producer=0)
     two = makers >= 2     # a lone maker is managed by whoever hired them, at any company size
-    if (s['size'] >= 1 and two) or makers >= 3 or s['shoots'] >= 6:      # someone has to run the queue and the shoots
+    if (s['size'] >= 1 and two) or makers >= 3 or s['shoots'] >= 6:      # someone has to run the queue, the shoots and the creative strategy
         auto['producer'] = max(1, ceil(makers / 8)) + (1 if s['shoots'] >= 12 else 0)   # a shoot a month is a job of its own
-    if two and (s['size'] >= 2 or s['ads'] >= 60):     # someone reading the results and deciding what to make next
-        auto['strategist'] = 1
     for k in SUPPORT:
         o = s['over'][k]
         n[k] = auto[k] if o is None else (max(auto[k], 1) if o else 0)
@@ -170,8 +173,9 @@ def view(s):
     birds = [plural(n['editor'], 'dedicated senior editor')] if n['editor'] else []
     if n['designer']:
         birds.append(plural(n['designer'], 'dedicated senior designer/animator', 'dedicated senior designers/animators'))
-    v['birds'] = ('With Birdline that is %s and %s, with ongoing creative strategy. We hire and manage them. You send the briefs.'
-                  % (', '.join(birds), 'a project manager' if m['makers'] <= 3 else 'the project management to run them'))
+    v['birds'] = ('With Birdline that is %s and %s. We hire and manage them. You send the briefs.'
+                  % (', '.join(birds), 'a project manager who is also your creative strategist' if m['makers'] <= 3
+                     else 'the project management and creative strategy to run them'))
     v['sr'] = 'On payroll: %s, %s a year. With Birdline: %s a year.' % (plural(m['heads'], 'person', 'people'), money(m['in_total']), money(m['bl_total']))
     top = max(m['in_total'], m['bl_total'], 1)
     w = {'in-team': m['team'] / top * 100, 'in-shoot': m['shoots'] / top * 100, 'bl-team': m['partner'] / top * 100, 'bl-shoot': m['shoots'] / top * 100}
@@ -187,7 +191,8 @@ def figures():
     return dict(v=v, m=m, s=s)
 
 # ---- the markup: every figure in it is the opening state's; site.js rewrites the elements marked data-tc
-INCLUDED = dict(producer='A dedicated project manager', strategist='Ongoing creative strategy')
+INCLUDED = dict(producer='A dedicated project manager who is also your creative strategist for creative marketing')
+ALSO = dict(producer='Also the creative strategist')     # a second line under the role's name
 # the Birdline App, which every partnership runs through: the three ways it saves time and money, in the app page's own terms
 # (Smart Brief, shot list, deliverables, Insights and the Generate New Brief button)
 APP = [('Less friction', 'Every brief, deliverable and final file lives in one place, tied to its campaign. Nobody digs through an inbox for the latest version.'),
@@ -203,13 +208,16 @@ def render(esc):
         return '<span data-tc="%s">%s</span>' % (key, esc(v[key]))
     def fill(val, lo, hi):   # how far along its track a slider sits, 0 to 1
         return pct((val - lo) / (hi - lo))
-    pills = ''.join('<label><input type="radio" name="tc-size" value="%d" data-tc-in="size"%s><span>%s</span></label>'
-                    % (i, ' checked' if i == s['size'] else '', esc(x)) for i, x in enumerate(c['sizes']))
+    # every control is named with the model's version, so a browser that restores typed figures after a reload restores them to the
+    # same fields of the same version and to nothing else
+    nm = 'tc%d-' % c['v']
+    pills = ''.join('<label><input type="radio" name="%ssize" value="%d" data-tc-in="size"%s><span>%s</span></label>'
+                    % (nm, i, ' checked' if i == s['size'] else '', esc(x)) for i, x in enumerate(c['sizes']))
     def slider(key, label, hint, val, rng, out, mix=False):
         lo, hi, step = rng
         return ('<div class="tc-f"><div class="tc-fl"><label for="tc-%s">%s</label><output for="tc-%s" data-tc="%s"%s>%s</output></div>'
-                '<input class="tc-range%s" id="tc-%s" type="range" min="%d" max="%d" step="%d" value="%d" data-tc-in="%s" style="--f:%s">%s</div>'
-                % (key, esc(label), key, out, ' class="tc-o-mix"' if mix else '', esc(v[out]), ' tc-range--mix' if mix else '', key, lo, hi, step, val, key, fill(val, lo, hi), hint))
+                '<input class="tc-range%s" id="tc-%s" name="%s%s" type="range" min="%d" max="%d" step="%d" value="%d" data-tc-in="%s" style="--f:%s">%s</div>'
+                % (key, esc(label), key, out, ' class="tc-o-mix"' if mix else '', esc(v[out]), ' tc-range--mix' if mix else '', key, nm, key, lo, hi, step, val, key, fill(val, lo, hi), hint))
     head = ('<div class="tc-head"><h3 class="tc-h">Build your content team</h3>'
             '<p class="tc-sub">Set your size and your volume. The team, what it costs and the Birdline equivalent follow.</p></div>')
     inputs = ('<div class="tc-in" role="group" aria-label="Your inputs">'
@@ -244,7 +252,10 @@ def render(esc):
     rows = []
     for k in ROLE_KEYS:
         bl = cell('bl-' + k, 'bl-%s-n' % k, 'bl-%s-x' % k, ' class="tc-bl"') if k in c['price'] else fixed('Included', INCLUDED[k])
-        rows.append('<tr data-tc-row="%s"%s><th scope="row">%s</th>%s%s</tr>' % (k, ' class="is-off"' if k in off else '', esc(names[k]), cell('in-' + k, 'in-%s-n' % k), bl))
+        # a role Birdline always includes keeps its row on a phone when the payroll side has no such hire (tc-keep)
+        cls = ' '.join(x for x in ('tc-keep' if k in INCLUDED else '', 'is-off' if k in off else '') if x)
+        rows.append('<tr data-tc-row="%s"%s><th scope="row">%s%s</th>%s%s</tr>'
+                    % (k, (' class="%s"' % cls) if cls else '', esc(names[k]), ('<small>%s</small>' % esc(ALSO[k])) if k in ALSO else '', cell('in-' + k, 'in-%s-n' % k), bl))
     rows.append('<tr><th scope="row">Benefits and payroll taxes</th>%s%s</tr>' % (cell('in-benefits', 'in-benefits-n'), fixed('$0', 'No payroll to run')))
     rows.append('<tr><th scope="row">Software and equipment</th>%s%s</tr>' % (cell('in-seats', 'in-seats-n'), fixed('Included', 'Licenses and workstations')))
     rows.append('<tr><th scope="row">Workflow tools</th>%s%s</tr>' % (cell('in-flow', 'in-flow-n'), fixed('Included', 'The Birdline App and Frame.io review')))
@@ -265,12 +276,12 @@ def render(esc):
               '<ul class="tc-app-l">%s</ul></div></div>'
               % (''.join(rows), esc(v['birds']), ''.join('<li><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in APP)))
     def field(key, label, val, unit='$', after=''):
-        return ('<label class="tc-field"><span>%s</span><span class="tc-inp">%s<input type="text" inputmode="numeric" autocomplete="off" value="%s" data-tc-set="%s" aria-label="%s">%s</span></label>'
-                % (esc(label), ('<i aria-hidden="true">%s</i>' % unit) if unit else '', format(val, ','), key, esc(label), ('<i aria-hidden="true">%s</i>' % after) if after else ''))
-    checks = ''.join('<label class="tc-check"><input type="checkbox" data-tc-role="%s"%s><span>%s</span></label>' % (k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
+        return ('<label class="tc-field"><span>%s</span><span class="tc-inp">%s<input type="text" name="%s%s" inputmode="numeric" autocomplete="off" value="%s" data-tc-set="%s" aria-label="%s">%s</span></label>'
+                % (esc(label), ('<i aria-hidden="true">%s</i>' % unit) if unit else '', nm, key, format(val, ','), key, esc(label), ('<i aria-hidden="true">%s</i>' % after) if after else ''))
+    checks = ''.join('<label class="tc-check"><input type="checkbox" name="%srole-%s" data-tc-role="%s"%s><span>%s</span></label>' % (nm, k, k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
     adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, costs, hiring time</small></summary><div class="tc-adv-in">'
            '<div class="tc-g"><b>Salaries, a year</b><div class="tc-fields">%s</div></div>'
-           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These two follow company size and volume until you set them.</p></div>'
+           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. The producer, who also carries creative strategy, follows team size, company size and productions until you set it.</p></div>'
            '<div class="tc-g tc-g--tall"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s%s</div>'
            '<p>Output is an average. With unlimited deliverables, it moves with your edit requests.</p></div>'
            '<div class="tc-g"><b>Hiring time</b><div class="tc-fields">%s</div><p>The median for a nonexecutive role. Birdline starts within a week.</p></div>'
@@ -285,11 +296,11 @@ def render(esc):
               field('backup', 'Backup drive, per production', s['backup']),
               field('shoot', 'Budget per production', s['shoot']),
               field('fill', 'Days to fill a seat', s['fill'], unit='', after='days')))
-    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics: senior pay, the 75th percentile, for the editor and the designer, and the median for the rest. Birdline figures use our starting prices, '
+    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics: senior pay, the 75th percentile, for the editor and the designer, and the median for the producer. Birdline figures use our starting prices, '
             'one package per dedicated creative. Productions use the same budget on both sides. The first 90 days assume every seat is filled at once and both sides ship at full rate from their first day.</p>'
             '<div class="tc-cta"><a class="btn" href="{{CALENDLY}}">Book a call</a><a class="btn btn--outline" href="{{ROOT}}packages.html">See the packages</a></div></div>')
-    cfg = dict(roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], tools=c['tools'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'],
+    cfg = dict(v=c['v'], roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], tools=c['tools'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'],
                fill=c['fill'], onboard=c['onboard'], window=c['window'], price=c['price'], start=c['start'])
-    return ('<figure class="tc" id="calculator" data-team-calc="%s" aria-label="Team calculator">\n<div class="tc-top on-dark">%s<div class="tc-body">%s%s%s</div></div>\n%s\n%s\n%s\n'
+    return ('<figure class="tc" id="calculator" data-teamcalc="%s" aria-label="Team calculator">\n<div class="tc-top on-dark">%s<div class="tc-body">%s%s%s</div></div>\n%s\n%s\n%s\n'
             '<p class="sr" aria-live="polite" data-tc-live></p>\n</figure>'
             % (esc(json.dumps(cfg, separators=(',', ':'))), head, inputs, summary, out, ledger, adv, foot))

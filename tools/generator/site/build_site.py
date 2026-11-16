@@ -2159,7 +2159,12 @@ if NEXT:
         close = '</%s>' % m.group(1)
         return dict(tag=m.group(1), attrs=attrs, html=frag[m.end():frag.rindex(close)].strip())
     _hd = relink(header, '/', False, clean=True)
+    # The script's address carries a hash of its content, so a page never runs a copy of the script a browser kept from an earlier
+    # deployment (November 15, 2026: a cached script redrew the team calculator of a newer page and wrote "$NaN").
+    _tcv = re.search(r'var TEAMCALC_V = (\d+);', script)
+    assert _tcv and int(_tcv.group(1)) == TC.CONFIG['v'], 'site.js TEAMCALC_V and teamcalc.py CONFIG["v"] must be the same number'
     chrome = dict(fonts=re.findall(r'href="([^"]+)"', FONTS.replace('&amp;', '&')),
+                  script='/js/birdline.js?v=' + hashlib.sha1(script.encode('utf-8')).hexdigest()[:10],
                   topMark=element(_hd[:_hd.index('<header')]), header=element(_hd[_hd.index('<header'):]),
                   footer=element(relink(footer, '/', False, clean=True)), lightbox=element(LIGHTBOX), book=element(relink(BOOK, '/', False, clean=True)))
     with open(os.path.join(NEXT, 'content', 'chrome.json'), 'w', encoding='utf-8') as fh:

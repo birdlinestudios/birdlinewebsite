@@ -1548,7 +1548,9 @@ body:has(.lb[open]){overflow:hidden}
 .tc-ledger th:nth-child(2),.tc-ledger td:nth-child(2){padding-right:8px}
 .tc-ledger tbody tr:last-child .tc-bl{border-radius:0 0 12px 12px}
 .tc-ledger .tc-x{display:none}
+.tc-ledger th small{display:block;margin-top:2px;font-size:12.5px;font-weight:400;line-height:1.35;color:var(--muted)}   /* what else the role covers */
 .tc-ledger tr.is-off th{font-weight:500;color:var(--muted)}
+.tc-ledger tr.is-off.tc-keep th{font-weight:600;color:var(--navy)}   /* off the payroll, still part of the partnership */
 .tc-ledger tr.is-off td:nth-child(2) b{font-weight:500;color:var(--muted)}
 .tc-ledger .tc-r th,.tc-ledger .tc-r td{border-top:2px solid var(--line-2)}
 .tc-ledger .tc-r td b{font-weight:700;color:var(--navy)}
@@ -1595,7 +1597,7 @@ body:has(.lb[open]){overflow:hidden}
 .tc-note{font-size:13px;line-height:1.5;color:var(--muted);text-wrap:pretty}
 .tc-cta{display:flex;flex-wrap:wrap;gap:10px}
 .tc-cta .btn{flex:1 1 0;min-width:0;min-height:50px;padding:12px 10px;font-size:15px}
-@container tc (max-width:559px){.tc-ledger tr.is-off{display:none}}
+@container tc (max-width:559px){.tc-ledger tr.is-off:not(.tc-keep){display:none}}   /* a role Birdline always includes keeps its row */
 @container tc (max-width:330px){
   .tc-ledger{padding-inline:12px}
   .tc-ledger table{font-size:13px}

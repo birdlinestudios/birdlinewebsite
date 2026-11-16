@@ -1,6 +1,8 @@
 // The document every page shares: the fonts, the site's CSS (app/globals.css), the header, the page itself (<main>, from each
 // route's page.tsx), the footer, the media lightbox, the booking modal, and the site's scripts (public/js/birdline.js), which run
 // after the page is on screen. The header, footer, lightbox and modal come from content/chrome.json as the generator wrote them.
+// The script is asked for by an address that ends in a hash of its content (chrome.json's "script"), so a page always runs the
+// script it was built with and never a copy a browser kept from an earlier deployment.
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -65,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Fragment part={c.lightbox} />
           <Fragment part={c.book} />
         </div>
-        <Script src="/js/birdline.js" strategy="afterInteractive" />
+        <Script src={c.script ?? "/js/birdline.js"} strategy="afterInteractive" />
         <SpeedInsights />
         {/* GA4 (property 563739787) through gtag.js, wired directly rather than through the GTM container so it collects now. In-site
             navigations count as page views through the stream's enhanced measurement (page changes on history events, on by

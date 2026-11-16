@@ -605,15 +605,19 @@
   });
 })();
 
-/* The team calculator ([data-team-calc], in the blog post on hiring a full-time team). teamcalc.py renders it as it opens and holds
+/* The team calculator ([data-teamcalc], in the blog post on hiring a full-time team). teamcalc.py renders it as it opens and holds
    the same model; model() and view() here must agree with it line for line. The numbers (salaries, output per person, the load on a
-   salary, the seat, the tools, the drives, the days to fill a seat, the package prices) arrive as JSON in data-team-calc. The sliders and the company size set the team; "Adjust the
+   salary, the seat, the tools, the drives, the days to fill a seat, the package prices) arrive as JSON in data-teamcalc, with the
+   model's version (v). A page and a script from different deployments can meet in a browser (a cached script, a restored tab), and
+   a script that redraws a page built for other roles writes "$NaN": so a calculator whose version is not TEAMCALC_V is left as it
+   was drawn and the page is loaded again, once, to bring the two back in step. The sliders and the company size set the team; "Adjust the
    assumptions" opens every figure behind it. Each element marked data-tc is rewritten with the figure of that name. The line a screen
    reader hears (data-tc-live) changes only when a control is let go, not on every step of a drag.
    window.__siteTeamCalc(root) arms a calculator added to the page later. */
 (function () {
   "use strict";
-  var SUPPORT = ['producer', 'strategist'];
+  var TEAMCALC_V = 5;   // teamcalc.py's CONFIG['v']; the build stops if the two differ
+  var SUPPORT = ['producer'];
   function rnd(x) { return Math.floor(x + 0.5); }
   function money(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
@@ -621,16 +625,15 @@
     var s = { size: c.start.size, ads: c.start.ads, shoots: c.start.shoots, design: c.start.design, salary: {},
               cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, tools: c.tools || 0, ssd: c.ssd || 0, backup: c.backup || 0, shoot: c.shoot,
               fill: c.fill || 0,
-              over: { producer: null, strategist: null } };
+              over: { producer: null } };
     c.roles.forEach(function (r) { s.salary[r[0]] = r[1]; });
     return s;
   }
   function model(c, s) {
     var video = rnd(s.ads * (100 - s.design) / 100), design = s.ads - video;
     var n = { editor: video ? Math.ceil(video / s.cap.editor) : 0, designer: design ? Math.ceil(design / s.cap.designer) : 0 };
-    var makers = n.editor + n.designer, two = makers >= 2, auto = { producer: 0, strategist: 0 };
+    var makers = n.editor + n.designer, two = makers >= 2, auto = { producer: 0 };
     if ((s.size >= 1 && two) || makers >= 3 || s.shoots >= 6) auto.producer = Math.max(1, Math.ceil(makers / 8)) + (s.shoots >= 12 ? 1 : 0);
-    if (two && (s.size >= 2 || s.ads >= 60)) auto.strategist = 1;   // someone reading the results and deciding what to make next
     SUPPORT.forEach(function (k) { var o = s.over[k]; n[k] = o === null ? auto[k] : (o ? Math.max(auto[k], 1) : 0); });
     var heads = 0, salaries = 0;
     c.roles.forEach(function (r) { heads += n[r[0]]; salaries += n[r[0]] * s.salary[r[0]]; });
@@ -703,7 +706,7 @@
     v['in-total'] = money(m.inTotal); v['bl-total'] = money(m.blTotal);
     var birds = n.editor ? [plural(n.editor, 'dedicated senior editor')] : [];
     if (n.designer) birds.push(plural(n.designer, 'dedicated senior designer/animator', 'dedicated senior designers/animators'));
-    v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager' : 'the project management to run them') + ', with ongoing creative strategy. We hire and manage them. You send the briefs.';
+    v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager who is also your creative strategist' : 'the project management and creative strategy to run them') + '. We hire and manage them. You send the briefs.';
     v.sr = 'On payroll: ' + plural(m.heads, 'person', 'people') + ', ' + money(m.inTotal) + ' a year. With Birdline: ' + money(m.blTotal) + ' a year.';
     var top = Math.max(m.inTotal, m.blTotal, 1);
     var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };
@@ -711,11 +714,22 @@
   }
   var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], tools: [0, 100000], ssd: [0, 100000], backup: [0, 100000], shoot: [0, 2000000],
                 fill: [0, 365] };
-  function arm(root) {
-    if (root.__tc) return;
+  var STALE = 'tc-stale';
+  function stale() {   // the page was built for another version of this script: fetch it again, once; if that changes nothing, leave it as drawn
+    try {
+      if (window.sessionStorage.getItem(STALE) === location.pathname) return;
+      window.sessionStorage.setItem(STALE, location.pathname);
+    } catch (err) { return; }
+    location.reload();
+  }
+  function finite(m) { return isFinite(m.inTotal) && isFinite(m.blTotal) && isFinite(m.heads); }
+  function arm(root) {   // true: live. false: built for another version of this script. Nothing: not a calculator this script can run.
+    if (root.__tc) return true;
     var c;
-    try { c = JSON.parse(root.getAttribute('data-team-calc')); } catch (err) { return; }
+    try { c = JSON.parse(root.getAttribute('data-teamcalc')); } catch (err) { return; }
     if (!c || !c.roles) return;
+    if (c.v !== TEAMCALC_V) return false;
+    try { if (!finite(model(c, start(c)))) return; } catch (err) { return; }   // figures that do not add up stay as the page drew them
     root.__tc = true;
     root.classList.add('is-live');
     var all = function (q) { return Array.prototype.slice.call(root.querySelectorAll(q)); };
@@ -737,6 +751,7 @@
     fields.forEach(parse);
     function paint(settled) {
       var r = view(c, s), v = r.v;
+      if (!finite(r.m)) return;   // never draw a figure that is not a number
       texts.forEach(function (el) { var k = el.getAttribute('data-tc'); if (k in v && el.textContent !== v[k]) el.textContent = v[k]; });
       widths.forEach(function (el) { el.style.flexBasis = r.w[el.getAttribute('data-tc-w')].toFixed(2) + '%'; });
       rows.forEach(function (el) { el.classList.toggle('is-off', r.off.indexOf(el.getAttribute('data-tc-row')) >= 0); });
@@ -771,8 +786,18 @@
       paint(true);
     });
     paint(false);
+    return true;
   }
-  function scan(r) { Array.prototype.forEach.call((r || document).querySelectorAll('[data-team-calc]'), arm); }
+  function scan(r) {
+    var scope = r || document, live = false;
+    var old = !!scope.querySelector('[data-team-calc]');   // a calculator drawn before the versions were stamped
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-teamcalc]'), function (el) {
+      var a = arm(el);
+      if (a === false) old = true; else if (a) live = true;
+    });
+    if (old) stale();
+    else if (live) { try { window.sessionStorage.removeItem(STALE); } catch (err) {} }   // in step again: a later mismatch may reload once more
+  }
   scan.model = model; scan.view = view; scan.start = start;
   window.__siteTeamCalc = scan;
   scan(document);
