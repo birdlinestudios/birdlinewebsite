@@ -613,7 +613,7 @@
    window.__siteTeamCalc(root) arms a calculator added to the page later. */
 (function () {
   "use strict";
-  var SUPPORT = ['producer', 'writer', 'director'];
+  var SUPPORT = ['producer', 'strategist'];
   function rnd(x) { return Math.floor(x + 0.5); }
   function money(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
@@ -621,17 +621,16 @@
     var s = { size: c.start.size, ads: c.start.ads, shoots: c.start.shoots, design: c.start.design, salary: {},
               cap: { editor: c.cap.editor, designer: c.cap.designer }, load: c.load, seat: c.seat, tools: c.tools || 0, ssd: c.ssd || 0, backup: c.backup || 0, shoot: c.shoot,
               fill: c.fill || 0,
-              over: { producer: null, writer: null, director: null } };
+              over: { producer: null, strategist: null } };
     c.roles.forEach(function (r) { s.salary[r[0]] = r[1]; });
     return s;
   }
   function model(c, s) {
     var video = rnd(s.ads * (100 - s.design) / 100), design = s.ads - video;
     var n = { editor: video ? Math.ceil(video / s.cap.editor) : 0, designer: design ? Math.ceil(design / s.cap.designer) : 0 };
-    var makers = n.editor + n.designer, two = makers >= 2, auto = { producer: 0, writer: 0, director: 0 };
+    var makers = n.editor + n.designer, two = makers >= 2, auto = { producer: 0, strategist: 0 };
     if ((s.size >= 1 && two) || makers >= 3 || s.shoots >= 6) auto.producer = Math.max(1, Math.ceil(makers / 8)) + (s.shoots >= 12 ? 1 : 0);
-    if (two && (s.size >= 2 || s.ads >= 60)) auto.writer = 1;
-    if ((s.size >= 3 && two) || makers >= 5) auto.director = 1;
+    if (two && (s.size >= 2 || s.ads >= 60)) auto.strategist = 1;   // someone reading the results and deciding what to make next
     SUPPORT.forEach(function (k) { var o = s.over[k]; n[k] = o === null ? auto[k] : (o ? Math.max(auto[k], 1) : 0); });
     var heads = 0, salaries = 0;
     c.roles.forEach(function (r) { heads += n[r[0]]; salaries += n[r[0]] * s.salary[r[0]]; });
@@ -653,13 +652,13 @@
     var diff = m.inTotal - m.blTotal;
     if (diff > 0) {
       pct = rnd(diff / m.inTotal * 100);
-      v.lead = 'Birdline comes in'; v.hero = money(diff);
+      v.lead = 'Birdline saves you'; v.hero = money(diff);
       var team = m.heads === 1 ? 'one hire' : 'a team of ' + m.heads;
-      v.tail = pct >= 3 ? 'a year lower, ' + pct + '% under ' + team + ' on payroll.' : 'a year lower. Close to even.';
+      v.tail = pct >= 3 ? 'a year, ' + pct + '% less than ' + team + ' on payroll.' : 'a year. Close to even.';
     } else if (diff < 0) {
       pct = rnd(-diff / m.blTotal * 100);
-      v.lead = 'A team on payroll comes in'; v.hero = money(-diff);
-      v.tail = pct >= 3 ? 'a year lower, ' + pct + '% under Birdline.' : 'a year lower. Close to even.';
+      v.lead = m.heads === 1 ? 'One hire on payroll saves you' : 'A team on payroll saves you'; v.hero = money(-diff);
+      v.tail = pct >= 3 ? 'a year, ' + pct + '% less than Birdline.' : 'a year. Close to even.';
     } else {
       v.lead = 'Both come to'; v.hero = money(m.inTotal); v.tail = 'a year. Even on cost.';
     }
@@ -704,7 +703,7 @@
     v['in-total'] = money(m.inTotal); v['bl-total'] = money(m.blTotal);
     var birds = n.editor ? [plural(n.editor, 'dedicated senior editor')] : [];
     if (n.designer) birds.push(plural(n.designer, 'dedicated senior designer/animator', 'dedicated senior designers/animators'));
-    v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager' : 'the project management to run them') + '. We hire and manage them. You send the briefs.';
+    v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager' : 'the project management to run them') + ', with ongoing creative strategy. We hire and manage them. You send the briefs.';
     v.sr = 'On payroll: ' + plural(m.heads, 'person', 'people') + ', ' + money(m.inTotal) + ' a year. With Birdline: ' + money(m.blTotal) + ' a year.';
     var top = Math.max(m.inTotal, m.blTotal, 1);
     var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };

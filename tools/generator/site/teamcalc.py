@@ -10,8 +10,11 @@ The figures and where they come from:
 - salaries: BLS Occupational Employment and Wage Statistics, May 2025, U.S. The two makers are priced at senior level, the
   75th percentile, because every Birdline editor and designer/animator is senior or expert level (Mike, November 15, 2026):
   film and video editors $105,310 (median $75,420); graphic designers $81,830 and special effects artists and animators
-  $139,130, whose midpoint, $110,480, rounded to $110,500, stands for a senior designer who also animates. The three support
-  roles stay at the median: producers and directors $90,360; writers and authors $76,910; art directors $114,850
+  $139,130, whose midpoint, $110,480, rounded to $110,500, stands for a senior designer who also animates. The two support
+  roles stay at the median: producers and directors $90,360; market research analysts and marketing specialists $78,760, the
+  occupation BLS files a creative strategist under. The strategist took the place of the copywriter and the creative director
+  on November 15, 2026 (Mike: Birdline is not out to replace copywriters and creative directors, and it does include ongoing
+  creative strategy)
 - benefits and payroll taxes: BLS Employer Costs for Employee Compensation, June 2026, full-time private industry workers:
   insurance $4.58 + retirement and savings $1.94 + legally required $3.76 = $10.28 an hour, against $36.97 in wages plus $4.40
   in paid leave (which a salary already includes) = $41.37, or 24.8%. Bonuses and other supplemental pay are left out.
@@ -28,6 +31,8 @@ The figures and where they come from:
   Birdline side the drives are ours
 - Birdline: the starting prices on the Packages page, one package per dedicated creative
 - productions: one budget per shoot, the same on both sides
+- output per person is an average (Mike, November 15, 2026): 20 finished video ads a month for an editor, 50 statics or motion
+  pieces for a designer. With unlimited deliverables the real number moves with the edit requests
 - the rules that staff the team are Birdline's working assumptions, stated in the post and open to change in the calculator"""
 import json
 from math import ceil, floor
@@ -35,8 +40,8 @@ from math import ceil, floor
 CONFIG = dict(
     sizes=['1–10', '11–50', '51–200', '201–500', '501–1,000', '1,000+'],     # employees, as the booking form asks
     roles=[('editor', 'Senior video editor', 105310), ('designer', 'Senior designer / animator', 110500), ('producer', 'Producer / project manager', 90360),
-           ('writer', 'Copywriter', 76910), ('director', 'Creative director', 114850)],
-    cap=dict(editor=20, designer=30),          # finished ads one person ships a month
+           ('strategist', 'Creative strategist', 78760)],
+    cap=dict(editor=20, designer=50),          # finished ads one person ships a month, on average
     load=25,                                   # benefits and payroll taxes, percent of salary
     seat=2500,                                 # software and equipment, per person per year
     tools=300,                                 # workflow tools, per person per year: a project tracker and a review tool
@@ -51,7 +56,7 @@ CONFIG = dict(
     start=dict(size=2, ads=40, shoots=4, design=50),              # how the calculator opens
 )
 ROLE_KEYS = [k for k, _n, _s in CONFIG['roles']]
-SUPPORT = ['producer', 'writer', 'director']
+SUPPORT = ['producer', 'strategist']
 
 def start_state():
     s = dict(CONFIG['start'])
@@ -72,14 +77,12 @@ def model(s):
     design = s['ads'] - video
     n = dict(editor=ceil(video / s['cap']['editor']) if video else 0, designer=ceil(design / s['cap']['designer']) if design else 0)
     makers = n['editor'] + n['designer']
-    auto = dict(producer=0, writer=0, director=0)
+    auto = dict(producer=0, strategist=0)
     two = makers >= 2     # a lone maker is managed by whoever hired them, at any company size
     if (s['size'] >= 1 and two) or makers >= 3 or s['shoots'] >= 6:      # someone has to run the queue and the shoots
         auto['producer'] = max(1, ceil(makers / 8)) + (1 if s['shoots'] >= 12 else 0)   # a shoot a month is a job of its own
-    if two and (s['size'] >= 2 or s['ads'] >= 60):
-        auto['writer'] = 1
-    if (s['size'] >= 3 and two) or makers >= 5:
-        auto['director'] = 1
+    if two and (s['size'] >= 2 or s['ads'] >= 60):     # someone reading the results and deciding what to make next
+        auto['strategist'] = 1
     for k in SUPPORT:
         o = s['over'][k]
         n[k] = auto[k] if o is None else (max(auto[k], 1) if o else 0)
@@ -115,13 +118,13 @@ def view(s):
     diff = m['in_total'] - m['bl_total']
     if diff > 0:
         pct = rnd(diff / m['in_total'] * 100)
-        v['lead'], v['hero'] = 'Birdline comes in', money(diff)
+        v['lead'], v['hero'] = 'Birdline saves you', money(diff)
         team = 'one hire' if m['heads'] == 1 else 'a team of %d' % m['heads']
-        v['tail'] = ('a year lower, %d%% under %s on payroll.' % (pct, team)) if pct >= 3 else 'a year lower. Close to even.'
+        v['tail'] = ('a year, %d%% less than %s on payroll.' % (pct, team)) if pct >= 3 else 'a year. Close to even.'
     elif diff < 0:
         pct = rnd(-diff / m['bl_total'] * 100)
-        v['lead'], v['hero'] = 'A team on payroll comes in', money(-diff)
-        v['tail'] = ('a year lower, %d%% under Birdline.' % pct) if pct >= 3 else 'a year lower. Close to even.'
+        v['lead'], v['hero'] = ('One hire on payroll saves you' if m['heads'] == 1 else 'A team on payroll saves you'), money(-diff)
+        v['tail'] = ('a year, %d%% less than Birdline.' % pct) if pct >= 3 else 'a year. Close to even.'
     else:
         v['lead'], v['hero'], v['tail'] = 'Both come to', money(m['in_total']), 'a year. Even on cost.'
     v['in-total-bar'], v['bl-total-bar'] = money(m['in_total']), money(m['bl_total'])
@@ -167,7 +170,7 @@ def view(s):
     birds = [plural(n['editor'], 'dedicated senior editor')] if n['editor'] else []
     if n['designer']:
         birds.append(plural(n['designer'], 'dedicated senior designer/animator', 'dedicated senior designers/animators'))
-    v['birds'] = ('With Birdline that is %s and %s. We hire and manage them. You send the briefs.'
+    v['birds'] = ('With Birdline that is %s and %s, with ongoing creative strategy. We hire and manage them. You send the briefs.'
                   % (', '.join(birds), 'a project manager' if m['makers'] <= 3 else 'the project management to run them'))
     v['sr'] = 'On payroll: %s, %s a year. With Birdline: %s a year.' % (plural(m['heads'], 'person', 'people'), money(m['in_total']), money(m['bl_total']))
     top = max(m['in_total'], m['bl_total'], 1)
@@ -184,7 +187,7 @@ def figures():
     return dict(v=v, m=m, s=s)
 
 # ---- the markup: every figure in it is the opening state's; site.js rewrites the elements marked data-tc
-INCLUDED = dict(producer='A dedicated project manager', writer='Script and copywriting', director='We hire and manage the team')
+INCLUDED = dict(producer='A dedicated project manager', strategist='Ongoing creative strategy')
 # the Birdline App, which every partnership runs through: the three ways it saves time and money, in the app page's own terms
 # (Smart Brief, shot list, deliverables, Insights and the Generate New Brief button)
 APP = [('Less friction', 'Every brief, deliverable and final file lives in one place, tied to its campaign. Nobody digs through an inbox for the latest version.'),
@@ -267,13 +270,14 @@ def render(esc):
     checks = ''.join('<label class="tc-check"><input type="checkbox" data-tc-role="%s"%s><span>%s</span></label>' % (k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
     adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, costs, hiring time</small></summary><div class="tc-adv-in">'
            '<div class="tc-g"><b>Salaries, a year</b><div class="tc-fields">%s</div></div>'
-           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These three follow company size and volume until you set them.</p></div>'
-           '<div class="tc-g tc-g--tall"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s%s</div></div>'
+           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. These two follow company size and volume until you set them.</p></div>'
+           '<div class="tc-g tc-g--tall"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s%s</div>'
+           '<p>Output is an average. With unlimited deliverables, it moves with your edit requests.</p></div>'
            '<div class="tc-g"><b>Hiring time</b><div class="tc-fields">%s</div><p>The median for a nonexecutive role. Birdline starts within a week.</p></div>'
            '<button class="tc-reset" type="button" data-tc-reset>Reset everything</button></div></details>'
            % (''.join(field('salary.' + k, names[k], s['salary'][k]) for k in ROLE_KEYS), checks,
-              field('cap.editor', 'Ads one editor ships a month', s['cap']['editor'], unit=''),
-              field('cap.designer', 'Ads one designer ships a month', s['cap']['designer'], unit=''),
+              field('cap.editor', 'Average ads an editor ships a month', s['cap']['editor'], unit=''),
+              field('cap.designer', 'Average ads a designer ships a month', s['cap']['designer'], unit=''),
               field('load', 'Benefits and payroll taxes', s['load'], unit='', after='%'),
               field('seat', 'Software and equipment, per person', s['seat']),
               field('tools', 'Workflow tools, per person', s['tools']),
