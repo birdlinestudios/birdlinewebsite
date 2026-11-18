@@ -616,7 +616,7 @@
    window.__siteTeamCalc(root) arms a calculator added to the page later. */
 (function () {
   "use strict";
-  var TEAMCALC_V = 5;   // teamcalc.py's CONFIG['v']; the build stops if the two differ
+  var TEAMCALC_V = 6;   // teamcalc.py's CONFIG['v']; the build stops if the two differ
   var SUPPORT = ['producer'];
   function rnd(x) { return Math.floor(x + 0.5); }
   function money(n) { return '$' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
@@ -641,11 +641,8 @@
     var flow = heads * s.tools;   // a tracker and a review tool for each person; the Birdline App covers it on a partnership
     var team = salaries + benefits + seats + flow + drives, shoots = s.shoots * s.shoot;
     var monthly = n.editor * c.price.editor + n.designer * c.price.designer, partner = monthly * 12;
-    // the first 90 days: each side ships at its full monthly rate from the day it starts (a search on payroll, a week with Birdline)
-    var win = c.window || 90, rampIn = rnd(s.ads * Math.max(0, win - s.fill) / 30), rampBl = rnd(s.ads * (win - (c.onboard || 0)) / 30);
     return { video: video, design: design, n: n, auto: auto, makers: makers, heads: heads, salaries: salaries, benefits: benefits, seats: seats,
-             flow: flow, drives: drives, team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots,
-             rampIn: rampIn, rampBl: rampBl };
+             flow: flow, drives: drives, team: team, shoots: shoots, monthly: monthly, partner: partner, inTotal: team + shoots, blTotal: partner + shoots };
   }
   function view(c, s) {
     var m = model(c, s), n = m.n, v = {}, off = [], pct;
@@ -667,12 +664,9 @@
     }
     v['in-total-bar'] = money(m.inTotal); v['bl-total-bar'] = money(m.blTotal);
     v.heads = String(m.heads);
-    v['heads-l'] = plural(m.heads, 'person', 'people');
-    c.roles.forEach(function (r) { v['n-' + r[0]] = String(n[r[0]]); });
     var months = s.ads * 12;
     v['perad-in'] = money(rnd(m.team / months)); v['perad-bl'] = money(rnd(m.partner / months));
     v['start-in'] = String(s.fill);
-    v['ramp-in'] = String(m.rampIn); v['ramp-bl'] = String(m.rampBl);
     c.roles.forEach(function (r) {
       var k = r[0];
       if (n[k]) {
@@ -709,7 +703,7 @@
     v.birds = 'With Birdline that is ' + birds.join(', ') + ' and ' + (m.makers <= 3 ? 'a project manager who is also your creative strategist' : 'the project management and creative strategy to run them') + '. We hire and manage them. You send the briefs.';
     v.sr = 'On payroll: ' + plural(m.heads, 'person', 'people') + ', ' + money(m.inTotal) + ' a year. With Birdline: ' + money(m.blTotal) + ' a year.';
     var top = Math.max(m.inTotal, m.blTotal, 1);
-    var w = { 'in-team': m.team / top * 100, 'in-shoot': m.shoots / top * 100, 'bl-team': m.partner / top * 100, 'bl-shoot': m.shoots / top * 100 };
+    var w = { 'in': m.inTotal / top * 100, 'bl': m.blTotal / top * 100 };   // each bar is one length: the year's total on that side
     return { v: v, w: w, off: off, m: m };
   }
   var LIMIT = { salary: [0, 1000000], cap: [1, 500], load: [0, 100], seat: [0, 100000], tools: [0, 100000], ssd: [0, 100000], backup: [0, 100000], shoot: [0, 2000000],
@@ -735,7 +729,7 @@
     var all = function (q) { return Array.prototype.slice.call(root.querySelectorAll(q)); };
     var texts = all('[data-tc]'), widths = all('[data-tc-w]'), rows = all('[data-tc-row]'), ranges = all('input[type="range"][data-tc-in]'),
         sizes = all('input[type="radio"][data-tc-in="size"]'), fields = all('[data-tc-set]'), roles = all('[data-tc-role]'),
-        chips = all('[data-tc-chip]'), bars = root.querySelector('[data-tc-bars]'), live = root.querySelector('[data-tc-live]');
+        bars = root.querySelector('[data-tc-bars]'), live = root.querySelector('[data-tc-live]');
     var s = start(c);
     function get(path) { var p = path.split('.'); return p.length === 2 ? s[p[0]][p[1]] : s[p[0]]; }
     function set(path, val) { var p = path.split('.'); if (p.length === 2) s[p[0]][p[1]] = val; else s[p[0]] = val; }
@@ -753,7 +747,7 @@
       var r = view(c, s), v = r.v;
       if (!finite(r.m)) return;   // never draw a figure that is not a number
       texts.forEach(function (el) { var k = el.getAttribute('data-tc'); if (k in v && el.textContent !== v[k]) el.textContent = v[k]; });
-      widths.forEach(function (el) { el.style.flexBasis = r.w[el.getAttribute('data-tc-w')].toFixed(2) + '%'; });
+      widths.forEach(function (el) { var x = r.w[el.getAttribute('data-tc-w')]; if (isFinite(x)) el.style.flexBasis = x.toFixed(2) + '%'; });
       rows.forEach(function (el) { el.classList.toggle('is-off', r.off.indexOf(el.getAttribute('data-tc-row')) >= 0); });
       ranges.forEach(function (el) {
         var lo = parseFloat(el.min), hi = parseFloat(el.max), k = el.getAttribute('data-tc-in');
@@ -761,8 +755,7 @@
         el.setAttribute('aria-valuetext', k === 'ads' ? s.ads + ' ads a month' : k === 'shoots' ? plural(s.shoots, 'production') + ' a year' : v['mix-out']);
       });
       roles.forEach(function (el) { el.checked = r.m.n[el.getAttribute('data-tc-role')] > 0; });
-      if (bars) { bars.setAttribute('aria-label', v.sr); bars.classList.toggle('is-flat', r.m.shoots === 0); }
-      chips.forEach(function (el) { el.hidden = r.m.n[el.getAttribute('data-tc-chip')] === 0; });
+      if (bars) bars.setAttribute('aria-label', v.sr);
       if (live && settled) live.textContent = v.sr;
     }
     root.addEventListener('input', function (e) {

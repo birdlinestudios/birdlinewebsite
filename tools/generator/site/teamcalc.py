@@ -29,8 +29,7 @@ The figures and where they come from:
   annually, Frame.io Pro at $15 a member a month: $311.88 a year). On the Birdline side the Birdline App and Frame.io review are
   included in every partnership (the Packages page)
 - the start (November 15, 2026, with the Birdline App): a seat takes 39 days to fill at the median (SHRM, 2026), and Birdline
-  starts within a week (the Packages and How It Works pages). "Ads shipped in the first 90 days" gives each side its full
-  monthly rate from the day it starts, every seat searched at once: generous to the payroll side
+  starts within a week (the Packages and How It Works pages): "Days to start"
 - drives: editors cut from portable SSDs and the footage is backed up to hard drives. Two 4TB SSDs per video editor a year
   ($936.98 each at B&H, November 2026: $1,900) and one 8TB desktop hard drive per production ($279.99 at B&H: $280). On the
   Birdline side the drives are ours
@@ -38,13 +37,18 @@ The figures and where they come from:
 - productions: one budget per shoot, the same on both sides
 - output per person is an average (Mike, November 15, 2026): 20 finished video ads a month for an editor, 50 statics or motion
   pieces for a designer. With unlimited deliverables the real number moves with the edit requests
-- the rules that staff the team are Birdline's working assumptions, stated in the post and open to change in the calculator"""
+- the rules that staff the team are Birdline's working assumptions, stated in the post and open to change in the calculator
+
+November 17, 2026 (Mike: the same point, simpler, as concise as possible): the calculator says each thing once. The roster of
+chips went (the ledger under it lists the same seats), each bar became one length (productions are a line of their own in the
+ledger, so the bars need no key), "Ads shipped in the first 90 days" went (the days until the work starts make the same point
+without a footnote), and the notes were cut to a line each. Nothing the comparison counts was taken out."""
 import json
 from math import ceil, floor
 
 CONFIG = dict(
     sizes=['1–10', '11–50', '51–200', '201–500', '501–1,000', '1,000+'],     # employees, as the booking form asks
-    v=5,                                       # the model's version; site.js carries the same number (see the note above)
+    v=6,                                       # the model's version; site.js carries the same number (see the note above)
     roles=[('editor', 'Senior video editor', 105310), ('designer', 'Senior designer / animator', 110500), ('producer', 'Producer / project manager', 90360)],
     cap=dict(editor=20, designer=50),          # finished ads one person ships a month, on average
     load=25,                                   # benefits and payroll taxes, percent of salary
@@ -55,7 +59,6 @@ CONFIG = dict(
     shoot=20000,                               # budget per production: crew, talent, locations, gear
     fill=39,                                   # days to fill a seat: SHRM's 2026 median time-to-fill, nonexecutive roles
     onboard=7,                                 # days before a Birdline partnership starts: within a week
-    window=90,                                 # the days counted in "ads shipped in the first 90 days"
     price=dict(editor=8000, designer=6000),    # Birdline, per dedicated creative per month (Video Editing, Design & Animation)
     ads=(5, 200, 5), shoots=(0, 24, 1), design=(0, 100, 25),      # the sliders: min, max, step
     start=dict(size=2, ads=40, shoots=4, design=50),              # how the calculator opens
@@ -99,19 +102,15 @@ def model(s):
     shoots = s['shoots'] * s['shoot']
     monthly = n['editor'] * CONFIG['price']['editor'] + n['designer'] * CONFIG['price']['designer']
     partner = monthly * 12
-    # the first 90 days: each side ships at its full monthly rate from the day it starts (a search on payroll, a week with Birdline)
-    ramp_in = rnd(s['ads'] * max(0, CONFIG['window'] - s['fill']) / 30)
-    ramp_bl = rnd(s['ads'] * (CONFIG['window'] - CONFIG['onboard']) / 30)
     return dict(video=video, design=design, n=n, auto=auto, makers=makers, heads=heads, salaries=salaries, benefits=benefits, seats=seats,
-                flow=flow, drives=drives, team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots,
-                ramp_in=ramp_in, ramp_bl=ramp_bl)
+                flow=flow, drives=drives, team=team, shoots=shoots, monthly=monthly, partner=partner, in_total=team + shoots, bl_total=partner + shoots)
 
 def plural(n, one, many=None):
     return '%d %s' % (n, one if n == 1 else (many or one + 's'))
 
 def view(s):
-    """every figure and line the calculator shows, by the name of the element that shows it (data-tc), plus the bar widths (w-*),
-    the rows that are empty (off) and the head count for the dots"""
+    """every figure and line the calculator shows, by the name of the element that shows it (data-tc), plus the two bar lengths (w),
+    the rows that are empty (off) and the model's own figures (m)"""
     m = model(s)
     n = m['n']
     v = {}
@@ -132,13 +131,9 @@ def view(s):
         v['lead'], v['hero'], v['tail'] = 'Both come to', money(m['in_total']), 'a year. Even on cost.'
     v['in-total-bar'], v['bl-total-bar'] = money(m['in_total']), money(m['bl_total'])
     v['heads'] = str(m['heads'])
-    v['heads-l'] = plural(m['heads'], 'person', 'people')
-    for k in ROLE_KEYS:
-        v['n-' + k] = str(n[k])
     months = s['ads'] * 12
     v['perad-in'], v['perad-bl'] = money(rnd(m['team'] / months)), money(rnd(m['partner'] / months))
     v['start-in'] = str(s['fill'])
-    v['ramp-in'], v['ramp-bl'] = str(m['ramp_in']), str(m['ramp_bl'])
     off = []
     for k in ROLE_KEYS:
         if n[k]:
@@ -178,7 +173,7 @@ def view(s):
                      else 'the project management and creative strategy to run them'))
     v['sr'] = 'On payroll: %s, %s a year. With Birdline: %s a year.' % (plural(m['heads'], 'person', 'people'), money(m['in_total']), money(m['bl_total']))
     top = max(m['in_total'], m['bl_total'], 1)
-    w = {'in-team': m['team'] / top * 100, 'in-shoot': m['shoots'] / top * 100, 'bl-team': m['partner'] / top * 100, 'bl-shoot': m['shoots'] / top * 100}
+    w = {'in': m['in_total'] / top * 100, 'bl': m['bl_total'] / top * 100}     # each bar is one length: the year's total on that side
     return v, w, off, m
 
 def pct(x):
@@ -191,13 +186,13 @@ def figures():
     return dict(v=v, m=m, s=s)
 
 # ---- the markup: every figure in it is the opening state's; site.js rewrites the elements marked data-tc
-INCLUDED = dict(producer='A dedicated project manager who is also your creative strategist for creative marketing')
+INCLUDED = dict(producer='On every partnership')
 ALSO = dict(producer='Also the creative strategist')     # a second line under the role's name
 # the Birdline App, which every partnership runs through: the three ways it saves time and money, in the app page's own terms
 # (Smart Brief, shot list, deliverables, Insights and the Generate New Brief button)
-APP = [('Less friction', 'Every brief, deliverable and final file lives in one place, tied to its campaign. Nobody digs through an inbox for the latest version.'),
-       ('Faster to execution', 'A Smart Brief becomes a shot list and assigned deliverables, so edits and productions start sooner.'),
-       ('More, newer content', 'Ad results sit beside the creative that earned them, and the next brief starts from what worked. New ads launch faster.')]
+APP = [('Less friction', 'Every brief, deliverable and final file in one place.'),
+       ('Faster to execution', 'A brief becomes a shot list and assigned work. Edits and productions start sooner.'),
+       ('More, newer content', 'The next brief starts from what worked, so new ads launch faster.')]
 
 def render(esc):
     c = CONFIG
@@ -219,7 +214,7 @@ def render(esc):
                 '<input class="tc-range%s" id="tc-%s" name="%s%s" type="range" min="%d" max="%d" step="%d" value="%d" data-tc-in="%s" style="--f:%s">%s</div>'
                 % (key, esc(label), key, out, ' class="tc-o-mix"' if mix else '', esc(v[out]), ' tc-range--mix' if mix else '', key, nm, key, lo, hi, step, val, key, fill(val, lo, hi), hint))
     head = ('<div class="tc-head"><h3 class="tc-h">Build your content team</h3>'
-            '<p class="tc-sub">Set your size and your volume. The team, what it costs and the Birdline equivalent follow.</p></div>')
+            '<p class="tc-sub">Set your size and volume. See both costs.</p></div>')
     inputs = ('<div class="tc-in" role="group" aria-label="Your inputs">'
               '<div class="tc-f tc-size" role="radiogroup" aria-labelledby="tc-size-l"><div class="tc-fl"><span id="tc-size-l">Company size</span><small>Employees</small></div><div class="tc-pills">%s</div></div>%s%s%s'
               '<p class="tc-nojs">Turn on JavaScript to change the inputs. The figures shown are for the settings above.</p></div>'
@@ -229,21 +224,16 @@ def render(esc):
                  slider('design', 'Video or design', '<small class="tc-ends"><span>All video</span><span>All design</span></small>', s['design'], c['design'], 'mix-out', mix=True)))
     summary = ('<div class="tc-sum"><span class="tc-lead" data-tc="lead">%s</span> <b class="tc-hero" data-tc="hero">%s</b> <span class="tc-tail" data-tc="tail">%s</span></div>'
                % (esc(v['lead']), esc(v['hero']), esc(v['tail'])))
-    def bar(cls, label, a, b, total):
-        return ('<div class="tc-bar%s"><span class="tc-bk">%s</span><span class="tc-track"><i class="tc-seg" data-tc-w="%s" style="flex-basis:%s%%"></i>'
-                '<i class="tc-seg tc-seg--2" data-tc-w="%s" style="flex-basis:%s%%"></i></span><b data-tc="%s">%s</b></div>'
-                % (cls, label, a, pct(w[a]), b, pct(w[b]), total, esc(v[total])))
-    chips = ''.join('<span class="tc-chip" data-tc-chip="%s"%s>%s <b data-tc="n-%s">%s</b></span>' % (k, ' hidden' if k in off else '', esc(names[k]), k, esc(v['n-' + k])) for k in ROLE_KEYS)
-    out = ('<div class="tc-out"><div class="tc-bars%s" role="img" data-tc-bars aria-label="%s">%s%s'
-           '<p class="tc-key"><i aria-hidden="true"></i>The lighter end of each bar is productions, the same either way.</p></div>'
-           '<div class="tc-team"><div class="tc-team-h"><span>The team this takes</span><b data-tc="heads-l">%s</b></div><div class="tc-chips">%s</div></div>'
+    def bar(cls, label, key, total):
+        return ('<div class="tc-bar%s"><span class="tc-bk">%s</span><span class="tc-track"><i class="tc-seg" data-tc-w="%s" style="flex-basis:%s%%"></i></span>'
+                '<b data-tc="%s">%s</b></div>' % (cls, label, key, pct(w[key]), total, esc(v[total])))
+    out = ('<div class="tc-out"><div class="tc-bars" role="img" data-tc-bars aria-label="%s">%s%s</div>'
            '<table class="tc-kpis"><thead><tr><td></td><th scope="col">On payroll</th><th scope="col">Birdline</th></tr></thead><tbody>'
-           '<tr><th scope="row">People to hire and manage</th><td>%s</td><td>0</td></tr>'
-           '<tr><th scope="row">Cost per finished ad</th><td>%s</td><td>%s</td></tr>'
-           '<tr><th scope="row">Days until the work starts</th><td>%s</td><td>%d</td></tr>'
-           '<tr><th scope="row">Ads shipped in the first %d days</th><td>%s</td><td>%s</td></tr></tbody></table></div>'
-           % ('' if m['shoots'] else ' is-flat', esc(v['sr']), bar('', 'On payroll', 'in-team', 'in-shoot', 'in-total-bar'), bar(' tc-bar--bl', 'Birdline', 'bl-team', 'bl-shoot', 'bl-total-bar'),
-              esc(v['heads-l']), chips, t('heads'), t('perad-in'), t('perad-bl'), t('start-in'), c['onboard'], c['window'], t('ramp-in'), t('ramp-bl')))
+           '<tr><th scope="row">People to hire</th><td>%s</td><td>0</td></tr>'
+           '<tr><th scope="row">Cost per ad</th><td>%s</td><td>%s</td></tr>'
+           '<tr><th scope="row">Days to start</th><td>%s</td><td>%d</td></tr></tbody></table></div>'
+           % (esc(v['sr']), bar('', 'On payroll', 'in', 'in-total-bar'), bar(' tc-bar--bl', 'Birdline', 'bl', 'bl-total-bar'),
+              t('heads'), t('perad-in'), t('perad-bl'), t('start-in'), c['onboard']))
     def cell(amount, note, extra=None, cls=''):
         x = ('<span class="tc-x" data-tc="%s">%s</span>' % (extra, esc(v[extra]))) if extra else ''
         return '<td%s><b data-tc="%s">%s</b><small>%s<span data-tc="%s">%s</span></small></td>' % (cls, amount, esc(v[amount]), x, note, esc(v[note]))
@@ -271,7 +261,7 @@ def render(esc):
               '<thead><tr><td></td><th scope="col">On payroll</th><th scope="col" class="tc-bl"><span class="tc-x">With </span>Birdline</th></tr></thead><tbody>%s</tbody></table>'
               '<p class="tc-birds" data-tc="birds">%s</p>'
               '<div class="tc-app"><div class="tc-app-h"><h4>The Birdline App comes with it</h4>'
-              '<p>One production workspace for your team and our Birds, where the brief, the shot list, every deliverable and its ad results stay connected. It saves time and money three ways.</p>'
+              '<p>One workspace for your team and ours. It saves time and money three ways.</p>'
               '<a href="{{ROOT}}workspace.html">Explore the Birdline App</a></div>'
               '<ul class="tc-app-l">%s</ul></div></div>'
               % (''.join(rows), esc(v['birds']), ''.join('<li><b>%s</b><span>%s</span></li>' % (esc(a), esc(b)) for a, b in APP)))
@@ -279,12 +269,12 @@ def render(esc):
         return ('<label class="tc-field"><span>%s</span><span class="tc-inp">%s<input type="text" name="%s%s" inputmode="numeric" autocomplete="off" value="%s" data-tc-set="%s" aria-label="%s">%s</span></label>'
                 % (esc(label), ('<i aria-hidden="true">%s</i>' % unit) if unit else '', nm, key, format(val, ','), key, esc(label), ('<i aria-hidden="true">%s</i>' % after) if after else ''))
     checks = ''.join('<label class="tc-check"><input type="checkbox" name="%srole-%s" data-tc-role="%s"%s><span>%s</span></label>' % (nm, k, k, '' if k in off else ' checked', esc(names[k])) for k in SUPPORT)
-    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output per person, costs, hiring time</small></summary><div class="tc-adv-in">'
+    adv = ('<details class="tc-adv"><summary><span>Adjust the assumptions</span> <small>Salaries, roles, output, costs, hiring time</small></summary><div class="tc-adv-in">'
            '<div class="tc-g"><b>Salaries, a year</b><div class="tc-fields">%s</div></div>'
-           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. The producer, who also carries creative strategy, follows team size, company size and productions until you set it.</p></div>'
+           '<div class="tc-g tc-g--tall"><b>Roles on the team</b><div class="tc-checks">%s</div><p>Editors and designers follow your volume. The producer follows team size, company size and productions until you set it.</p></div>'
            '<div class="tc-g tc-g--tall"><b>Output and costs</b><div class="tc-fields">%s%s%s%s%s%s%s%s</div>'
            '<p>Output is an average. With unlimited deliverables, it moves with your edit requests.</p></div>'
-           '<div class="tc-g"><b>Hiring time</b><div class="tc-fields">%s</div><p>The median for a nonexecutive role. Birdline starts within a week.</p></div>'
+           '<div class="tc-g"><b>Hiring time</b><div class="tc-fields">%s</div><p>The median. Birdline starts within a week.</p></div>'
            '<button class="tc-reset" type="button" data-tc-reset>Reset everything</button></div></details>'
            % (''.join(field('salary.' + k, names[k], s['salary'][k]) for k in ROLE_KEYS), checks,
               field('cap.editor', 'Average ads an editor ships a month', s['cap']['editor'], unit=''),
@@ -296,11 +286,11 @@ def render(esc):
               field('backup', 'Backup drive, per production', s['backup']),
               field('shoot', 'Budget per production', s['shoot']),
               field('fill', 'Days to fill a seat', s['fill'], unit='', after='days')))
-    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics: senior pay, the 75th percentile, for the editor and the designer, and the median for the producer. Birdline figures use our starting prices, '
-            'one package per dedicated creative. Productions use the same budget on both sides. The first 90 days assume every seat is filled at once and both sides ship at full rate from their first day.</p>'
+    foot = ('<div class="tc-foot"><p class="tc-note">An estimate, not a quote. Salaries are U.S. figures from the Bureau of Labor Statistics, at senior pay for the editor and the designer. '
+            'Birdline figures are our starting prices. Productions cost the same on both sides.</p>'
             '<div class="tc-cta"><a class="btn" href="{{CALENDLY}}">Book a call</a><a class="btn btn--outline" href="{{ROOT}}packages.html">See the packages</a></div></div>')
     cfg = dict(v=c['v'], roles=[[k, sal] for k, _n, sal in c['roles']], cap=c['cap'], load=c['load'], seat=c['seat'], tools=c['tools'], ssd=c['ssd'], backup=c['backup'], shoot=c['shoot'],
-               fill=c['fill'], onboard=c['onboard'], window=c['window'], price=c['price'], start=c['start'])
+               fill=c['fill'], onboard=c['onboard'], price=c['price'], start=c['start'])
     return ('<figure class="tc" id="calculator" data-teamcalc="%s" aria-label="Team calculator">\n<div class="tc-top on-dark">%s<div class="tc-body">%s%s%s</div></div>\n%s\n%s\n%s\n'
             '<p class="sr" aria-live="polite" data-tc-live></p>\n</figure>'
             % (esc(json.dumps(cfg, separators=(',', ':'))), head, inputs, summary, out, ledger, adv, foot))

@@ -2257,6 +2257,20 @@ body:has(.lb[open]){overflow:hidden}
 .blg-sources a{color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
 .blg-sources a:hover{color:var(--blue);text-decoration-color:currentColor}
 .blg-sources p{margin:14px 0 0;font-size:13px}
+/* a part of a post that stays folded until the reader opens it (the figures behind the team calculator): a row between two rules,
+   the title on the left and a chevron on the right, and smaller type inside */
+.blg-prose .blg-notes{margin-top:3em;border-block:1px solid var(--line-2)}
+.blg-notes summary{position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;padding:20px 44px 20px 0;font:600 18px/1.3 var(--display);letter-spacing:-.01em;color:var(--navy);cursor:pointer;list-style:none}
+.blg-notes summary::-webkit-details-marker{display:none}
+.blg-notes summary small{font:400 14px/1.4 var(--text);letter-spacing:0;color:var(--muted)}
+.blg-notes summary::after{content:"";position:absolute;right:8px;top:50%;width:9px;height:9px;margin-top:-7px;border-right:2px solid var(--navy);border-bottom:2px solid var(--navy);transform:rotate(45deg);transition:transform .2s var(--ease)}
+.blg-notes[open] summary::after{margin-top:-2px;transform:rotate(-135deg)}
+.blg-notes summary:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:6px}
+.blg-notes-in{padding:2px 0 28px;font-size:15.5px;line-height:1.6;color:var(--ink-2)}
+.blg-notes-in>*{margin:0}
+.blg-notes-in>*+*{margin-top:1.15em}
+.blg-notes-in .blg-sources{margin-top:2em}
+@media(prefers-reduced-motion:reduce){.blg-notes summary::after{transition:none}}
 .blg-prose .blg-quote{margin:2em 0;padding:4px 0 4px 26px;border-left:3px solid var(--blue)}
 .blg-quote p{font:600 clamp(21px,2.2vw,28px)/1.3 var(--display);letter-spacing:-.018em;color:var(--navy);text-wrap:balance}
 .blg-author{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 22px;align-items:start;margin-top:56px;padding-top:40px;border-top:1px solid var(--line-2)}
@@ -2277,8 +2291,9 @@ body:has(.lb[open]){overflow:hidden}
    site.js). One figure, wider than the article's column on a wide screen: a navy panel with the inputs and the answer, the ledger
    line by line on white, the assumptions behind it, and the note. It lays itself out by its own width (a container query): one
    column under 800px, where the answer rides the bottom of the screen while the inputs are in view, and two columns from there.
-   The bars are an emphasis pair: the team on payroll in a neutral, Birdline in the accent, each with a lighter step of its own
-   hue for productions (checked on navy: both steps clear 3:1, and the two bars sit 18.7 apart under protan and deutan). */
+   The bars are an emphasis pair: the team on payroll in a neutral, Birdline in the accent (checked on navy: both clear 3:1, and
+   the two bars sit 18.7 apart under protan and deutan). Each is one length, the year's total on that side, named and valued
+   beside it, so the pair needs no key. */
 .blg-article>.wrap{container-type:inline-size}
 .blg-prose>.tc{--tc-w:100%;width:var(--tc-w);max-width:none;margin:2.4em 0 2.4em calc((100% - var(--tc-w)) / 2)}
 @supports(width:1cqw){.blg-prose>.tc{--tc-w:min(1120px,100cqw)}}
@@ -2327,30 +2342,16 @@ body:has(.lb[open]){overflow:hidden}
 .tc-bars{display:grid;gap:10px}
 .tc-bar{display:grid;grid-template-columns:5.2em minmax(0,1fr) auto;align-items:center;column-gap:10px;font-size:14px}
 .tc-bk{font-weight:600;color:var(--on-navy-2)}
-.tc-track{display:flex;gap:2px;height:14px}
-.tc-seg{flex:0 1 0%;min-width:0;height:100%;background:#d9dff5;transition:flex-basis .35s var(--ease)}
-.tc-seg--2{border-radius:0 4px 4px 0;background:#8f9ac6}
+.tc-track{display:flex;height:14px}
+.tc-seg{flex:0 1 0%;min-width:0;height:100%;border-radius:0 4px 4px 0;background:#d9dff5;transition:flex-basis .35s var(--ease)}
 .tc-bar--bl .tc-seg{background:var(--peri)}
-.tc-bar--bl .tc-seg--2{background:#566bd0}
-.tc-bars.is-flat .tc-seg{border-radius:0 4px 4px 0}
-.tc-bars.is-flat .tc-seg--2,.tc-bars.is-flat .tc-key{display:none}
 .tc-bar b{min-width:5.7em;text-align:right;font-weight:700;color:#ffffff;font-variant-numeric:tabular-nums}
-.tc-key{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:12.5px;line-height:1.35;color:var(--on-navy-3)}
-.tc-key i{flex:none;width:18px;height:8px;border-radius:2px;background:linear-gradient(to right,#8f9ac6 50%,#566bd0 0)}
 .tc-kpis{width:100%;border-collapse:collapse;table-layout:fixed}
 .tc-kpis th,.tc-kpis td{padding:10px 0;border-top:1px solid rgba(255,255,255,.14);text-align:right;vertical-align:top}
 .tc-kpis thead th,.tc-kpis thead td{padding:0 0 8px;border-top:0;font-size:12.5px;font-weight:600;color:var(--on-navy-3)}
 .tc-kpis thead th{width:6em}
 .tc-kpis tbody th{padding-right:10px;text-align:left;font-size:14px;font-weight:500;line-height:1.35;color:var(--on-navy-2)}
 .tc-kpis tbody td{font:700 20px/1.15 var(--display);letter-spacing:-.015em;color:#ffffff;font-variant-numeric:tabular-nums}
-/* the roster: a chip for each seat the team needs, with how many; shown where the answer has room for it */
-.tc-team{display:none;gap:10px}
-.tc-team-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:14px;color:var(--on-navy-2)}
-.tc-team-h b{font:700 18px/1 var(--display);letter-spacing:-.015em;color:#ffffff}
-.tc-chips{display:flex;flex-wrap:wrap;gap:6px}
-.tc-chip{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:4px 5px 4px 12px;border-radius:999px;background:rgba(255,255,255,.1);font-size:13.5px;font-weight:500;line-height:1.2;color:#ffffff}
-.tc-chip[hidden]{display:none}
-.tc-chip b{display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:#ffffff;font-size:13px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
 /* the ledger: a line for each seat and cost, the team on payroll beside the same line with Birdline */
 .tc-ledger{padding:6px 16px 18px}
 .tc-ledger table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:14px}
@@ -2430,7 +2431,6 @@ body:has(.lb[open]){overflow:hidden}
   .tc-in{gap:24px;padding:24px 30px 26px}
   .tc-f{gap:9px}
   .tc-sub{display:block}
-  .tc-team{display:grid}
   .tc-fl .tc-o-mix{font-size:20px}
   .tc-pills{grid-template-columns:repeat(6,minmax(0,1fr))}
   .tc-sum{margin-inline:22px}

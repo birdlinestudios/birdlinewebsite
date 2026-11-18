@@ -1927,6 +1927,10 @@ def blog_body(blocks):
             out.append('<figure class="blg-fig"><img class="d-only" src="{{ROOT}}img/ws-%s.webp" width="%d" height="%d" alt="%s" loading="lazy">'
                        '<img class="m-only" src="{{ROOT}}img/ws-%s-m.webp" width="%d" height="%d" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure>'
                        % (key, w, h, esc(alt), key, mw, mh, esc(alt), esc(cap)))
+        elif kind == 'details':   # (title, hint, blocks): a part of the post that stays folded until the reader opens it
+            title, hint, inner = val
+            out.append('<details class="blg-notes"><summary><span>%s</span>%s</summary><div class="blg-notes-in">%s</div></details>'
+                       % (esc(title), (' <small>%s</small>' % esc(hint)) if hint else '', blog_body(inner)))
         elif kind == 'sources':
             items, note = val
             li = ''.join('<li>%s</li>' % (('<a href="%s" rel="noopener"%s>%s</a>' % (x['href'], '' if x['href'].startswith('{{') else ' target="_blank"', esc(x['text']))) if x.get('href') else esc(x['text'])) for x in items)
@@ -1946,7 +1950,8 @@ def post_page(p):
             % (esc(p['category']), esc(p['title']), esc(p['dek']), by, f, w, h, esc(p['cover_alt']), blog_focal(p)))
     take = ('<aside class="blg-take" aria-label="Key takeaways"><b>Key takeaways</b><ul>%s</ul></aside>' % ''.join('<li>%s</li>' % esc(x) for x in p['takeaways'])) if p.get('takeaways') else ''
     author = ''
-    ld = json.dumps(dict(**{'@context': 'https://schema.org', '@type': 'BlogPosting'}, headline=p['title'], description=p['dek'], datePublished=p['date'],
+    # the structured data describes the article as its search description does (`meta`); a dek can be a line as short as "You could."
+    ld = json.dumps(dict(**{'@context': 'https://schema.org', '@type': 'BlogPosting'}, headline=p['title'], description=p.get('meta') or p['dek'], datePublished=p['date'],
                          author={'@type': 'Organization', 'name': 'Birdline'}, publisher={'@type': 'Organization', 'name': 'Birdline'}), ensure_ascii=False).replace('</', '<\\/')
     article = ('<!-- ===== The article ===== -->\n'
                '<section class="band blg-article">\n  <div class="wrap"><div class="blg-col">%s<div class="blg-prose">%s</div>%s</div></div>\n'
